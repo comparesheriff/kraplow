@@ -10,23 +10,23 @@ public enum Role {
     private final String goal;
     private final String roleName;
 
-    Role(String roleName, String goal){
+    Role(String roleName, String goal) {
         this.roleName = roleName;
         this.goal = goal;
     }
 
     public static Role getRole(int ordinal) {
         for (Role value : values()) {
-            if(value.ordinal() == ordinal){
+            if (value.ordinal() == ordinal) {
                 return value;
             }
         }
         return OUTLAW;
     }
 
-    public static Role getRole(String roleName){
+    public static Role getRole(String roleName) {
         for (Role value : values()) {
-            if(value.roleName.equals(roleName)){
+            if (value.roleName.equals(roleName)) {
                 return value;
             }
         }

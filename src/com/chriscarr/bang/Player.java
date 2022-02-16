@@ -1,155 +1,155 @@
 package com.chriscarr.bang;
 
-import java.util.List;
-
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.models.Role;
 
+import java.util.List;
+
 public class Player {
 
-	public static final int SHERIFF = 0;
-	public static final int OUTLAW = 1;
-	public static final int DEPUTY = 2;
-	public static final int RENEGADE = 3;
-	
-	private Figure figure;
-	private Hand hand;
-	private InPlay inPlay;
-	private Role role;
-	private int maxHealth;
-	private int health;	
-	private String ability;
+    public static final int SHERIFF = 0;
+    public static final int OUTLAW = 1;
+    public static final int DEPUTY = 2;
+    public static final int RENEGADE = 3;
 
-	public void setInPlay(InPlay inPlay) {
-		this.inPlay = inPlay;
-	}
+    private Figure figure;
+    private Hand hand;
+    private InPlay inPlay;
+    private Role role;
+    private int maxHealth;
+    private int health;
+    private String ability;
 
-	public void setHand(Hand hand) {
-		this.hand = hand;
-	}
+    public void setInPlay(InPlay inPlay) {
+        this.inPlay = inPlay;
+    }
 
-	public void setFigure(Figure figure) {
-		this.figure = figure;
-		this.setAbility(figure.getName());
-	}
+    public void setHand(Hand hand) {
+        this.hand = hand;
+    }
 
-	public Figure getFigure() {
-		return figure;
-	}
+    public void setFigure(Figure figure) {
+        this.figure = figure;
+        this.setAbility(figure.getName());
+    }
 
-	public Hand getHand() {
-		return hand;
-	}
+    public Figure getFigure() {
+        return figure;
+    }
 
-	public InPlay getInPlay() {
-		return inPlay;
-	}
+    public Hand getHand() {
+        return hand;
+    }
 
-	public void setMaxHealth(int maxHealth) {
-		this.maxHealth = maxHealth;
-		this.health = maxHealth;
-	}
+    public InPlay getInPlay() {
+        return inPlay;
+    }
 
-	public int getMaxHealth() {
-		return maxHealth;
-	}
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
+    }
 
-	public void setHealth(int health) {
-		this.health = health;
-	}
-	
-	public int getHealth(){
-		return health;
-	}
+    public int getMaxHealth() {
+        return maxHealth;
+    }
 
-	public Role getRole(){
-		return role;
-	}
+    public void setHealth(int health) {
+        this.health = health;
+    }
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
+    public int getHealth() {
+        return health;
+    }
 
-	public void addInPlay(Card card) {
-		inPlay.add(card);
-	}
+    public Role getRole() {
+        return role;
+    }
 
-	public boolean isInPlay(String name) {
-		return inPlay.hasItem(name) || inPlay.getGunName().equals(name);
-	}
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
-	public String getName() {
-		return figure.getName();
-	}
+    public void addInPlay(Card card) {
+        inPlay.add(card);
+    }
 
-	public String getAbility() {
-		return this.ability;
-	}
+    public boolean isInPlay(String name) {
+        return inPlay.hasItem(name) || inPlay.getGunName().equals(name);
+    }
 
-	public void setAbility(String ability) {
-		this.ability = ability;
-	}
+    public String getName() {
+        return figure.getName();
+    }
 
-	public int getGunRange() {
-		return inPlay.getGunRange();
-	}
+    public String getAbility() {
+        return this.ability;
+    }
 
-	public void addHealth(int toAdd) {
-		health = health + toAdd;
-	}
+    public void setAbility(String ability) {
+        this.ability = ability;
+    }
 
-	public Object removeRandom() {
-		return hand.removeRandom();
-	}
+    public int getGunRange() {
+        return inPlay.getGunRange();
+    }
 
-	public int countBeers() {
-		return hand.countBeers();
-	}
+    public void addHealth(int toAdd) {
+        health = health + toAdd;
+    }
 
-	public int countBangs() {
-		return hand.countBangs();
-	}
+    public Object removeRandom() {
+        return hand.removeRandom();
+    }
 
-	public int countMisses() {
-		return hand.countMisses();
-	}
+    public int countBeers() {
+        return hand.countBeers();
+    }
 
-	public void setGun(Card card) {
-		inPlay.setGun(card);
-	}
+    public int countBangs() {
+        return hand.countBangs();
+    }
 
-	public Object getGunName() {
-		return inPlay.getGunName();
-	}
+    public int countMisses() {
+        return hand.countMisses();
+    }
 
-	public boolean hasGun() {
-		return inPlay.hasGun();
-	}
+    public void setGun(Card card) {
+        inPlay.setGun(card);
+    }
 
-	public Object removeGun() {
-		return inPlay.removeGun();
-	}
+    public Object getGunName() {
+        return inPlay.getGunName();
+    }
 
-	public int getHandSize() {
-		return hand.size();
-	}
+    public boolean hasGun() {
+        return inPlay.hasGun();
+    }
 
-	public boolean isSheriff() {
-		return Role.SHERIFF.equals(role);
-	}
+    public Object removeGun() {
+        return inPlay.removeGun();
+    }
 
-	public GameStateCard getGameStateGun() {
-		return Turn.cardToGameStateCard((Card)inPlay.getGun());
-	}
+    public int getHandSize() {
+        return hand.size();
+    }
 
-	public String getSpecialAbility() {
-		return Figure.getSpecialAbilityText(getName());
-	}
+    public boolean isSheriff() {
+        return Role.SHERIFF.equals(role);
+    }
 
-	public List<GameStateCard> getGameStateInPlay() {
-		return inPlay.getGameStateInPlay();
-	}
+    public GameStateCard getGameStateGun() {
+        return Turn.cardToGameStateCard((Card) inPlay.getGun());
+    }
+
+    public String getSpecialAbility() {
+        return Figure.getSpecialAbilityText(getName());
+    }
+
+    public List<GameStateCard> getGameStateInPlay() {
+        return inPlay.getGameStateInPlay();
+    }
 
 
 }

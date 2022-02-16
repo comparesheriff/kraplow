@@ -1,118 +1,118 @@
 package com.chriscarr.bang;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameStateCard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class InPlay {
 
-	Object gun = null;
-	List<Object> cards = new ArrayList<>();
-	
-	public boolean hasGun() {
-		return gun != null;
-	}
+    Object gun = null;
+    List<Object> cards = new ArrayList<>();
 
-	public void setGun(Object object) {
-		gun = object;
-	}
+    public boolean hasGun() {
+        return gun != null;
+    }
 
-	public void add(Object toAdd) {
-		cards.add(toAdd);
-	}
+    public void setGun(Object object) {
+        gun = object;
+    }
 
-	public Object peek(int i) {
-		return cards.get(i);
-	}
+    public void add(Object toAdd) {
+        cards.add(toAdd);
+    }
 
-	public Object remove(int i) {		
-		Object removed = cards.remove(i);
-		return removed;
-	}
+    public Object peek(int i) {
+        return cards.get(i);
+    }
 
-	public int count() {
-		return cards.size();
-	}
+    public Object remove(int i) {
+        Object removed = cards.remove(i);
+        return removed;
+    }
 
-	public Object removeGun() { //refactor
-		Object tempGun = gun;
-		gun = new Card();
-		gun = null;
-		return tempGun;
-	}
+    public int count() {
+        return cards.size();
+    }
 
-	public boolean hasItem(String cardName) {
-		for(Object card : cards){
-			if(((Card)card).getName().equals(cardName)){
-				return true;
-			}
-		}
-		return false;
-	}
+    public Object removeGun() { //refactor
+        Object tempGun = gun;
+        gun = new Card();
+        gun = null;
+        return tempGun;
+    }
 
-	public int getGunRange() {
-		if(hasGun()){
-			return Card.getRange(((Card)gun).getName());
-		} else {
-			return 1;
-		}
-	}
+    public boolean hasItem(String cardName) {
+        for (Object card : cards) {
+            if (((Card) card).getName().equals(cardName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public boolean isGunVolcanic() {
-		return ((Card)gun).getName().equals(Card.CARDVOLCANIC);
-	}
+    public int getGunRange() {
+        if (hasGun()) {
+            return Card.getRange(((Card) gun).getName());
+        } else {
+            return 1;
+        }
+    }
 
-	public Object removeDynamite() {
-		for(Object card : cards){
-			if(((Card)card).getName().equals(Card.CARDDYNAMITE)){
-				cards.remove(card);
-				return card;
-			}
-		}
-		return null;
-	}
+    public boolean isGunVolcanic() {
+        return ((Card) gun).getName().equals(Card.CARDVOLCANIC);
+    }
 
-	public Object removeJail() {
-		for(Object card : cards){
-			if(((Card)card).getName().equals(Card.CARDJAIL)){
-				cards.remove(card);
-				return card;
-			}
-		}
-		return null;
-	}
+    public Object removeDynamite() {
+        for (Object card : cards) {
+            if (((Card) card).getName().equals(Card.CARDDYNAMITE)) {
+                cards.remove(card);
+                return card;
+            }
+        }
+        return null;
+    }
 
-	public boolean isEmpty() {
-		return cards.isEmpty();
-	}
+    public Object removeJail() {
+        for (Object card : cards) {
+            if (((Card) card).getName().equals(Card.CARDJAIL)) {
+                cards.remove(card);
+                return card;
+            }
+        }
+        return null;
+    }
 
-	public int size() {
-		return cards.size();
-	}
+    public boolean isEmpty() {
+        return cards.isEmpty();
+    }
 
-	public Object get(int i) {
-		return cards.get(i);
-	}
+    public int size() {
+        return cards.size();
+    }
 
-	public String getGunName() {
-		if(hasGun()){
-			return ((Card)gun).getName();
-		} else {
-			return "Colt .45";
-		}
-	}
+    public Object get(int i) {
+        return cards.get(i);
+    }
 
-	public Object getGun() {
-		return gun;
-	}
+    public String getGunName() {
+        if (hasGun()) {
+            return ((Card) gun).getName();
+        } else {
+            return "Colt .45";
+        }
+    }
 
-	public List<GameStateCard> getGameStateInPlay() {
-		List<GameStateCard> gameStateCards = new ArrayList<>();
-		for(Object card : cards){
-			gameStateCards.add(Turn.cardToGameStateCard(((Card)card)));
-		}
-		return gameStateCards;
-	}
+    public Object getGun() {
+        return gun;
+    }
+
+    public List<GameStateCard> getGameStateInPlay() {
+        List<GameStateCard> gameStateCards = new ArrayList<>();
+        for (Object card : cards) {
+            gameStateCards.add(Turn.cardToGameStateCard(((Card) card)));
+        }
+        return gameStateCards;
+    }
 }

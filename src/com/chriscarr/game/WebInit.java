@@ -1,11 +1,11 @@
 package com.chriscarr.game;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.chriscarr.bang.Setup;
 import com.chriscarr.bang.gamestate.GameStateListener;
 import com.chriscarr.bang.userinterface.UserInterface;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class WebInit {

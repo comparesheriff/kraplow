@@ -1,48 +1,48 @@
 package com.chriscarr.bang.userinterface;
 
-import java.util.List;
-
 import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
 
+import java.util.List;
+
 public interface UserInterface {
 
-	int askBlueDiscard(Player player);
+    int askBlueDiscard(Player player);
 
-	int askDiscard(Player player);
+    int askDiscard(Player player);
 
-	int askPlay(Player player);
+    int askPlay(Player player);
 
-	int askPlayer(Player player, List<String> otherPlayers);
+    int askPlayer(Player player, List<String> otherPlayers);
 
-	int respondBang(Player player);
+    int respondBang(Player player);
 
-	int respondMiss(Player player, boolean canSingleUse);
-	
-	List<Object> respondTwoMiss(Player player);
+    int respondMiss(Player player, boolean canSingleUse);
 
-	int chooseGeneralStoreCard(Player player,
-			List<Object> cards);
+    List<Object> respondTwoMiss(Player player);
 
-	int askOthersCard(Player player, InPlay inPlay, boolean hasHand);
+    int chooseGeneralStoreCard(Player player,
+                               List<Object> cards);
 
-	int respondBeer(Player player);
+    int askOthersCard(Player player, InPlay inPlay, boolean hasHand);
 
-	boolean chooseDiscard(Player player, Object card);
-	
-	boolean chooseFromPlayer(Player player);	
+    int respondBeer(Player player);
 
-	List<Object> chooseTwoDiscardForLife(Player player);
+    boolean chooseDiscard(Player player, Object card);
 
-	List<Object> chooseTwoDiscardForShoot(Player player);
-	
-	void printInfo(String info);
+    boolean chooseFromPlayer(Player player);
 
-	int chooseDrawCard(Player player, List<Object> cards);
+    List<Object> chooseTwoDiscardForLife(Player player);
 
-	int chooseCardToPutBack(Player player, List<Object> cards);
-	
-	String getRoleForName(String name);
-	
-	String getTimeout();
+    List<Object> chooseTwoDiscardForShoot(Player player);
+
+    void printInfo(String info);
+
+    int chooseDrawCard(Player player, List<Object> cards);
+
+    int chooseCardToPutBack(Player player, List<Object> cards);
+
+    String getRoleForName(String name);
+
+    String getTimeout();
 }

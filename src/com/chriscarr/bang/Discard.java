@@ -5,26 +5,26 @@ import java.util.List;
 
 public class Discard {
 
-	List<Object> cards = new ArrayList<>();
-	
-	public void add(Object object) {
-		cards.add(object);
-	}
+    List<Object> cards = new ArrayList<>();
 
-	public Object peek() {
-		return cards.get(cards.size() - 1);
-	}
+    public void add(Object object) {
+        cards.add(object);
+    }
 
-	public Object remove() {
-		return cards.remove(cards.size() - 1);
-	}
+    public Object peek() {
+        return cards.get(cards.size() - 1);
+    }
 
-	public boolean canDrawFromDiscard() {
-		return !cards.isEmpty();
-	}
-	
-	public int size() {
-		return cards.size();
-	}
+    public Object remove() {
+        return cards.remove(cards.size() - 1);
+    }
+
+    public boolean canDrawFromDiscard() {
+        return !cards.isEmpty();
+    }
+
+    public int size() {
+        return cards.size();
+    }
 
 }

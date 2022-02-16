@@ -6,37 +6,37 @@ import java.util.List;
 
 public class Deck {
 
-	private final List<Object> cards = new ArrayList<>();
-	private Discard discard;
-	
-	public void add(Object card) {
-		cards.add(card);
-	}
+    private final List<Object> cards = new ArrayList<>();
+    private Discard discard;
 
-	public Object pull() {
-		if(cards.size() == 0){
-			while(discard.canDrawFromDiscard()){
-				cards.add(discard.remove());
-			}
-			shuffle();
-		}
-		return cards.remove(cards.size() - 1);
-	}
+    public void add(Object card) {
+        cards.add(card);
+    }
 
-	public boolean isEmpty() {
-		return cards.isEmpty();
-	}
+    public Object pull() {
+        if (cards.size() == 0) {
+            while (discard.canDrawFromDiscard()) {
+                cards.add(discard.remove());
+            }
+            shuffle();
+        }
+        return cards.remove(cards.size() - 1);
+    }
 
-	public void shuffle() {
-		Collections.shuffle(cards);
-	}
+    public boolean isEmpty() {
+        return cards.isEmpty();
+    }
 
-	public void setDiscard(Discard discard) {
-		this.discard = discard;
-	}
+    public void shuffle() {
+        Collections.shuffle(cards);
+    }
 
-	public int size() {
-		return cards.size();
-	}
+    public void setDiscard(Discard discard) {
+        this.discard = discard;
+    }
+
+    public int size() {
+        return cards.size();
+    }
 
 }
