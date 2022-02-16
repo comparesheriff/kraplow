@@ -96,7 +96,7 @@ public class Setup {
             player.setRole(role);
             player.setFigure(figure);
             int maxHealth = Figure.getStartingHealth(figure.getName());
-            if (Role.SHERIFF.equals(role)) {
+            if (player.isSheriff()) {
                 maxHealth = maxHealth + 1;
             }
             player.setMaxHealth(maxHealth);
@@ -138,31 +138,6 @@ public class Setup {
         return roles;
     }
 
-    public static List<Integer> getRoles(int countPlayers) {
-        List<Integer> roles = new ArrayList<>();
-        roles.add(Player.SHERIFF);
-        roles.add(Player.OUTLAW);
-        roles.add(Player.OUTLAW);
-        roles.add(Player.RENEGADE);
-        if (countPlayers == 4) {
-            return roles;
-        }
-        roles.add(Player.DEPUTY);
-        if (countPlayers == 5) {
-            return roles;
-        }
-        roles.add(Player.OUTLAW);
-        if (countPlayers == 6) {
-            return roles;
-        }
-        roles.add(Player.DEPUTY);
-        if (countPlayers == 7) {
-            return roles;
-        }
-        roles.add(Player.RENEGADE);
-        return roles;
-    }
-
     public static void drawHands(List<Player> players, Deck deck) {
         for (Player player : players) {
             int maxHealth = player.getMaxHealth();
@@ -187,7 +162,7 @@ public class Setup {
             player.setRole(role);
             player.setFigure(figure);
             int maxHealth = Figure.getStartingHealth(figure.getName());
-            if (Role.SHERIFF.equals(role)) {
+            if (player.isSheriff()) {
                 maxHealth = maxHealth + 1;
             }
             player.setMaxHealth(maxHealth);

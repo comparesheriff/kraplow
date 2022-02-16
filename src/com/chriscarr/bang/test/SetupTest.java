@@ -44,7 +44,7 @@ public class SetupTest extends TestCase {
         int deputy = 0;
         int renegade = 0;
         for (Player player : players) {
-            if (Role.SHERIFF.equals(player.getRole())) {
+            if (player.isSheriff()) {
                 sheriff++;
             }
             if (Role.OUTLAW.equals(player.getRole())) {
@@ -68,7 +68,7 @@ public class SetupTest extends TestCase {
         int deputy = 0;
         int renegade = 0;
         for (Player player : players) {
-            if (Role.SHERIFF.equals(player.getRole())) {
+            if (player.isSheriff()) {
                 sheriff++;
             }
             if (Role.OUTLAW.equals(player.getRole())) {
@@ -92,7 +92,7 @@ public class SetupTest extends TestCase {
         int deputy = 0;
         int renegade = 0;
         for (Player player : players) {
-            if (Role.SHERIFF.equals(player.getRole())) {
+            if (player.isSheriff()) {
                 sheriff++;
             }
             if (Role.OUTLAW.equals(player.getRole())) {
@@ -116,7 +116,7 @@ public class SetupTest extends TestCase {
         int deputy = 0;
         int renegade = 0;
         for (Player player : players) {
-            if (Role.SHERIFF.equals(player.getRole())) {
+            if (player.isSheriff()) {
                 sheriff++;
             }
             if (Role.OUTLAW.equals(player.getRole())) {

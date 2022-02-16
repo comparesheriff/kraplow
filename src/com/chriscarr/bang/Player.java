@@ -67,6 +67,7 @@ public class Player {
         return role;
     }
 
+
     public void setRole(Role role) {
         this.role = role;
     }

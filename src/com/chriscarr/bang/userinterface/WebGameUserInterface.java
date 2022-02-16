@@ -126,7 +126,7 @@ public class WebGameUserInterface extends JSPUserInterface {
             if (duelIndex != -1) {
                 String otherPlayer = lastMessage.substring(0, duelIndex);
                 Player other = turn.getPlayerForName(otherPlayer);
-                if (Role.DEPUTY.equals(aiPlayer.getRole()) && Role.SHERIFF.equals(other.getRole())) {
+                if (Role.DEPUTY.equals(aiPlayer.getRole()) && other.isSheriff()) {
                     //Let the sheriff kill you(Not great for the sheriff)
                     return "-1";
                 }
@@ -349,23 +349,22 @@ public class WebGameUserInterface extends JSPUserInterface {
             name = name.trim();
             if (!name.equals("Cancel")) {
                 Player other = turn.getPlayerForName(name);
-                Role otherRole = other.getRole();
-                if (Role.OUTLAW.equals(role) && Role.SHERIFF.equals(otherRole)) {
+                if (Role.OUTLAW.equals(role) && other.isSheriff()) {
                     if (!takeCard || playerGotCardIWantToTake(player, other)) {
                         return i;
                     }
                 }
-                if (Role.OUTLAW.equals(role) && !Role.SHERIFF.equals(otherRole)) {
+                if (Role.OUTLAW.equals(role) && !other.isSheriff()) {
                     if (!takeCard || playerGotCardIWantToTake(player, other)) {
                         targets.add(i);
                     }
                 }
-                if (Role.SHERIFF.equals(role)) {
+                if (player.isSheriff()) {
                     if (!takeCard || playerGotCardIWantToTake(player, other)) {
                         targets.add(i);
                     }
                 }
-                if (Role.RENEGADE.equals(role) && (turn.countPlayers() == 2 || !Role.SHERIFF.equals(otherRole))) {
+                if (Role.RENEGADE.equals(role) && (turn.countPlayers() == 2 || !other.isSheriff())) {
                     if (!takeCard || playerGotCardIWantToTake(player, other)) {
                         targets.add(i);
                     }

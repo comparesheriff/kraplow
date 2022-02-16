@@ -50,7 +50,7 @@ public class Hand {
         return bangs;
     }
 
-    public Object removeMiss() {
+    public Object removeMiss() { //refactor
         for (Object card : cards) {
             if (((Card) card).getName().equals(Card.CARDMISSED)) {
                 cards.remove(card);
@@ -74,7 +74,7 @@ public class Hand {
         return beers;
     }
 
-    public Object removeBeer() {
+    public Object removeBeer() { //refactor
         for (Object card : cards) {
             if (((Card) card).getName().equals(Card.CARDBEER)) {
                 cards.remove(card);

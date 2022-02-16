@@ -31,7 +31,6 @@ public class Turn {
     public ArrayList<String> getRoles() {
         ArrayList<String> roles = new ArrayList<>();
         for (Player player : players) {
-            //roles.add(Player.roleToString(player.getRole()));
             roles.add(player.getRole().roleName());
         }
         Collections.sort(roles);
@@ -69,7 +68,7 @@ public class Turn {
         return players.get(index);
     }
 
-    public static Player getPreviousPlayer(Player player, List<Player> players) {
+    public static Player getPreviousPlayer(Player player, List<Player> players) { //refactor
         int index = players.indexOf(player);
         if (index == 0) {
             index = players.size() - 1;
@@ -80,6 +79,7 @@ public class Turn {
     }
 
     public void nextTurn() {
+        //refactor
         //Log of all cards
 		/*
 		int cardTotal = 0;
@@ -169,7 +169,7 @@ public class Turn {
 
     public void setSheriff() {
         for (Player player : players) {
-            if (Role.SHERIFF.equals(player.getRole())) {
+            if (player.isSheriff()) {
                 currentPlayer = player;
                 turnLoop(currentPlayer);
             }
@@ -178,7 +178,7 @@ public class Turn {
 
     public void setSheriffManualTest() {
         for (Player player : players) {
-            if (Role.SHERIFF.equals(player.getRole())) {
+            if (player.isSheriff()) {
                 currentPlayer = player;
             }
         }
@@ -833,7 +833,7 @@ public class Turn {
         if (!isGameOver(players)) {
             deadDiscardAll(player, players, discard, deck);
             if (damager != null) {
-                if (Role.SHERIFF.equals(damager.getRole())
+                if (damager.isSheriff()
                         && Role.DEPUTY.equals(player.getRole())) {
                     userInterface.printInfo(damager.getName()
                             + " killed own deputy, loses all cards");
@@ -1089,7 +1089,7 @@ public class Turn {
         others.add(cancelPlayer);
         for (Player otherPlayer : players) {
             boolean isInJail = otherPlayer.getInPlay().hasItem(Card.CARDJAIL);
-            boolean isSheriff = Role.SHERIFF.equals(otherPlayer.getRole());
+            boolean isSheriff = otherPlayer.isSheriff();
             boolean isPlayer = otherPlayer.equals(player);
             if (!isInJail && !isSheriff && !isPlayer) {
                 others.add(otherPlayer);
