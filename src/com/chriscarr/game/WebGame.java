@@ -62,10 +62,10 @@ public class WebGame {
         return gamePreps.get(gameId).canJoin();
     }
 
-    public static void leave(int gameId, String joinNumber) {
-        gamePreps.get(gameId).leave(joinNumber);
+    public static void leave(int gameId, String handle) {
+        gamePreps.get(gameId).leave(handle);
         List<String> handles = gameHandles.get(Integer.toString(gameId));
-        handles.remove(joinNumber);
+        handles.remove(handle);
         if (gamePreps.get(gameId).getCountPlayers() == 0) {
             gamePreps.remove(gameId);
         }
@@ -97,7 +97,7 @@ public class WebGame {
         if (canStart(gameId)) {
             WebInit webInit = new WebInit();
             WebGameUserInterface x = new WebGameUserInterface(gamePreps.get(gameId).getJoinedPlayers(), aiSleepMs);
-            webInit.setup(getCountPlayers(gameId), x, x, gameId, gamePreps.get(gameId).getSidestep(), pRole, pChar);
+            webInit.setup(getCountPlayers(gameId), x, x, gameId, gamePreps.get(gameId).isSideStep(), pRole, pChar);
             gamePreps.remove(gameId);
         }
     }

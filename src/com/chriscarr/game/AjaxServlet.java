@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("serial")
 public class AjaxServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)

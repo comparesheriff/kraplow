@@ -6,7 +6,6 @@ import java.util.List;
 public class GamePrep {
     private final List<String> joinedPlayers;
     private Long lastUpdated;
-    private int counter;
     private final String visibility;
     private final boolean sidestep;
     private final int maxPlayers;
@@ -14,16 +13,12 @@ public class GamePrep {
     public GamePrep(String visibility, boolean sidestep) {
         this.visibility = visibility;
         this.sidestep = sidestep;
-        if (sidestep) {
-            maxPlayers = 8;
-        } else {
-            maxPlayers = 7;
-        }
+        maxPlayers = sidestep ? 8 : 7;
         joinedPlayers = new ArrayList<>();
         lastUpdated = System.currentTimeMillis();
     }
 
-    public boolean getSidestep() {
+    public boolean isSideStep() {
         return this.sidestep;
     }
 
@@ -31,13 +26,17 @@ public class GamePrep {
         if (joinedPlayers.size() < maxPlayers) {
             return true;
         } else {
-            for (String joinedPlayer : joinedPlayers) {
-                if (joinedPlayer.endsWith("AI")) {
-                    return true;
-                }
-            }
-            return false;
+            return isAIPlaying();
         }
+    }
+
+    private boolean isAIPlaying() {
+        for (String joinedPlayer : joinedPlayers) {
+            if (joinedPlayer.endsWith("AI")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean canJoinAI() {
@@ -47,19 +46,20 @@ public class GamePrep {
     public String join(String handle) {
         if (canJoin()) {
             lastUpdated = System.currentTimeMillis();
-            if (joinedPlayers.size() == maxPlayers) {
-                for (int i = 0; i < joinedPlayers.size(); i++) {
-                    if (joinedPlayers.get(i).endsWith("AI")) {
-                        joinedPlayers.remove(i);
-                        break;
-                    }
-                }
-            }
+            if (joinedPlayers.size() == maxPlayers) removeAIPlayer();
             joinedPlayers.add(handle);
-            counter = counter + 1;
             return handle;
         } else {
             return null;
+        }
+    }
+
+    private void removeAIPlayer() {
+        for (String joinedPlayer : joinedPlayers) {
+            if (joinedPlayer.endsWith("AI")) {
+                joinedPlayers.remove(joinedPlayer);
+                break;
+            }
         }
     }
 
@@ -68,15 +68,14 @@ public class GamePrep {
             lastUpdated = System.currentTimeMillis();
             handle = handle + "AI";
             joinedPlayers.add(handle);
-            counter = counter + 1;
             return handle;
         } else {
             return null;
         }
     }
 
-    public void leave(String joinNumber) {
-        joinedPlayers.remove(joinNumber);
+    public void leave(String handle) {
+        joinedPlayers.remove(handle);
         lastUpdated = System.currentTimeMillis();
     }
 
