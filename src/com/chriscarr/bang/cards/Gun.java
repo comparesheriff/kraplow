@@ -21,7 +21,7 @@ public class Gun extends Card {
 		}
 		if (Figure.JOHNNYKISCH.equals(currentPlayer.getAbility())) {
 			for (Player player : players) {
-				if(player.getInPlay().getGunName() == this.getName()){
+				if(player.getInPlay().getGunName().equals(this.getName())){
 					Object gun = player.getInPlay().removeGun();
 					discard.add(gun);
 					userInterface.printInfo(currentPlayer.getName() + " plays a " + this.getName() + " and forces " + player.getName() + " to discard one from play.");

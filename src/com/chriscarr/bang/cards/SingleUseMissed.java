@@ -19,7 +19,7 @@ public class SingleUseMissed extends SingleUse implements Playable{
 	}
 
 	public List<Player> targets(Player player, List<Player> players){
-		List<Player> targets = new ArrayList<Player>();
+		List<Player> targets = new ArrayList<>();
 		targets.add(player);
 		return targets;
 	}

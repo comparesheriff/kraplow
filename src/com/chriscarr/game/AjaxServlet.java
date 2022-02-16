@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ArrayList;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +22,7 @@ import com.chriscarr.bang.userinterface.WebGameUserInterface;
 public class AjaxServlet extends HttpServlet {
 	
   public void doGet(HttpServletRequest request, HttpServletResponse response)
-                               throws ServletException, IOException {
+                               throws IOException {
 	  response.setContentType("text/xml"); 
       response.setHeader("Cache-Control", "no-cache");
       
@@ -126,13 +125,12 @@ public class AjaxServlet extends HttpServlet {
     		}
     		response.getWriter().write("</playercount>");
     		response.getWriter().write("<players>");
-    		List<String> joinedPlayers = WebGame.getJoinedPlayers(Integer.parseInt(gameId));
-    		for(int playerIndex = 0; playerIndex < joinedPlayers.size(); playerIndex++){
-    			String playerHandle = joinedPlayers.get(playerIndex);
-    			response.getWriter().write("<playerName>");
-	    		response.getWriter().write(playerHandle);
-	    		response.getWriter().write("</playerName>");
-    		}
+    		List<String> joinedPlayers = WebGame.getJoinedPlayers(Integer.parseInt(gameId)); //refactor nullcheck
+			for (String playerHandle : joinedPlayers) {
+				response.getWriter().write("<playerName>");
+				response.getWriter().write(playerHandle);
+				response.getWriter().write("</playerName>");
+			}
     		response.getWriter().write("</players>");
     		response.getWriter().write("</count>");
     	} else if(messageType.equals("GETGUESTCOUNTER")){
@@ -142,28 +140,27 @@ public class AjaxServlet extends HttpServlet {
     	} else if(messageType.equals("AVAILABLEGAMES")){
     		response.getWriter().write("<gameids>");
     		List<Integer> availableGames = WebGame.getAvailableGames();
-    		for(int i = 0; i < availableGames.size(); i++){
-    			response.getWriter().write("<game>");
-	    		response.getWriter().write("<gameid>");
-	    		response.getWriter().write(Integer.toString(availableGames.get(i)));
-	    		response.getWriter().write("</gameid>");
-	    		response.getWriter().write("<playercount>");
-	    		response.getWriter().write(Integer.toString(WebGame.getCountPlayers(availableGames.get(i))));
-	    		response.getWriter().write("</playercount>");
-	    		response.getWriter().write("<canjoin>");
-	    		response.getWriter().write(Boolean.toString(WebGame.canJoin(availableGames.get(i))));
-	    		response.getWriter().write("</canjoin>");
-	    		response.getWriter().write("<players>");
-	    		List<String> joinedPlayers = WebGame.getJoinedPlayers(availableGames.get(i));
-	    		for(int playerIndex = 0; playerIndex < joinedPlayers.size(); playerIndex++){
-	    			String playerHandle = joinedPlayers.get(playerIndex);
-	    			response.getWriter().write("<playerName>");
-		    		response.getWriter().write(playerHandle);
-		    		response.getWriter().write("</playerName>");
-	    		}
-	    		response.getWriter().write("</players>");
-	    		response.getWriter().write("</game>");
-    		}
+			for (Integer availableGame : availableGames) {
+				response.getWriter().write("<game>");
+				response.getWriter().write("<gameid>");
+				response.getWriter().write(Integer.toString(availableGame));
+				response.getWriter().write("</gameid>");
+				response.getWriter().write("<playercount>");
+				response.getWriter().write(Integer.toString(WebGame.getCountPlayers(availableGame)));
+				response.getWriter().write("</playercount>");
+				response.getWriter().write("<canjoin>");
+				response.getWriter().write(Boolean.toString(WebGame.canJoin(availableGame)));
+				response.getWriter().write("</canjoin>");
+				response.getWriter().write("<players>");
+				List<String> joinedPlayers = WebGame.getJoinedPlayers(availableGame);
+				for (String playerHandle : joinedPlayers) {
+					response.getWriter().write("<playerName>");
+					response.getWriter().write(playerHandle);
+					response.getWriter().write("</playerName>");
+				}
+				response.getWriter().write("</players>");
+				response.getWriter().write("</game>");
+			}
     		response.getWriter().write("</gameids>");
     	} else if(messageType.equals("CANSTART")){
     		String gameId = request.getParameter("gameId");
@@ -224,11 +221,8 @@ public class AjaxServlet extends HttpServlet {
     		response.getWriter().write("<ok/>");
     	} else if(messageType.equals("CREATE")){
     		String visibility = request.getParameter("visibility");
-    		boolean sidestep = false;
-    		if(request.getParameterMap().containsKey("sidestep")){
-    			sidestep = true;
-    		}
-    		int gameId = WebGame.create(visibility, sidestep);    		
+    		boolean sidestep = request.getParameterMap().containsKey("sidestep");
+			int gameId = WebGame.create(visibility, sidestep);
     		response.getWriter().write("<gameid>");
     		response.getWriter().write(Integer.toString(gameId));
     		response.getWriter().write("</gameid>");

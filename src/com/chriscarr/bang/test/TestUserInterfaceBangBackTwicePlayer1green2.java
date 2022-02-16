@@ -95,7 +95,7 @@ public class TestUserInterfaceBangBackTwicePlayer1green2 extends TestUserInterfa
 	
 	@Override
 	public List<Object> respondTwoMiss(Player player) {
-		List<Object> result = new ArrayList<Object>();
+		List<Object> result = new ArrayList<>();
 		Hand hand = player.getHand();
                 InPlay inPlay = player.getInPlay();
 		result.add(inPlay.get(0));

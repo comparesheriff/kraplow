@@ -11,13 +11,13 @@ import com.chriscarr.bang.userinterface.WebGameUserInterface;
 public class WebGame {
 	private static int gameCounter = 0;
 	private static int guestCounter = 0;
-	private static Map<Integer, GamePrep> gamePreps = new ConcurrentHashMap<Integer, GamePrep>();
-	private static Map<String, List<ChatMessage>> chatLogs = new ConcurrentHashMap<String, List<ChatMessage>>();
-	private static Map<String, Session> sessions = new ConcurrentHashMap<String, Session>();
-	private static Map<String, List<String>> gameHandles = new ConcurrentHashMap<String, List<String>>();
+	private static final Map<Integer, GamePrep> gamePreps = new ConcurrentHashMap<>();
+	private static final Map<String, List<ChatMessage>> chatLogs = new ConcurrentHashMap<>();
+	private static final Map<String, Session> sessions = new ConcurrentHashMap<>();
+	private static final Map<String, List<String>> gameHandles = new ConcurrentHashMap<>();
 	
 	static {
-		chatLogs.put("lobby", new ArrayList<ChatMessage>());
+		chatLogs.put("lobby", new ArrayList<>());
 	}
 	
 	public static int create(String visibility, boolean sidestep){
@@ -25,8 +25,8 @@ public class WebGame {
 		GamePrep gamePrep = new GamePrep(visibility, sidestep);
 		gamePreps.put(gameId, gamePrep);
 		gameCounter++;
-		chatLogs.put(Integer.toString(gameId), new ArrayList<ChatMessage>());
-		gameHandles.put(Integer.toString(gameId), new ArrayList<String>());
+		chatLogs.put(Integer.toString(gameId), new ArrayList<>());
+		gameHandles.put(Integer.toString(gameId), new ArrayList<>());
 		return gameId;
 	}
 	
@@ -35,7 +35,7 @@ public class WebGame {
 		if(gamePrep != null){
 			return gamePrep.getJoinedPlayers();
 		} else {
-			return new ArrayList<String>();
+			return new ArrayList<>();
 		}
 	}
 	
@@ -103,13 +103,13 @@ public class WebGame {
 	}
 
 	public static List<Integer> getAvailableGames() {
-		ArrayList<Integer> results = new ArrayList<Integer>();
-		ArrayList<Integer> gameKeys = new ArrayList<Integer>(gamePreps.keySet());
-		for(int i = 0; i < gameKeys.size(); i++){
-			GamePrep prep = gamePreps.get(gameKeys.get(i));
+		ArrayList<Integer> results = new ArrayList<>();
+		ArrayList<Integer> gameKeys = new ArrayList<>(gamePreps.keySet());
+		for (Integer gameKey : gameKeys) {
+			GamePrep prep = gamePreps.get(gameKey);
 			String visibility = prep.getVisibility();
-			if(visibility.equals("public")) {
-				results.add(gameKeys.get(i));
+			if (visibility.equals("public")) {
+				results.add(gameKey);
 			}
 		}
 		return results;		
@@ -135,11 +135,10 @@ public class WebGame {
 			if((sessions.get(sessionId).lastUpdated + 5000) < now){
 				Session session = sessions.get(sessionId);
 				String handle = session.handle;
-				ArrayList<GamePrep> allPreps = new ArrayList<GamePrep>(gamePreps.values());
-				for(int i = 0; i < allPreps.size(); i++){
-					GamePrep prep = allPreps.get(i);
-					prep.leave(handle);
-				}
+				ArrayList<GamePrep> allPreps = new ArrayList<>(gamePreps.values());
+                for (GamePrep prep : allPreps) {
+                    prep.leave(handle);
+                }
 				sessions.remove(sessionId);
 			}
 		}
@@ -158,7 +157,7 @@ public class WebGame {
 	}
 
 	public static List<Session> getSessions() {
-		return new ArrayList<Session>(sessions.values());		
+		return new ArrayList<>(sessions.values());
 	}
 
 	public static void removeGame(int gameId) {

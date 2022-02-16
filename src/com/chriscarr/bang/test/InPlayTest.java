@@ -51,13 +51,13 @@ public class InPlayTest extends TestCase {
 	
 	public void testCountInPlay(){
 		InPlay inPlay = new InPlay();
-		assertTrue(inPlay.count() == 0);
+		assertEquals(0, inPlay.count());
 	}
 	
 	public void testCountInPlayAdd(){
 		InPlay inPlay = new InPlay();
 		inPlay.add(new Object());
-		assertTrue(inPlay.count() == 1);
+		assertEquals(1, inPlay.count());
 	}
 	
 	public void testSameNameReject(){

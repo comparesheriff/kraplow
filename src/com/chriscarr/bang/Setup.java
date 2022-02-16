@@ -9,6 +9,7 @@ import java.util.logging.*;
 import com.chriscarr.bang.cards.BangDeck;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameStateListener;
+import com.chriscarr.bang.models.Role;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 public class Setup {
@@ -62,9 +63,8 @@ public class Setup {
 	}
 
 	public static List<Player> getPlayers(int countCharacters, Deck deck, boolean sidestep, String pRole, String pChar) {
-		ArrayList<Player> players = new ArrayList<Player>();
-		ArrayList<String> characterList = new ArrayList<String>();
-		characterList.addAll(Arrays.asList(Figure.CHARACTERS));
+		ArrayList<Player> players = new ArrayList<>();
+		ArrayList<String> characterList = new ArrayList<>(Arrays.asList(Figure.CHARACTERS));
 		try{
 			if(sidestep){
 				characterList.addAll(Arrays.asList(Figure.CHARACTERSSIDESTEP));
@@ -74,8 +74,8 @@ public class Setup {
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 		Collections.shuffle(characterList);
-		List<Integer> roles = getRoles(countCharacters);
-		Collections.shuffle(roles);
+		List<Role> newRoles = getNewRoles(countCharacters);
+		Collections.shuffle(newRoles);
 		for(int i = 0; i < countCharacters; i++){
 			Player player = new Player();
 			
@@ -85,16 +85,17 @@ public class Setup {
 				characterList.add(0, pChar);
 			}
 			figure.setName(characterList.get(i));
-			if(i == 0 && !pRole.equals("random") && roles.contains(Player.stringToRole(pRole))){
-				roles.remove(Player.stringToRole(pRole));
-				roles.add(0, Player.stringToRole(pRole));
+			Role newRole = Role.getRole(pRole);
+			if(i == 0 && !Role.RANDOM.equals(newRole) && newRoles.contains(newRole)){
+				newRoles.remove(newRole);
+				newRoles.remove(newRole);
 			}
-			int role = roles.get(i);
+			Role role = newRoles.get(i);
 			
 			player.setRole(role);
 			player.setFigure(figure);
 			int maxHealth = Figure.getStartingHealth(figure.getName());
-			if(role == Player.SHERIFF){
+			if(Role.SHERIFF.equals(role)){
 				maxHealth = maxHealth + 1;
 			}
 			player.setMaxHealth(maxHealth);
@@ -110,9 +111,34 @@ public class Setup {
 		
 		return players;
 	}
-	
+
+	private static List<Role> getNewRoles(int countPlayers) {
+		List<Role> roles = new ArrayList<>();
+		roles.add(Role.SHERIFF);
+		roles.add(Role.OUTLAW);
+		roles.add(Role.OUTLAW);
+		roles.add(Role.RENEGADE);
+		if(countPlayers == 4){
+			return roles;
+		}
+		roles.add(Role.DEPUTY);
+		if(countPlayers == 5){
+			return roles;
+		}
+		roles.add(Role.OUTLAW);
+		if(countPlayers == 6){
+			return roles;
+		}
+		roles.add(Role.DEPUTY);
+		if(countPlayers == 7){
+			return roles;
+		}
+		roles.add(Role.RENEGADE);
+		return roles;
+	}
+
 	public static List<Integer> getRoles(int countPlayers){
-		List<Integer> roles = new ArrayList<Integer>();
+		List<Integer> roles = new ArrayList<>();
 		roles.add(Player.SHERIFF);
 		roles.add(Player.OUTLAW);
 		roles.add(Player.OUTLAW);
@@ -147,20 +173,20 @@ public class Setup {
 	}
 
 	public static List<Player> getNormalPlayers(int countCharacters) {
-		ArrayList<Player> players = new ArrayList<Player>();
+		ArrayList<Player> players = new ArrayList<>();
 				
-		List<Integer> roles = getRoles(countCharacters);
+		List<Role> roles = getNewRoles(countCharacters);
 		Collections.shuffle(roles);
 		for(int i = 0; i < countCharacters; i++){
 			Player player = new Player();
 			
 			Figure figure = new Figure();			
 			figure.setName("Average Joe");
-			int role = roles.get(i);
+			Role role = roles.get(i);
 			player.setRole(role);
 			player.setFigure(figure);
 			int maxHealth = Figure.getStartingHealth(figure.getName());
-			if(role == Player.SHERIFF){
+			if(Role.SHERIFF.equals(role)){
 				maxHealth = maxHealth + 1;
 			}
 			player.setMaxHealth(maxHealth);

@@ -21,7 +21,7 @@ public class Canteen extends SingleUse implements Playable{
 	public boolean activate(Player currentPlayer, List<Player> players,
 		UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 
-		if(!Turn.isMaxHealth(currentPlayer)){
+		if(Turn.canPlayerHeal(currentPlayer)){
 			currentPlayer.addHealth(1);
 		}
 		removeFromInPlay(currentPlayer);

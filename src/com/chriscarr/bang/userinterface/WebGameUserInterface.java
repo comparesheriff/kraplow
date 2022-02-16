@@ -14,6 +14,7 @@ import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
+import com.chriscarr.bang.models.Role;
 
 public class WebGameUserInterface extends JSPUserInterface {
 
@@ -28,14 +29,14 @@ public class WebGameUserInterface extends JSPUserInterface {
 	List<String> infoHistory;
 
 	public WebGameUserInterface(List<String> users, int aiSleepMs) {
-		infoHistory = new ArrayList<String>();
-		timedOutPlayers = new ArrayList<String>();
+		infoHistory = new ArrayList<>();
+		timedOutPlayers = new ArrayList<>();
 		this.aiSleepMs = aiSleepMs;
-		messages = new ConcurrentHashMap<String, List<Message>>();
-		responses = new ConcurrentHashMap<String, List<Message>>();
+		messages = new ConcurrentHashMap<>();
+		responses = new ConcurrentHashMap<>();
 		for (String user : users) {
-			messages.put(user, new ArrayList<Message>());
-			responses.put(user, new ArrayList<Message>());
+			messages.put(user, new ArrayList<>());
+			responses.put(user, new ArrayList<>());
 		}
 	}
 
@@ -61,10 +62,10 @@ public class WebGameUserInterface extends JSPUserInterface {
 				}
 			}
 			
-			if(splitMessage[0].indexOf("true") != -1){
+			if(splitMessage[0].contains("true")){
 				return "-1";
 			}
-			if(splitMessage[1].indexOf("true") != -1){
+			if(splitMessage[1].contains("true")){
 				return "-2";
 			}
 			return "0";
@@ -131,7 +132,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 			if (duelIndex != -1) {
 				String otherPlayer = lastMessage.substring(0, duelIndex);
 				Player other = turn.getPlayerForName(otherPlayer);
-				if(aiPlayer.getRole() == Player.DEPUTY && other.getRole() == Player.SHERIFF) {
+				if(Role.DEPUTY.equals(aiPlayer.getRole()) && Role.SHERIFF.equals(other.getRole())) {
 					//Let the sheriff kill you(Not great for the sheriff)
 					return "-1";
 				}
@@ -295,49 +296,33 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 	
 	private boolean isThisGunBetter(String thisGun, String thatGun){
-		Map<String, Integer> gunRank = new HashMap<String, Integer>();
+		Map<String, Integer> gunRank = new HashMap<>();
 		gunRank.put("Colt .45", 0);
 		gunRank.put(Card.CARDVOLCANIC, 1);
 		gunRank.put(Card.CARDSCHOFIELD, 2);
 		gunRank.put(Card.CARDREMINGTON, 3);
 		gunRank.put(Card.CARDREVCARBINE, 4);
 		gunRank.put(Card.CARDWINCHESTER, 5);
-		if(gunRank.get(thisGun) - gunRank.get(thatGun) > 0){
-			return true;
-		} else {
-			return false;
-		}
+        return gunRank.get(thisGun) - gunRank.get(thatGun) > 0;
 	}
 	
 
 	public boolean hurtEveryone(Player player){
-		int role = player.getRole();
-		if(role == Player.DEPUTY || (role == Player.RENEGADE && turn.countPlayers() > 2)){
+		Role role = player.getRole();
+		if(Role.DEPUTY.equals(role) || (Role.RENEGADE.equals(role) && turn.countPlayers() > 2)){
 			Player sheriff = turn.getSheriff();
-			if(sheriff.getHealth() > 3){
-				return true;
-			} else {
-				return false;
-			}
+            return sheriff.getHealth() > 3;
 		}
 		return true;
 	}
 
 	public boolean healEveryone(Player player){
-		int role = player.getRole();
-		if(role == Player.DEPUTY || (role == Player.RENEGADE && turn.countPlayers() > 2)){
+		Role role = player.getRole();
+		if(Role.DEPUTY.equals(role) || (Role.RENEGADE.equals(role) && turn.countPlayers() > 2)){
 			Player sheriff = turn.getSheriff();
-			if(sheriff.getHealth() < 3){
-				return true;
-			} else {
-				return false;
-			}
+            return sheriff.getHealth() < 3;
 		}
-		if(player.getHealth() < player.getMaxHealth()){
-			return true;
-		} else {
-			return false;
-		}
+        return player.getHealth() < player.getMaxHealth();
 	}
 	
 	public boolean playerGotCardIWantToTake(Player me, Player them){
@@ -354,39 +339,36 @@ public class WebGameUserInterface extends JSPUserInterface {
 		if(inPlay.hasItem(Card.CARDDYNAMITE)){
 			cardsInPlay--;
 		}
-		if(cardsInPlay > 0){
-			return true;
-		}
-		return false;
-	}
+        return cardsInPlay > 0;
+    }
 	
 	public int whoToHurt(Player player, String namesString){
 		return whoToHurtCardTake(player, namesString, false);
 	}
 	
 	public int whoToHurtCardTake(Player player, String namesString, boolean takeCard){
-		ArrayList<Integer> targets = new ArrayList<Integer>();
-		int role = player.getRole();
+		ArrayList<Integer> targets = new ArrayList<>();
+		Role role = player.getRole();
 		String[] names = namesString.split("\\$");
 		for(int i = 0; i < names.length; i++){
 			String name = names[i];
 			name = name.trim();
 			if(!name.equals("Cancel")){
 				Player other = turn.getPlayerForName(name);
-				int otherRole = other.getRole();
-				if(role == Player.OUTLAW && otherRole == Player.SHERIFF){
+				Role otherRole = other.getRole();
+				if(Role.OUTLAW.equals(role) && Role.SHERIFF.equals(otherRole)){
 					if(!takeCard || playerGotCardIWantToTake(player, other)){
 						return i;
 					}
-				} if(role == Player.DEPUTY && otherRole != Player.SHERIFF){
+				} if(Role.OUTLAW.equals(role) && !Role.SHERIFF.equals(otherRole)){
 					if(!takeCard || playerGotCardIWantToTake(player, other)){
 						targets.add(i);
 					}
-				} if(role == Player.SHERIFF){
+				} if(Role.SHERIFF.equals(role)){
 					if(!takeCard || playerGotCardIWantToTake(player, other)){
 						targets.add(i);
 					}
-				} if(role == Player.RENEGADE && (turn.countPlayers() == 2 || otherRole != Player.SHERIFF)){
+				} if(Role.RENEGADE.equals(role) && (turn.countPlayers() == 2 || !Role.SHERIFF.equals(otherRole))){
 					if(!takeCard || playerGotCardIWantToTake(player, other)){
 						targets.add(i);
 					}
@@ -395,7 +377,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 		}
 		for(int i = 0; i < names.length - 1; i++){
 			if(!names[i].equals("Cancel")){
-				if(role == Player.OUTLAW){
+				if(Role.OUTLAW.equals(role)){
 					Player other = turn.getPlayerForName(names[i]);
 					if(!takeCard || playerGotCardIWantToTake(player, other)){
 						targets.add(i);
@@ -422,7 +404,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 				.get(userFigureNames.get(player));
 		playerMessages.add(new MessageImpl(player + "-" + message));
 		if (userFigureNames.get(player).contains("AI") || timedOutPlayers.contains(userFigureNames.get(player))) {
-			while (messages.isEmpty()) {
+			while (messages.isEmpty()) { //refactor what's this?
 				
 			}
 			addResponse(userFigureNames.get(player), somethingAI(player,
@@ -464,13 +446,13 @@ public class WebGameUserInterface extends JSPUserInterface {
 		List<GameStatePlayer> players = gameState.getPlayers();
 		Set<String> keys = messages.keySet();
 		Iterator<String> userIter = keys.iterator();
-		userFigureNames = new ConcurrentHashMap<String, String>();
-		figureNamesUser = new ConcurrentHashMap<String, String>();
+		userFigureNames = new ConcurrentHashMap<>();
+		figureNamesUser = new ConcurrentHashMap<>();
 		//If there is only one human put them first so they can get there prefered role and character if chosen
 		//More than one leave it mixed
 		int humanCount = 0;
-		ArrayList<String> humanFirstList = new ArrayList<String>();
-		ArrayList<String> sameOrderList = new ArrayList<String>();
+		ArrayList<String> humanFirstList = new ArrayList<>();
+		ArrayList<String> sameOrderList = new ArrayList<>();
 		while(userIter.hasNext()){
 			String user = userIter.next();
 			sameOrderList.add(user);
@@ -482,7 +464,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 			}
 		}
 		
-		ArrayList<String> usersList = null;
+		ArrayList<String> usersList;
 		if(humanCount == 1){
 			usersList = humanFirstList;
 		} else {
@@ -503,7 +485,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 		int waitCount = 0;
 		while (responses.get(userFigureNames.get(player)).isEmpty()) {
 			try {
-				Thread.sleep(wait);
+				Thread.sleep(wait); //refactor
 				waitCount += wait;
 				if (waitCount > maxWait) {
 					printInfo(player + " has timed out and AI has taken over for them.");

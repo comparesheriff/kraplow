@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chriscarr.bang.Hand;
-import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
-import com.chriscarr.bang.userinterface.UserInterface;
 
 public class TestUserInterfaceSpecial extends TestUserInterface {
 
@@ -23,7 +21,7 @@ public class TestUserInterfaceSpecial extends TestUserInterface {
         
         @Override
 	public List<Object> chooseTwoDiscardForLife(Player player) {
-		List<Object> cards = new ArrayList<Object>();
+		List<Object> cards = new ArrayList<>();
 		Hand hand = player.getHand();
 		cards.add(hand.get(0));
 		cards.add(hand.get(1));

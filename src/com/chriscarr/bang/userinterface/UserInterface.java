@@ -36,7 +36,7 @@ public interface UserInterface {
 
 	List<Object> chooseTwoDiscardForShoot(Player player);
 	
-	public void printInfo(String info);
+	void printInfo(String info);
 
 	int chooseDrawCard(Player player, List<Object> cards);
 

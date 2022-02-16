@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GamePrep {
-	private List<String> joinedPlayers;
+	private final List<String> joinedPlayers;
 	private Long lastUpdated;
 	private int counter;
-	private String visibility;
-	private boolean sidestep;
-	private int maxPlayers;
+	private final String visibility;
+	private final boolean sidestep;
+	private final int maxPlayers;
 	
 	public GamePrep(String visibility, boolean sidestep){
 		this.visibility = visibility;
@@ -19,7 +19,7 @@ public class GamePrep {
 		} else {
 			maxPlayers = 7;
 		}
-		joinedPlayers = new ArrayList<String>();
+		joinedPlayers = new ArrayList<>();
 		lastUpdated = System.currentTimeMillis();
 	}
 	
@@ -31,21 +31,17 @@ public class GamePrep {
 		if(joinedPlayers.size() < maxPlayers){
 			return true;
 		} else {
-			for(int i = 0; i < joinedPlayers.size(); i++) {
-				if(joinedPlayers.get(i).substring(joinedPlayers.get(i).length() - 2).equals("AI")){
-					return true;
-				}
-			}
+            for (String joinedPlayer : joinedPlayers) {
+                if (joinedPlayer.endsWith("AI")) {
+                    return true;
+                }
+            }
 			return false;
 		}
 	}
 
 	public boolean canJoinAI(){
-		if(joinedPlayers.size() < maxPlayers){
-			return true;
-		} else {
-			return false;
-		}
+		return joinedPlayers.size() < maxPlayers;
 	}
 	
 	public String join(String handle){
@@ -53,7 +49,7 @@ public class GamePrep {
 			lastUpdated = System.currentTimeMillis();
 			if(joinedPlayers.size() == maxPlayers){
 				for(int i = 0; i < joinedPlayers.size(); i++) {
-					if(joinedPlayers.get(i).substring(joinedPlayers.get(i).length() - 2).equals("AI")){
+					if(joinedPlayers.get(i).endsWith("AI")){
 						joinedPlayers.remove(i);
 						break;
 					}

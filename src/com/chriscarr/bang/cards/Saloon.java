@@ -24,7 +24,7 @@ public class Saloon extends Card implements Playable {
 			UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 		discard.add(this);
 		for(Player player : players){
-			if(!Turn.isMaxHealth(player)){
+			if(Turn.canPlayerHeal(player)){
 				player.addHealth(1);
 			}
 		}

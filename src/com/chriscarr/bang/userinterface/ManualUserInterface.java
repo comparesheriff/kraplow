@@ -32,7 +32,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	@Override
 	public List<Object> chooseTwoDiscardForShoot(Player player) {
 		// TODO Auto-generated method stub
-		return new ArrayList<Object>();
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 					System.out.print(name + " ");
 				}
 			}
-			System.out.println("");
+			System.out.println();
 		}
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
@@ -135,7 +135,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	private void printPrivateInfo(Player player) {
-		System.out.println(Player.roleToString(player.getRole()));
+		System.out.println(player.getRole().roleName());
 	}
 
 	@Override
@@ -215,7 +215,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 		int handSize = hand.size();
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
-		List<Object> chosenCards = new ArrayList<Object>();
+		List<Object> chosenCards = new ArrayList<>();
 		while (true){
 			System.out.println("-1) done choosing");
 			for(int i = 0; i < handSize; i++){
@@ -263,7 +263,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 					System.out.print(name + " ");
 				}
 			}
-			System.out.println("");
+			System.out.println();
 		}
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
@@ -297,7 +297,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 					System.out.print(name + " ");
 				}
 			}
-			System.out.println("");
+			System.out.println();
 		}
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
@@ -331,7 +331,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 					System.out.print(name + " ");
 				}
 			}
-			System.out.println("");
+			System.out.println();
 		}
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
@@ -454,7 +454,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 		int handSize = hand.size();
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
-		List<Object> chosenCards = new ArrayList<Object>();
+		List<Object> chosenCards = new ArrayList<>();
 		while (true){
 			try {
 				String line = in.readLine();

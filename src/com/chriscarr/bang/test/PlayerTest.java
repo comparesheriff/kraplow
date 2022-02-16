@@ -5,6 +5,7 @@ import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
 
+import com.chriscarr.bang.models.Role;
 import junit.framework.TestCase;
 
 public class PlayerTest extends TestCase {
@@ -12,7 +13,7 @@ public class PlayerTest extends TestCase {
 		Player player = new Player();
 		Figure setFigure = new Figure();
 		player.setFigure(setFigure);
-		int setRole = Player.SHERIFF;
+		Role setRole = Role.SHERIFF;
 		player.setRole(setRole);
 		Hand setHand = new Hand();
 		player.setHand(setHand);
@@ -20,7 +21,7 @@ public class PlayerTest extends TestCase {
 		player.setInPlay(setInPlay);
 		
 		Figure gotFigure = player.getFigure();
-		int gotRole = player.getRole();
+		Role gotRole = player.getRole();
 		Hand gotHand = player.getHand();
 		InPlay gotInPlay = player.getInPlay();
 		

@@ -24,7 +24,7 @@ public class Whisky extends Card implements Playable {
 	
 	@Override
 	public List<Player> targets(Player player, List<Player> players) {
-		List<Player> targets = new ArrayList<Player>();
+		List<Player> targets = new ArrayList<>();
 		targets.add(player);
 		return targets;
 	}
@@ -41,10 +41,10 @@ public class Whisky extends Card implements Playable {
 		Object card = currentHand.remove(cardDiscard);
 		discard.add(card);
 		discard.add(this);
-		if(!Turn.isMaxHealth(currentPlayer)){
+		if(Turn.canPlayerHeal(currentPlayer)){
 			currentPlayer.addHealth(1);
 		}
-		if(!Turn.isMaxHealth(currentPlayer)){
+		if(Turn.canPlayerHeal(currentPlayer)){
 			currentPlayer.addHealth(1);
 		}
 		return true;

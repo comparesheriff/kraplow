@@ -45,7 +45,7 @@ public class Tequila extends Card implements Playable {
 		discard.add(card);
 		discard.add(this);
 		//Draw and give to that player
-		if(!Turn.isMaxHealth(targetPlayer)){
+		if(Turn.canPlayerHeal(targetPlayer)){
 			targetPlayer.addHealth(1);
 		}
 		return true;

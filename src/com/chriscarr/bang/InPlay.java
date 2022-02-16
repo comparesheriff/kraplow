@@ -9,7 +9,7 @@ import com.chriscarr.bang.gamestate.GameStateCard;
 public class InPlay {
 
 	Object gun = null;
-	List<Object> cards = new ArrayList<Object>();
+	List<Object> cards = new ArrayList<>();
 	
 	public boolean hasGun() {
 		return gun != null;
@@ -36,7 +36,7 @@ public class InPlay {
 		return cards.size();
 	}
 
-	public Object removeGun() {
+	public Object removeGun() { //refactor
 		Object tempGun = gun;
 		gun = new Card();
 		gun = null;
@@ -109,7 +109,7 @@ public class InPlay {
 	}
 
 	public List<GameStateCard> getGameStateInPlay() {
-		List<GameStateCard> gameStateCards = new ArrayList<GameStateCard>();
+		List<GameStateCard> gameStateCards = new ArrayList<>();
 		for(Object card : cards){
 			gameStateCards.add(Turn.cardToGameStateCard(((Card)card)));
 		}

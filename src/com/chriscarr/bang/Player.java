@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameStateCard;
+import com.chriscarr.bang.models.Role;
 
 public class Player {
 
@@ -15,7 +16,7 @@ public class Player {
 	private Figure figure;
 	private Hand hand;
 	private InPlay inPlay;
-	private int role;
+	private Role role;
 	private int maxHealth;
 	private int health;	
 	private String ability;
@@ -28,10 +29,6 @@ public class Player {
 		this.hand = hand;
 	}
 
-	public void setRole(int role) {
-		this.role = role;
-	}
-
 	public void setFigure(Figure figure) {
 		this.figure = figure;
 		this.setAbility(figure.getName());
@@ -39,10 +36,6 @@ public class Player {
 
 	public Figure getFigure() {
 		return figure;
-	}
-
-	public int getRole() {
-		return role;
 	}
 
 	public Hand getHand() {
@@ -70,46 +63,12 @@ public class Player {
 		return health;
 	}
 
-	public static String roleToString(int role) {
-		if(role == SHERIFF){
-			return "Sheriff";
-		} else if(role == OUTLAW){
-			return "Outlaw";
-		} else if(role == DEPUTY){
-			return "Deputy";
-		} else if(role == RENEGADE){
-			return "Renegade";
-		} else { 
-			throw new RuntimeException("Invalid Role");
-		}
+	public Role getRole(){
+		return role;
 	}
 
-	public static Integer stringToRole(String roleName){
-		if(roleName.equals("Sheriff")){
-			return SHERIFF;
-		} else if(roleName.equals("Outlaw")){
-			return OUTLAW;
-		} else if(roleName.equals("Deputy")){
-			return DEPUTY;
-		} else if(roleName.equals("Renegade")){
-			return RENEGADE;
-		} else { 
-			throw new RuntimeException("Invalid Role");
-		}
-	}
-	
-	public static String roleToGoal(int role) {
-		if(role == SHERIFF){
-			return "Kill the outlaws and renegade";
-		} else if(role == OUTLAW){
-			return "Kill the sheriff";
-		} else if(role == DEPUTY){
-			return "Kill the outlaws and renegade";
-		} else if(role == RENEGADE){
-			return "Be the last one alive";
-		} else { 
-			throw new RuntimeException("Invalid Role");
-		}
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	public void addInPlay(Card card) {
@@ -177,7 +136,7 @@ public class Player {
 	}
 
 	public boolean isSheriff() {
-		return role == SHERIFF;
+		return Role.SHERIFF.equals(role);
 	}
 
 	public GameStateCard getGameStateGun() {
@@ -191,5 +150,6 @@ public class Player {
 	public List<GameStateCard> getGameStateInPlay() {
 		return inPlay.getGameStateInPlay();
 	}
+
 
 }

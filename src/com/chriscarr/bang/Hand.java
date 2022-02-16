@@ -8,7 +8,7 @@ import com.chriscarr.bang.cards.SingleUse;
 
 public class Hand {
 
-	List<Object> cards = new ArrayList<Object>();
+	List<Object> cards = new ArrayList<>();
 	
 	public void add(Object object) {
 		if(object instanceof SingleUse){
@@ -27,8 +27,7 @@ public class Hand {
 	}
 
 	public Object remove(int card) {
-		Object removedCard = cards.remove(card);
-		return removedCard;
+		return cards.remove(card);
 	}
 
 	public int countBangs() {
@@ -62,8 +61,7 @@ public class Hand {
 	}
 
 	public Object removeRandom() {
-		Object removedCard = cards.remove((int)(Math.random() * cards.size()));
-		return removedCard;
+		return cards.remove((int)(Math.random() * cards.size()));
 	}
 
 	public int countBeers() {

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Discard {
 
-	List<Object> cards = new ArrayList<Object>();
+	List<Object> cards = new ArrayList<>();
 	
 	public void add(Object object) {
 		cards.add(object);
@@ -19,8 +19,8 @@ public class Discard {
 		return cards.remove(cards.size() - 1);
 	}
 
-	public boolean isEmpty() {
-		return cards.isEmpty();
+	public boolean canDrawFromDiscard() {
+		return !cards.isEmpty();
 	}
 	
 	public int size() {

@@ -41,7 +41,7 @@ public class GameStateImpl implements GameState {
 	@Override
 	public boolean isGameOver() {
 		if(gameOver){
-			return gameOver;
+			return true; //refactor: what's this
 		} else {
 			return turn.isGameOver();
 		}

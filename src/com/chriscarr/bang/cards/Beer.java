@@ -26,11 +26,11 @@ public class Beer extends Card implements Playable {
 			UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 		discard.add(this);
 		if(Turn.isBeerGiveHealth(players)){
-			if(!Turn.isMaxHealth(currentPlayer)){
+			if(Turn.canPlayerHeal(currentPlayer)){
 				currentPlayer.addHealth(1);
 			}
 			if(Figure.TEQUILAJOE.equals(currentPlayer.getAbility())){
-				if(!Turn.isMaxHealth(currentPlayer)){
+				if(Turn.canPlayerHeal(currentPlayer)){
 					currentPlayer.addHealth(1);
 				}	
 			}
@@ -40,7 +40,7 @@ public class Beer extends Card implements Playable {
 
 	@Override
 	public List<Player> targets(Player player, List<Player> players) {
-		List<Player> targets = new ArrayList<Player>();
+		List<Player> targets = new ArrayList<>();
 		targets.add(player);
 		return targets;
 	}

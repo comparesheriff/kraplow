@@ -8,6 +8,7 @@ import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Setup;
 import com.chriscarr.bang.cards.Card;
 
+import com.chriscarr.bang.models.Role;
 import junit.framework.TestCase;
 
 public class SetupTest extends TestCase {
@@ -44,16 +45,16 @@ public class SetupTest extends TestCase {
 		int deputy = 0;
 		int renegade = 0;
 		for(Player player : players){
-			if(player.getRole() == Player.SHERIFF){
+			if(Role.SHERIFF.equals(player.getRole())){
 				sheriff++;
 			}
-			if(player.getRole() == Player.OUTLAW){
+			if(Role.OUTLAW.equals(player.getRole())){
 				outlaw++;
 			}
-			if(player.getRole() == Player.DEPUTY){
+			if(Role.DEPUTY.equals(player.getRole())){
 				deputy++;
 			}
-			if(player.getRole() == Player.RENEGADE){
+			if(Role.RENEGADE.equals(player.getRole())){
 				renegade++;
 			}
 		}
@@ -68,16 +69,16 @@ public class SetupTest extends TestCase {
 		int deputy = 0;
 		int renegade = 0;
 		for(Player player : players){
-			if(player.getRole() == Player.SHERIFF){
+			if(Role.SHERIFF.equals(player.getRole())){
 				sheriff++;
 			}
-			if(player.getRole() == Player.OUTLAW){
+			if(Role.OUTLAW.equals(player.getRole())){
 				outlaw++;
 			}
-			if(player.getRole() == Player.DEPUTY){
+			if(Role.DEPUTY.equals(player.getRole())){
 				deputy++;
 			}
-			if(player.getRole() == Player.RENEGADE){
+			if(Role.RENEGADE.equals(player.getRole())){
 				renegade++;
 			}
 		}
@@ -92,16 +93,16 @@ public class SetupTest extends TestCase {
 		int deputy = 0;
 		int renegade = 0;
 		for(Player player : players){
-			if(player.getRole() == Player.SHERIFF){
+			if(Role.SHERIFF.equals(player.getRole())){
 				sheriff++;
 			}
-			if(player.getRole() == Player.OUTLAW){
+			if(Role.OUTLAW.equals(player.getRole())){
 				outlaw++;
 			}
-			if(player.getRole() == Player.DEPUTY){
+			if(Role.DEPUTY.equals(player.getRole())){
 				deputy++;
 			}
-			if(player.getRole() == Player.RENEGADE){
+			if(Role.RENEGADE.equals(player.getRole())){
 				renegade++;
 			}
 		}
@@ -116,16 +117,16 @@ public class SetupTest extends TestCase {
 		int deputy = 0;
 		int renegade = 0;
 		for(Player player : players){
-			if(player.getRole() == Player.SHERIFF){
+			if(Role.SHERIFF.equals(player.getRole())){
 				sheriff++;
 			}
-			if(player.getRole() == Player.OUTLAW){
+			if(Role.OUTLAW.equals(player.getRole())){
 				outlaw++;
 			}
-			if(player.getRole() == Player.DEPUTY){
+			if(Role.DEPUTY.equals(player.getRole())){
 				deputy++;
 			}
-			if(player.getRole() == Player.RENEGADE){
+			if(Role.RENEGADE.equals(player.getRole())){
 				renegade++;
 			}
 		}
