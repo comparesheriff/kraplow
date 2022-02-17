@@ -4,7 +4,7 @@ import com.chriscarr.bang.Figure;
 import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
-import com.chriscarr.bang.models.Role;
+import com.chriscarr.bang.models.game.Role;
 import junit.framework.TestCase;
 
 public class PlayerTest extends TestCase {

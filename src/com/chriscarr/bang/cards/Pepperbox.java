@@ -1,7 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.Deck;
-import com.chriscarr.bang.Discard;
+import com.chriscarr.bang.DiscardPile;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
@@ -19,12 +19,12 @@ public class Pepperbox extends SingleUse implements Playable {
     }
 
     public boolean activate(Player currentPlayer, List<Player> players,
-                            UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+                            UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
 
-        boolean result = this.shoot(currentPlayer, players, userInterface, deck, discard, turn, true);
+        boolean result = this.shoot(currentPlayer, players, userInterface, deck, discardPile, turn, true);
         if (result) {
             removeFromInPlay(currentPlayer);
-            discard.add(this);
+            discardPile.add(this);
         }
         return result;
     }

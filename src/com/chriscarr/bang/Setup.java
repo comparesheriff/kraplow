@@ -3,7 +3,7 @@ package com.chriscarr.bang;
 import com.chriscarr.bang.cards.BangDeck;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameStateListener;
-import com.chriscarr.bang.models.Role;
+import com.chriscarr.bang.models.game.Role;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.ArrayList;
@@ -25,13 +25,13 @@ public class Setup {
     public Setup(int countPlayers, UserInterface userInterface, GameStateListener gameStateListener, boolean sidestep, String pRole, String pChar) {
         deck = setupDeck(sidestep);
         deck.shuffle();
-        Discard discard = new Discard();
-        deck.setDiscard(discard);
+        DiscardPile discardPile = new DiscardPile();
+        deck.setDiscard(discardPile);
         players = getPlayers(countPlayers, deck, sidestep, pRole, pChar);
         drawHands(players, deck);
         Turn turn = new Turn();
         turn.setDeck(deck);
-        turn.setDiscard(discard);
+        turn.setDiscard(discardPile);
         turn.setPlayers(players);
         turn.setUserInterface(userInterface);
         gameStateListener.setTurn(turn);

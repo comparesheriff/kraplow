@@ -5,7 +5,7 @@ import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
-import com.chriscarr.bang.models.Role;
+import com.chriscarr.bang.models.game.Role;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -433,8 +433,7 @@ public class WebGameUserInterface extends JSPUserInterface {
     }
 
     public GameState getGameState() {
-        GameState gameState = super.getGameState(gameOver);
-        return gameState;
+        return super.getGameState(gameOver);
     }
 
     private void setupMap() {

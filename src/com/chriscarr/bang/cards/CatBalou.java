@@ -28,8 +28,8 @@ public class CatBalou extends Card implements Playable {
     /* (non-Javadoc)
      * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
      */
-    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
-        discard.add(this);
+    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
+        discardPile.add(this);
         Player other = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
         if (Figure.APACHEKID.equals(other.getAbility()) && this.getSuit() == Card.DIAMONDS) {
             userInterface.printInfo(other.getName() + " is unaffected by diamond Cat Balou");
@@ -40,17 +40,17 @@ public class CatBalou extends Card implements Playable {
             chosenCard = userInterface.askOthersCard(currentPlayer, other.getInPlay(), other.getHand().size() > 0);
         }
         if (chosenCard == -1) {
-            Object card = other.getHand().removeRandom();
-            discard.add(card);
-            userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card) card).getName() + " from " + other.getName() + "'s hand with a Cat Balou");
+            Card card = other.getHand().removeRandom();
+            discardPile.add(card);
+            userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + other.getName() + "'s hand with a Cat Balou");
         } else if (chosenCard == -2) {
-            Object card = other.getInPlay().removeGun();
-            discard.add(card);
-            userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card) card).getName() + " from " + other.getName() + " with a Cat Balou");
+            Card card = other.getInPlay().removeGun();
+            discardPile.add(card);
+            userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + other.getName() + " with a Cat Balou");
         } else {
-            Object card = other.getInPlay().remove(chosenCard);
-            discard.add(card);
-            userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card) card).getName() + " from " + other.getName() + " with a Cat Balou");
+            Card card = other.getInPlay().remove(chosenCard);
+            discardPile.add(card);
+            userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + other.getName() + " with a Cat Balou");
         }
         return true;
     }

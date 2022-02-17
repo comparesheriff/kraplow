@@ -12,21 +12,21 @@ public class InPlayTest extends TestCase {
 
     public void testDoesHaveGun() {
         InPlay inPlay = new InPlay();
-        inPlay.setGun(new Object());
+        inPlay.setGun(new Card());
         assertTrue(inPlay.hasGun());
     }
 
     public void testRemoveGun() {
         InPlay inPlay = new InPlay();
-        Object gun = new Card();
+        Card gun = new Card();
         inPlay.setGun(gun);
-        Object removedGun = inPlay.removeGun();
+        Card removedGun = inPlay.removeGun();
         assertEquals(removedGun, gun);
     }
 
     public void testRemovedGun() {
         InPlay inPlay = new InPlay();
-        Object gun = new Card();
+        Card gun = new Card();
         inPlay.setGun(gun);
         inPlay.removeGun();
         assertFalse(inPlay.hasGun());
@@ -34,17 +34,17 @@ public class InPlayTest extends TestCase {
 
     public void testAddCard() {
         InPlay inPlay = new InPlay();
-        Object toAdd = new Object();
+        Card toAdd = new Card();
         inPlay.add(toAdd);
-        Object peeked = inPlay.peek(0);
+        Card peeked = inPlay.peek(0);
         assertEquals(toAdd, peeked);
     }
 
     public void testRemoveCard() {
         InPlay inPlay = new InPlay();
-        Object toAdd = new Object();
+        Card toAdd = new Card();
         inPlay.add(toAdd);
-        Object removed = inPlay.remove(0);
+        Card removed = inPlay.remove(0);
         assertEquals(toAdd, removed);
     }
 
@@ -55,7 +55,7 @@ public class InPlayTest extends TestCase {
 
     public void testCountInPlayAdd() {
         InPlay inPlay = new InPlay();
-        inPlay.add(new Object());
+        inPlay.add(new Card());
         assertEquals(1, inPlay.count());
     }
 

@@ -27,7 +27,7 @@ public class Tequila extends Card implements Playable {
     /* (non-Javadoc)
      * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
      */
-    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
         //Choose card to discard
         int cardDiscard = userInterface.askDiscard(currentPlayer);
         if (cardDiscard == -1) {
@@ -37,9 +37,9 @@ public class Tequila extends Card implements Playable {
         Player targetPlayer = Turn.getValidChosenPlayer(currentPlayer, players, userInterface);
         //discard the card
         Hand currentHand = currentPlayer.getHand();
-        Object card = currentHand.remove(cardDiscard);
-        discard.add(card);
-        discard.add(this);
+        Card card = currentHand.remove(cardDiscard);
+        discardPile.add(card);
+        discardPile.add(this);
         //Draw and give to that player
         if (Turn.canPlayerHeal(targetPlayer)) {
             targetPlayer.addHealth(1);

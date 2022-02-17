@@ -2,7 +2,7 @@ package com.chriscarr.bang;
 
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameStateCard;
-import com.chriscarr.bang.models.Role;
+import com.chriscarr.bang.models.game.Role;
 
 import java.util.List;
 
@@ -100,7 +100,7 @@ public class Player {
         health = health + toAdd;
     }
 
-    public Object removeRandom() {
+    public Card removeRandom() {
         return hand.removeRandom();
     }
 
@@ -120,7 +120,7 @@ public class Player {
         inPlay.setGun(card);
     }
 
-    public Object getGunName() {
+    public String getGunName() {
         return inPlay.getGunName();
     }
 
@@ -128,7 +128,7 @@ public class Player {
         return inPlay.hasGun();
     }
 
-    public Object removeGun() {
+    public Card removeGun() {
         return inPlay.removeGun();
     }
 
@@ -141,7 +141,7 @@ public class Player {
     }
 
     public GameStateCard getGameStateGun() {
-        return Turn.cardToGameStateCard((Card) inPlay.getGun());
+        return Turn.cardToGameStateCard(inPlay.getGun());
     }
 
     public String getSpecialAbility() {

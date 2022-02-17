@@ -3,6 +3,7 @@ package com.chriscarr.bang.test;
 import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
+import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class TestUserInterface implements UserInterface {
     }
 
     @Override
-    public List<Object> chooseTwoDiscardForShoot(Player player) {
+    public List<Card> chooseTwoDiscardForShoot(Player player) {
         // TODO Auto-generated method stub
         return new ArrayList<>();
     }
@@ -37,7 +38,7 @@ public class TestUserInterface implements UserInterface {
 
     @Override
     public int chooseGeneralStoreCard(Player generalPlayer,
-                                      List<Object> generalStoreCards) {
+                                      List<Card> generalStoreCards) {
         // TODO Auto-generated method stub
         return 0;
     }
@@ -70,8 +71,8 @@ public class TestUserInterface implements UserInterface {
 
 
     @Override
-    public List<Object> chooseTwoDiscardForLife(Player player) {
-        List<Object> cards = new ArrayList<>();
+    public List<Card> chooseTwoDiscardForLife(Player player) {
+        List<Card> cards = new ArrayList<>();
         Hand hand = player.getHand();
         cards.add(hand.get(0));
         cards.add(hand.get(1));
@@ -91,7 +92,7 @@ public class TestUserInterface implements UserInterface {
     }
 
     @Override
-    public boolean chooseDiscard(Player player, Object card) {
+    public boolean chooseDiscard(Player player, Card card) {
         // TODO Auto-generated method stub
         return true;
     }
@@ -107,19 +108,19 @@ public class TestUserInterface implements UserInterface {
     }
 
     @Override
-    public int chooseDrawCard(Player player, List<Object> cards) {
+    public int chooseDrawCard(Player player, List<Card> cards) {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public int chooseCardToPutBack(Player player, List<Object> cards) {
+    public int chooseCardToPutBack(Player player, List<Card> cards) {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public List<Object> respondTwoMiss(Player player) {
+    public List<Card> respondTwoMiss(Player player) {
         return new ArrayList<>();
     }
 

@@ -1,7 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.Deck;
-import com.chriscarr.bang.Discard;
+import com.chriscarr.bang.DiscardPile;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
@@ -23,8 +23,8 @@ public class Stagecoach extends Card implements Playable {
 
     @Override
     public boolean play(Player currentPlayer, List<Player> players,
-                        UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
-        discard.add(this);
+                        UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
+        discardPile.add(this);
         Turn.deckToHand(currentPlayer.getHand(), deck, 2, userInterface);
         return true;
     }

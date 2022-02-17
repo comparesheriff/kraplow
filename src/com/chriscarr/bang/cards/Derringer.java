@@ -16,12 +16,12 @@ public class Derringer extends SingleUse implements Playable {
     }
 
     public boolean activate(Player currentPlayer, List<Player> players,
-                            UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+                            UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
 
-        boolean result = this.shoot(currentPlayer, players, userInterface, deck, discard, turn, true);
+        boolean result = this.shoot(currentPlayer, players, userInterface, deck, discardPile, turn, true);
         if (result) {
             removeFromInPlay(currentPlayer);
-            discard.add(this);
+            discardPile.add(this);
             Hand currentHand = currentPlayer.getHand();
             userInterface.printInfo(currentPlayer.getName() + " draws a card");
             currentHand.add(deck.pull());

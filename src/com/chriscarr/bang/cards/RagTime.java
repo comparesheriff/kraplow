@@ -27,7 +27,7 @@ public class RagTime extends Card implements Playable {
     /* (non-Javadoc)
      * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
      */
-    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
         //Choose card to discard
         int cardDiscard = userInterface.askDiscard(currentPlayer);
         if (cardDiscard == -1) {
@@ -46,19 +46,19 @@ public class RagTime extends Card implements Playable {
                 hand.add(otherPlayer.getHand().removeRandom());
                 userInterface.printInfo(currentPlayer.getName() + " takes a card from " + otherPlayer.getName() + "'s hand with a " + this.getName());
             } else if (chosenCard == -2) {
-                Object card = otherPlayer.getInPlay().removeGun();
+                Card card = otherPlayer.getInPlay().removeGun();
                 hand.add(card);
-                userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card) card).getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
+                userInterface.printInfo(currentPlayer.getName() + " takes a " + card.getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
             } else {
-                Object card = otherPlayer.getInPlay().remove(chosenCard);
+                Card card = otherPlayer.getInPlay().remove(chosenCard);
                 hand.add(card);
-                userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card) card).getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
+                userInterface.printInfo(currentPlayer.getName() + " takes a " + card.getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
             }
             //discard the card
             Hand currentHand = currentPlayer.getHand();
-            Object card = currentHand.remove(cardDiscard);
-            discard.add(card);
-            discard.add(this);
+            Card card = currentHand.remove(cardDiscard);
+            discardPile.add(card);
+            discardPile.add(this);
             return true;
         } else {
             return false;

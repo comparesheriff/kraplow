@@ -12,7 +12,7 @@ public class AllTests {
         suite.addTestSuite(DistanceTest.class);
         suite.addTestSuite(HandTest.class);
         suite.addTestSuite(DeckTest.class);
-        suite.addTestSuite(DiscardTest.class);
+        suite.addTestSuite(DiscardPileTest.class);
         suite.addTestSuite(InPlayTest.class);
         suite.addTestSuite(FigureTest.class);
         suite.addTestSuite(CardTest.class);

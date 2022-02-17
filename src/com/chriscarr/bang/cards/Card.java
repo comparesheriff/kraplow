@@ -202,15 +202,15 @@ public class Card implements Playable {
 
     @Override
     public boolean play(Player currentPlayer, List<Player> players,
-                        UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+                        UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
         if (Figure.JOHNNYKISCH.equals(currentPlayer.getAbility())) {
             for (Player player : players) {
                 int inPlayCount = player.getInPlay().count();
                 for (int inPlayIndex = 0; inPlayIndex < inPlayCount; inPlayIndex++) {
-                    Card peeked = (Card) player.getInPlay().peek(inPlayIndex);
+                    Card peeked = player.getInPlay().peek(inPlayIndex);
                     if (peeked.getName().equals(this.getName())) {
-                        Card removed = (Card) player.getInPlay().remove(inPlayIndex);
-                        discard.add(removed);
+                        Card removed = player.getInPlay().remove(inPlayIndex);
+                        discardPile.add(removed);
                         userInterface.printInfo(currentPlayer.getName() + " plays a " + this.getName() + " and forces " + player.getName() + " to discard one from play.");
                     }
                 }
@@ -235,11 +235,11 @@ public class Card implements Playable {
         }
     }
 
-    public boolean shoot(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard) {
-        return shoot(currentPlayer, players, userInterface, deck, discard, turn, skipDiscard, null);
+    public boolean shoot(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn, boolean skipDiscard) {
+        return shoot(currentPlayer, players, userInterface, deck, discardPile, turn, skipDiscard, null);
     }
 
-    public boolean shoot(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard, Player targetPlayer) {
+    public boolean shoot(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn, boolean skipDiscard, Player targetPlayer) {
         Player otherPlayer;
         if (targetPlayer == null) {
             otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
@@ -251,7 +251,7 @@ public class Card implements Playable {
             if (Figure.APACHEKID.equals(otherPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS) {
                 userInterface.printInfo(otherPlayer.getName() + " is unaffected by diamond " + this.getName());
                 if (!skipDiscard) {
-                    discard.add(this);
+                    discardPile.add(this);
                 }
                 return true;
             }
@@ -259,24 +259,24 @@ public class Card implements Playable {
             if (this.getName().equals(Card.CARDBANG) && Figure.SLABTHEKILLER.equals(currentPlayer.getAbility())) {
                 missesRequired = 2;
             }
-            int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discard, userInterface, missesRequired, currentPlayer);
+            int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discardPile, userInterface, missesRequired, currentPlayer);
             missesRequired = missesRequired - barrelMisses;
             boolean canPlaySingleUse = !Figure.BELLESTAR.equals(currentPlayer.getAbility());
             if (missesRequired <= 0) {
                 if (!skipDiscard) {
-                    discard.add(this);
+                    discardPile.add(this);
                 }
                 return true;
             } else if (missesRequired == 1) {
                 int missPlayed = Turn.validPlayMiss(otherPlayer, userInterface, canPlaySingleUse);
                 if (missPlayed == -1) {
-                    turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
+                    turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discardPile, userInterface);
                     userInterface.printInfo(otherPlayer.getName() + " loses a health.");
                 } else {
                     for (int i = 0; i < missesRequired; i++) {
                         if (missPlayed < otherPlayer.getHand().size()) {
-                            Card missCard = (Card) otherPlayer.getHand().remove(missPlayed);
-                            discard.add(missCard);
+                            Card missCard = otherPlayer.getHand().remove(missPlayed);
+                            discardPile.add(missCard);
                             if (missCard.getName().equals(CARDDODGE)) {
                                 Hand otherHand = otherPlayer.getHand();
                                 otherHand.add(deck.pull());
@@ -301,33 +301,33 @@ public class Card implements Playable {
                                 otherPlayer.getHand().add(deck.pull());
                             }
                             userInterface.printInfo(otherPlayer.getName() + " plays a " + sum.getName());
-                            discard.add(sum);
+                            discardPile.add(sum);
                         }
                     }
                 }
             } else if (missesRequired == 2) {
                 Hand hand = otherPlayer.getHand();
                 InPlay inPlay = otherPlayer.getInPlay();
-                List<Object> cardsToDiscard;
+                List<Card> cardsToDiscard;
                 cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);
                 if (cardsToDiscard.size() == 0) {
-                    turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
+                    turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discardPile, userInterface);
                     userInterface.printInfo(otherPlayer.getName() + " loses a health.");
                 } else {
                     //TODO issue here, can select more than 2 cards. Green card and missed locks up game.
-                    for (Object card : cardsToDiscard) {
-                        if (inPlay.hasItem(((Card) card).getName())) {
+                    for (Card card : cardsToDiscard) {
+                        if (inPlay.hasItem(card.getName())) {
                             for (int i = 0; i < inPlay.size(); i++) {
-                                Card gotCard = (Card) inPlay.get(i);
-                                if (gotCard.getName().equals(((Card) card).getName())) {
-                                    discard.add(inPlay.remove(i));
+                                Card gotCard = inPlay.get(i);
+                                if (gotCard.getName().equals(card.getName())) {
+                                    discardPile.add(inPlay.remove(i));
                                 }
                             }
-                            userInterface.printInfo(otherPlayer.getName() + " plays a " + ((Card) card).getName());
+                            userInterface.printInfo(otherPlayer.getName() + " plays a " + card.getName());
                         } else {
                             hand.remove(card);
-                            discard.add(card);
-                            userInterface.printInfo(otherPlayer.getName() + " plays a " + ((Card) card).getName());
+                            discardPile.add(card);
+                            userInterface.printInfo(otherPlayer.getName() + " plays a " + card.getName());
                             if (Figure.MOLLYSTARK.equals(otherPlayer.getAbility())) {
                                 Hand otherHand = otherPlayer.getHand();
                                 otherHand.add(deck.pull());
@@ -338,7 +338,7 @@ public class Card implements Playable {
                 }
             }
             if (!skipDiscard) {
-                discard.add(this);
+                discardPile.add(this);
             }
             return true;
         } else {

@@ -8,9 +8,9 @@ import java.util.List;
 
 public class Hand {
 
-    List<Object> cards = new ArrayList<>();
+    List<Card> cards = new ArrayList<>();
 
-    public void add(Object object) {
+    public void add(Card object) {
         if (object instanceof SingleUse) {
             SingleUse card = (SingleUse) object;
             card.setReadyToPlay(false);
@@ -18,7 +18,7 @@ public class Hand {
         cards.add(object);
     }
 
-    public Object get(int i) {
+    public Card get(int i) {
         return cards.get(i);
     }
 
@@ -26,14 +26,14 @@ public class Hand {
         return cards.size();
     }
 
-    public Object remove(int card) {
+    public Card remove(int card) {
         return cards.remove(card);
     }
 
     public int countBangs() {
         int bangs = 0;
-        for (Object card : cards) {
-            if (((Card) card).getName().equals(Card.CARDBANG)) {
+        for (Card card : cards) {
+            if (Card.CARDBANG.equals(card.getName())) {
                 bangs = bangs + 1;
             }
         }
@@ -42,17 +42,17 @@ public class Hand {
 
     public int countMisses() {
         int bangs = 0;
-        for (Object card : cards) {
-            if (((Card) card).getName().equals(Card.CARDMISSED)) {
+        for (Card card : cards) {
+            if (Card.CARDMISSED.equals(card.getName())) {
                 bangs = bangs + 1;
             }
         }
         return bangs;
     }
 
-    public Object removeMiss() { //refactor
-        for (Object card : cards) {
-            if (((Card) card).getName().equals(Card.CARDMISSED)) {
+    public Card removeMiss() { //refactor
+        for (Card card : cards) {
+            if (Card.CARDMISSED.equals(card.getName())) {
                 cards.remove(card);
                 return card;
             }
@@ -60,23 +60,23 @@ public class Hand {
         return null;
     }
 
-    public Object removeRandom() {
+    public Card removeRandom() {
         return cards.remove((int) (Math.random() * cards.size()));
     }
 
     public int countBeers() {
         int beers = 0;
-        for (Object card : cards) {
-            if (((Card) card).getName().equals(Card.CARDBEER)) {
+        for (Card card : cards) {
+            if (Card.CARDBEER.equals(card.getName())) {
                 beers = beers + 1;
             }
         }
         return beers;
     }
 
-    public Object removeBeer() { //refactor
-        for (Object card : cards) {
-            if (((Card) card).getName().equals(Card.CARDBEER)) {
+    public Card removeBeer() { //refactor
+        for (Card card : cards) {
+            if (Card.CARDBEER.equals(card.getName())) {
                 cards.remove(card);
                 return card;
             }
@@ -84,7 +84,7 @@ public class Hand {
         return null;
     }
 
-    public void remove(Object card) {
+    public void remove(Card card) {
         cards.remove(card);
     }
 

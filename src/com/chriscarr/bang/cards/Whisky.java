@@ -28,15 +28,15 @@ public class Whisky extends Card implements Playable {
     /* (non-Javadoc)
      * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
      */
-    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
         int cardDiscard = userInterface.askDiscard(currentPlayer);
         if (cardDiscard == -1) {
             return false;
         }
         Hand currentHand = currentPlayer.getHand();
-        Object card = currentHand.remove(cardDiscard);
-        discard.add(card);
-        discard.add(this);
+        Card card = currentHand.remove(cardDiscard);
+        discardPile.add(card);
+        discardPile.add(this);
         if (Turn.canPlayerHeal(currentPlayer)) {
             currentPlayer.addHealth(1);
         }

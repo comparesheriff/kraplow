@@ -5,7 +5,7 @@ import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Setup;
 import com.chriscarr.bang.cards.Card;
-import com.chriscarr.bang.models.Role;
+import com.chriscarr.bang.models.game.Role;
 import junit.framework.TestCase;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class SetupTest extends TestCase {
         Deck deck = Setup.setupDeck(false);
         Card pulled = null;
         for (int i = 0; i < 80; i++) {
-            pulled = (Card) deck.pull();
+            pulled = deck.pull();
         }
         assertEquals(pulled.getName(), Card.CARDBARREL);
         assertEquals(pulled.getSuit(), Card.SPADES);

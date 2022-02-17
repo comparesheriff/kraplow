@@ -1,4 +1,4 @@
-package com.chriscarr.bang.models;
+package com.chriscarr.bang.models.game;
 
 public enum Role {
     SHERIFF("Sheriff", "Kill the outlaws and renegade"),

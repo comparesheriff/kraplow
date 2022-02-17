@@ -11,15 +11,15 @@ public class Gun extends Card {
     }
 
     public boolean play(Player currentPlayer, List<Player> players,
-                        UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+                        UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
         if (currentPlayer.hasGun()) {
-            discard.add(currentPlayer.removeGun());
+            discardPile.add(currentPlayer.removeGun());
         }
         if (Figure.JOHNNYKISCH.equals(currentPlayer.getAbility())) {
             for (Player player : players) {
                 if (player.getInPlay().getGunName().equals(this.getName())) {
-                    Object gun = player.getInPlay().removeGun();
-                    discard.add(gun);
+                    Card gun = player.getInPlay().removeGun();
+                    discardPile.add(gun);
                     userInterface.printInfo(currentPlayer.getName() + " plays a " + this.getName() + " and forces " + player.getName() + " to discard one from play.");
                 }
             }

@@ -23,11 +23,11 @@ public class SingleUse extends Card implements Playable {
     }
 
     public boolean play(Player currentPlayer, List<Player> players,
-                        UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+                        UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
         if (readyToPlay) {
             Logger logger = Logger.getLogger(SingleUse.class.getName());
             logger.log(Level.SEVERE, "Playing Ready To Play");
-            return activate(currentPlayer, players, userInterface, deck, discard, turn);
+            return activate(currentPlayer, players, userInterface, deck, discardPile, turn);
         } else {
             currentPlayer.addInPlay(this);
             readyToPlay = false;
@@ -40,7 +40,7 @@ public class SingleUse extends Card implements Playable {
     }
 
     public boolean activate(Player currentPlayer, List<Player> players,
-                            UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+                            UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
         return false;
     }
 

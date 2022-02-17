@@ -21,15 +21,14 @@ public class Duel extends Card implements Playable {
      * @see com.chriscarr.bang.Playable#targets(com.chriscarr.bang.Player, java.util.List)
      */
     public List<Player> targets(Player player, List<Player> players) {
-        List<Player> targets = Turn.others(player, players);
-        return targets;
+        return Turn.others(player, players);
     }
 
     /* (non-Javadoc)
      * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
      */
-    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
-        discard.add(this);
+    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
+        discardPile.add(this);
         List<Player> targets = Turn.others(currentPlayer, players);
         CancelPlayer cancelPlayer = new CancelPlayer();
         targets.add(0, cancelPlayer);
@@ -44,32 +43,32 @@ public class Duel extends Card implements Playable {
             while (true) {
                 int bangPlayed = Turn.validPlayBang(other, userInterface);
                 if (bangPlayed == -1) {
-                    turn.damagePlayer(other, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
+                    turn.damagePlayer(other, players, currentPlayer, 1, currentPlayer, deck, discardPile, userInterface);
                     userInterface.printInfo(other.getName() + " loses a health");
                     if (Figure.MOLLYSTARK.equals(other.getAbility())) {
                         giveMollyStarkCards(other, deck, mollyStarkAmount, userInterface);
                     }
                     return true;
                 } else {
-                    Object card = other.getHand().remove(bangPlayed);
-                    discard.add(card);
-                    userInterface.printInfo(other.getName() + " plays a " + ((Card) card).getName());
+                    Card card = other.getHand().remove(bangPlayed);
+                    discardPile.add(card);
+                    userInterface.printInfo(other.getName() + " plays a " + card.getName());
                     if (Figure.MOLLYSTARK.equals(other.getAbility())) {
                         mollyStarkAmount += 1;
                     }
                 }
                 int currentBangPlayed = Turn.validPlayBang(currentPlayer, userInterface);
                 if (currentBangPlayed == -1) {
-                    turn.damagePlayer(currentPlayer, players, currentPlayer, 1, null, deck, discard, userInterface);
+                    turn.damagePlayer(currentPlayer, players, currentPlayer, 1, null, deck, discardPile, userInterface);
                     userInterface.printInfo(currentPlayer.getName() + " loses a health");
                     if (Figure.MOLLYSTARK.equals(other.getAbility())) {
                         giveMollyStarkCards(other, deck, mollyStarkAmount, userInterface);
                     }
                     return true;
                 } else {
-                    Object card = currentPlayer.getHand().remove(currentBangPlayed);
-                    discard.add(card);
-                    userInterface.printInfo(currentPlayer.getName() + " plays a " + ((Card) card).getName());
+                    Card card = currentPlayer.getHand().remove(currentBangPlayed);
+                    discardPile.add(card);
+                    userInterface.printInfo(currentPlayer.getName() + " plays a " + card.getName());
                 }
             }
         } else {

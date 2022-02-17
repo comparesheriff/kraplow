@@ -30,11 +30,11 @@ public class Bang extends Card implements Playable {
     /* (non-Javadoc)
      * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
      */
-    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard) {
-        return this.shoot(currentPlayer, players, userInterface, deck, discard, turn, skipDiscard);
+    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn, boolean skipDiscard) {
+        return this.shoot(currentPlayer, players, userInterface, deck, discardPile, turn, skipDiscard);
     }
 
-    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
-        return this.play(currentPlayer, players, userInterface, deck, discard, turn, false);
+    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
+        return this.play(currentPlayer, players, userInterface, deck, discardPile, turn, false);
     }
 }

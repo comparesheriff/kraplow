@@ -16,7 +16,7 @@ public class PonyExpress extends SingleUse implements Playable {
     }
 
     public boolean activate(Player currentPlayer, List<Player> players,
-                            UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+                            UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
 
         Hand currentHand = currentPlayer.getHand();
         currentHand.add(deck.pull());
@@ -24,7 +24,7 @@ public class PonyExpress extends SingleUse implements Playable {
         currentHand.add(deck.pull());
         userInterface.printInfo(currentPlayer.getName() + " draws 3 cards");
         removeFromInPlay(currentPlayer);
-        discard.add(this);
+        discardPile.add(this);
         return true;
     }
 

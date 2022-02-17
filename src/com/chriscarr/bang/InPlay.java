@@ -8,44 +8,43 @@ import java.util.List;
 
 public class InPlay {
 
-    Object gun = null;
-    List<Object> cards = new ArrayList<>();
+    Card gun = null;
+    List<Card> cards = new ArrayList<>();
 
     public boolean hasGun() {
         return gun != null;
     }
 
-    public void setGun(Object object) {
+    public void setGun(Card object) {
         gun = object;
     }
 
-    public void add(Object toAdd) {
+    public void add(Card toAdd) {
         cards.add(toAdd);
     }
 
-    public Object peek(int i) {
+    public Card peek(int i) {
         return cards.get(i);
     }
 
-    public Object remove(int i) {
-        Object removed = cards.remove(i);
-        return removed;
+    public Card remove(int i) {
+        return cards.remove(i);
     }
 
     public int count() {
         return cards.size();
     }
 
-    public Object removeGun() { //refactor
-        Object tempGun = gun;
+    public Card removeGun() { //refactor
+        Card tempGun = gun;
         gun = new Card();
         gun = null;
         return tempGun;
     }
 
     public boolean hasItem(String cardName) {
-        for (Object card : cards) {
-            if (((Card) card).getName().equals(cardName)) {
+        for (Card card : cards) {
+            if (card.getName().equals(cardName)) {
                 return true;
             }
         }
@@ -54,19 +53,19 @@ public class InPlay {
 
     public int getGunRange() {
         if (hasGun()) {
-            return Card.getRange(((Card) gun).getName());
+            return Card.getRange(gun.getName());
         } else {
             return 1;
         }
     }
 
     public boolean isGunVolcanic() {
-        return ((Card) gun).getName().equals(Card.CARDVOLCANIC);
+        return Card.CARDVOLCANIC.equals(gun.getName());
     }
 
-    public Object removeDynamite() {
-        for (Object card : cards) {
-            if (((Card) card).getName().equals(Card.CARDDYNAMITE)) {
+    public Card removeDynamite() {
+        for (Card card : cards) {
+            if (Card.CARDDYNAMITE.equals(card.getName())) {
                 cards.remove(card);
                 return card;
             }
@@ -74,9 +73,9 @@ public class InPlay {
         return null;
     }
 
-    public Object removeJail() {
-        for (Object card : cards) {
-            if (((Card) card).getName().equals(Card.CARDJAIL)) {
+    public Card removeJail() {
+        for (Card card : cards) {
+            if (Card.CARDJAIL.equals(card.getName())) {
                 cards.remove(card);
                 return card;
             }
@@ -92,26 +91,26 @@ public class InPlay {
         return cards.size();
     }
 
-    public Object get(int i) {
+    public Card get(int i) {
         return cards.get(i);
     }
 
     public String getGunName() {
         if (hasGun()) {
-            return ((Card) gun).getName();
+            return gun.getName();
         } else {
             return "Colt .45";
         }
     }
 
-    public Object getGun() {
+    public Card getGun() {
         return gun;
     }
 
     public List<GameStateCard> getGameStateInPlay() {
         List<GameStateCard> gameStateCards = new ArrayList<>();
-        for (Object card : cards) {
-            gameStateCards.add(Turn.cardToGameStateCard(((Card) card)));
+        for (Card card : cards) {
+            gameStateCards.add(Turn.cardToGameStateCard(card));
         }
         return gameStateCards;
     }

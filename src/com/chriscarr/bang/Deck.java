@@ -1,22 +1,24 @@
 package com.chriscarr.bang;
 
+import com.chriscarr.bang.cards.Card;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Deck {
 
-    private final List<Object> cards = new ArrayList<>();
-    private Discard discard;
+    private final List<Card> cards = new ArrayList<>();
+    private DiscardPile discardPile;
 
-    public void add(Object card) {
+    public void add(Card card) {
         cards.add(card);
     }
 
-    public Object pull() {
+    public Card pull() {
         if (cards.size() == 0) {
-            while (discard.canDrawFromDiscard()) {
-                cards.add(discard.remove());
+            while (discardPile.canDrawFromDiscard()) {
+                cards.add(discardPile.remove());
             }
             shuffle();
         }
@@ -31,8 +33,8 @@ public class Deck {
         Collections.shuffle(cards);
     }
 
-    public void setDiscard(Discard discard) {
-        this.discard = discard;
+    public void setDiscard(DiscardPile discardPile) {
+        this.discardPile = discardPile;
     }
 
     public int size() {

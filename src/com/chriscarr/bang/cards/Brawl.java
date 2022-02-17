@@ -27,7 +27,7 @@ public class Brawl extends Card implements Playable {
     /* (non-Javadoc)
      * @see com.chriscarr.bang.Playable#play(com.chriscarr.bang.Player, java.util.List, com.chriscarr.bang.UserInterface, com.chriscarr.bang.Deck, com.chriscarr.bang.Discard)
      */
-    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
         //Choose card to discard
         int cardDiscard = userInterface.askDiscard(currentPlayer);
         if (cardDiscard == -1) {
@@ -36,9 +36,9 @@ public class Brawl extends Card implements Playable {
 
         //discard the card
         Hand currentHand = currentPlayer.getHand();
-        Object discardCard = currentHand.remove(cardDiscard);
-        discard.add(discardCard);
-        discard.add(this);
+        Card discardCard = currentHand.remove(cardDiscard);
+        discardPile.add(discardCard);
+        discardPile.add(this);
         //Discard card from players
         Player brawlPlayer = Turn.getNextPlayer(currentPlayer, players);
         while (brawlPlayer != currentPlayer) {
@@ -55,17 +55,17 @@ public class Brawl extends Card implements Playable {
                 chosenCard = userInterface.askOthersCard(currentPlayer, brawlPlayer.getInPlay(), brawlPlayer.getHand().size() > 0);
             }
             if (chosenCard == -1) {
-                Object card = brawlPlayer.getHand().removeRandom();
-                discard.add(card);
-                userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card) card).getName() + " from " + brawlPlayer.getName() + "'s hand with a Brawl");
+                Card card = brawlPlayer.getHand().removeRandom();
+                discardPile.add(card);
+                userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + brawlPlayer.getName() + "'s hand with a Brawl");
             } else if (chosenCard == -2) {
-                Object card = brawlPlayer.getInPlay().removeGun();
-                discard.add(card);
-                userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card) card).getName() + " from " + brawlPlayer.getName() + " with a Brawl");
+                Card card = brawlPlayer.getInPlay().removeGun();
+                discardPile.add(card);
+                userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + brawlPlayer.getName() + " with a Brawl");
             } else {
-                Object card = brawlPlayer.getInPlay().remove(chosenCard);
-                discard.add(card);
-                userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card) card).getName() + " from " + brawlPlayer.getName() + " with a Brawl");
+                Card card = brawlPlayer.getInPlay().remove(chosenCard);
+                discardPile.add(card);
+                userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + brawlPlayer.getName() + " with a Brawl");
             }
             brawlPlayer = nextPlayer;
         }

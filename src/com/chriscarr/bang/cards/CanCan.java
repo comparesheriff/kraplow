@@ -16,7 +16,7 @@ public class CanCan extends SingleUse implements Playable {
     }
 
     public boolean activate(Player currentPlayer, List<Player> players,
-                            UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+                            UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
 
         Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
         if (Figure.APACHEKID.equals(otherPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS) {
@@ -29,20 +29,20 @@ public class CanCan extends SingleUse implements Playable {
                 chosenCard = userInterface.askOthersCard(currentPlayer, otherPlayer.getInPlay(), otherPlayer.getHand().size() > 0);
             }
             if (chosenCard == -1) {
-                Card discardedCard = (Card) otherPlayer.getHand().removeRandom();
-                discard.add(discardedCard);
+                Card discardedCard = otherPlayer.getHand().removeRandom();
+                discardPile.add(discardedCard);
                 userInterface.printInfo(currentPlayer.getName() + " discards a " + discardedCard.getName() + " from " + otherPlayer.getName() + "'s hand with a " + this.getName());
             } else if (chosenCard == -2) {
-                Object card = otherPlayer.getInPlay().removeGun();
-                discard.add(card);
-                userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card) card).getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
+                Card card = otherPlayer.getInPlay().removeGun();
+                discardPile.add(card);
+                userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
             } else {
-                Object card = otherPlayer.getInPlay().remove(chosenCard);
-                discard.add(card);
-                userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card) card).getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
+                Card card = otherPlayer.getInPlay().remove(chosenCard);
+                discardPile.add(card);
+                userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
             }
             removeFromInPlay(currentPlayer);
-            discard.add(this);
+            discardPile.add(this);
             return true;
         } else {
             return false;

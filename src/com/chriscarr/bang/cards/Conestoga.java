@@ -16,7 +16,7 @@ public class Conestoga extends SingleUse implements Playable {
     }
 
     public boolean activate(Player currentPlayer, List<Player> players,
-                            UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+                            UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
 
         Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
         if (Figure.APACHEKID.equals(otherPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS) {
@@ -33,16 +33,16 @@ public class Conestoga extends SingleUse implements Playable {
                 hand.add(otherPlayer.getHand().removeRandom());
                 userInterface.printInfo(currentPlayer.getName() + " takes a card from " + otherPlayer.getName() + "'s hand with a " + this.getName());
             } else if (chosenCard == -2) {
-                Object card = otherPlayer.getInPlay().removeGun();
+                Card card = otherPlayer.getInPlay().removeGun();
                 hand.add(card);
-                userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card) card).getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
+                userInterface.printInfo(currentPlayer.getName() + " takes a " + card.getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
             } else {
-                Object card = otherPlayer.getInPlay().remove(chosenCard);
+                Card card = otherPlayer.getInPlay().remove(chosenCard);
                 hand.add(card);
-                userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card) card).getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
+                userInterface.printInfo(currentPlayer.getName() + " takes a " + card.getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
             }
             removeFromInPlay(currentPlayer);
-            discard.add(this);
+            discardPile.add(this);
             return true;
         } else {
             return false;
