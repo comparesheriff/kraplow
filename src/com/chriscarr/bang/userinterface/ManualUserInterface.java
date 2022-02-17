@@ -6,6 +6,7 @@ import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.gamestate.GameStateListener;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
+import com.chriscarr.bang.models.game.Character;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
     }
 
     public int askDiscard(Player player) {
-        System.out.println(player.getFigure().getName());
+        System.out.println(player.getCharacter().characterName());
         System.out.println("Discard");
         Hand hand = player.getHand();
         int handSize = hand.size();
@@ -61,7 +62,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 
     @Override
     public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
-        System.out.println(player.getFigure().getName());
+        System.out.println(player.getCharacter().characterName());
         System.out.println("Choose Other Players Card");
         int handSize = inPlay.size();
         if (hasHand) {
@@ -136,7 +137,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 
     @Override
     public int askPlayer(Player player, List<String> otherPlayers) {
-        System.out.println(player.getFigure().getName());
+        System.out.println(player.getCharacter().characterName());
         System.out.println("Choose Player");
         int handSize = otherPlayers.size();
         for (int i = 0; i < handSize; i++) {
@@ -159,7 +160,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 
     @Override
     public boolean chooseDiscard(Player player, Card card) {
-        System.out.println(player.getFigure().getName());
+        System.out.println(player.getCharacter().characterName());
         System.out.println("Draw Card From Discard");
         System.out.println("0) From Discard " + card.getName());
         System.out.println("1) From Deck");
@@ -182,7 +183,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 
     @Override
     public int chooseGeneralStoreCard(Player player, List<Card> cards) {
-        System.out.println(player.getFigure().getName());
+        System.out.println(player.getCharacter().characterName());
         System.out.println("Choose General Store Card");
         int handSize = cards.size();
         for (int i = 0; i < handSize; i++) {
@@ -205,7 +206,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 
     @Override
     public List<Card> chooseTwoDiscardForLife(Player player) {
-        System.out.println(player.getFigure().getName());
+        System.out.println(player.getCharacter().characterName());
         System.out.println("Discard Two cards for 1 Life, 4 for 2, etc");
         Hand hand = player.getHand();
         int handSize = hand.size();
@@ -251,7 +252,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
         System.out.println("-1) done playing");
         for (int i = 0; i < handSize; i++) {
             Card card = hand.get(i);
-            boolean canPlay = Card.CARDBANG.equals(card.getName()) || (Card.CARDMISSED.equals(card.getName()) && Figure.CALAMITYJANET.equals(player.getName()));
+            boolean canPlay = Card.CARDBANG.equals(card.getName()) || (Card.CARDMISSED.equals(card.getName()) && Character.CALAMITY_JANET.equals(player.getCharacter()));
             System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
             if (canPlay) {
                 System.out.print(" Targets: ");
@@ -319,7 +320,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
         System.out.println("-1) done playing");
         for (int i = 0; i < handSize; i++) {
             Card card = hand.get(i);
-            boolean canPlay = Card.CARDMISSED.equals(card.getName()) || (Card.CARDBANG.equals(card.getName()) && Figure.CALAMITYJANET.equals(player.getName()));
+            boolean canPlay = Card.CARDMISSED.equals(card.getName()) || (Card.CARDBANG.equals(card.getName()) && Character.CALAMITY_JANET.equals(player.getCharacter()));
             System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
             if (canPlay) {
                 System.out.print(" Targets: ");
@@ -346,7 +347,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 
     @Override
     public boolean chooseFromPlayer(Player player) {
-        System.out.println(player.getFigure().getName());
+        System.out.println(player.getCharacter().characterName());
         System.out.println("Draw Card From Player");
         System.out.println("0) From Player");
         System.out.println("1) From Deck");
@@ -369,7 +370,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 
     @Override
     public int chooseDrawCard(Player player, List<Card> cards) {
-        System.out.println(player.getFigure().getName());
+        System.out.println(player.getCharacter().characterName());
         System.out.println("Choose Draw Card to keep");
         int handSize = cards.size();
         for (int i = 0; i < handSize; i++) {
@@ -392,7 +393,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 
     @Override
     public int chooseCardToPutBack(Player player, List<Card> cards) {
-        System.out.println(player.getFigure().getName());
+        System.out.println(player.getCharacter().characterName());
         System.out.println("Choose card put back");
         int handSize = cards.size();
         for (int i = 0; i < handSize; i++) {

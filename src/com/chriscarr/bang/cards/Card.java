@@ -1,6 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
+import com.chriscarr.bang.models.game.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.ArrayList;
@@ -203,7 +204,7 @@ public class Card implements Playable {
     @Override
     public boolean play(Player currentPlayer, List<Player> players,
                         UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
-        if (Figure.JOHNNYKISCH.equals(currentPlayer.getAbility())) {
+        if (Character.JOHNNY_KISCH.equals(currentPlayer.getCharacter())) {
             for (Player player : players) {
                 int inPlayCount = player.getInPlay().count();
                 for (int inPlayIndex = 0; inPlayIndex < inPlayCount; inPlayIndex++) {
@@ -248,7 +249,7 @@ public class Card implements Playable {
         }
         if (!(otherPlayer instanceof CancelPlayer)) {
             userInterface.printInfo(currentPlayer.getName() + " Shoots " + otherPlayer.getName());
-            if (Figure.APACHEKID.equals(otherPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS) {
+            if (Character.APACHE_KID.equals(otherPlayer.getCharacter()) && this.getSuit() == Card.DIAMONDS) {
                 userInterface.printInfo(otherPlayer.getName() + " is unaffected by diamond " + this.getName());
                 if (!skipDiscard) {
                     discardPile.add(this);
@@ -256,12 +257,12 @@ public class Card implements Playable {
                 return true;
             }
             int missesRequired = 1;
-            if (this.getName().equals(Card.CARDBANG) && Figure.SLABTHEKILLER.equals(currentPlayer.getAbility())) {
+            if (this.getName().equals(Card.CARDBANG) && Character.SLAB_THE_KILLER.equals(currentPlayer.getCharacter())) {
                 missesRequired = 2;
             }
             int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discardPile, userInterface, missesRequired, currentPlayer);
             missesRequired = missesRequired - barrelMisses;
-            boolean canPlaySingleUse = !Figure.BELLESTAR.equals(currentPlayer.getAbility());
+            boolean canPlaySingleUse = !Character.BELLE_STAR.equals(currentPlayer.getCharacter());
             if (missesRequired <= 0) {
                 if (!skipDiscard) {
                     discardPile.add(this);
@@ -288,7 +289,7 @@ public class Card implements Playable {
                                     userInterface.printInfo(otherPlayer.getName() + " plays a " + missCard.getName() + " as a Missed!");
                                 }
                             }
-                            if (Figure.MOLLYSTARK.equals(otherPlayer.getAbility())) {
+                            if (Character.MOLLY_STARK.equals(otherPlayer.getCharacter())) {
                                 Hand otherHand = otherPlayer.getHand();
                                 otherHand.add(deck.pull());
                                 userInterface.printInfo(otherPlayer.getName() + " draws a card");
@@ -328,7 +329,7 @@ public class Card implements Playable {
                             hand.remove(card);
                             discardPile.add(card);
                             userInterface.printInfo(otherPlayer.getName() + " plays a " + card.getName());
-                            if (Figure.MOLLYSTARK.equals(otherPlayer.getAbility())) {
+                            if (Character.MOLLY_STARK.equals(otherPlayer.getCharacter())) {
                                 Hand otherHand = otherPlayer.getHand();
                                 otherHand.add(deck.pull());
                                 userInterface.printInfo(otherPlayer.getName() + " draws a card");

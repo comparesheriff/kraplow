@@ -21,7 +21,7 @@ public enum Role {
                 return value;
             }
         }
-        return OUTLAW;
+        return RANDOM;
     }
 
     public static Role getRole(String roleName) {
@@ -30,7 +30,7 @@ public enum Role {
                 return value;
             }
         }
-        return OUTLAW;
+        return RANDOM;
     }
 
     public String roleName() {

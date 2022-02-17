@@ -1,6 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
+import com.chriscarr.bang.models.game.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class Bang extends Card implements Playable {
      * @see com.chriscarr.bang.Playable#canPlay(com.chriscarr.bang.Player, java.util.List, int)
      */
     public boolean canPlay(Player player, List<Player> players, int bangsPlayed) {
-        if (bangsPlayed > 0 && !(player.getInPlay().hasGun() && player.getInPlay().isGunVolcanic()) && !Figure.WILLYTHEKID.equals(player.getAbility())) {
+        if (bangsPlayed > 0 && !(player.getInPlay().hasGun() && player.getInPlay().isGunVolcanic()) && !Character.WILLY_THE_KID.equals(player.getCharacter())) {
             return false;
         }
         return targets(player, players).size() > 1;

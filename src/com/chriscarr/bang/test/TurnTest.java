@@ -2,6 +2,7 @@ package com.chriscarr.bang.test;
 
 import com.chriscarr.bang.*;
 import com.chriscarr.bang.cards.*;
+import com.chriscarr.bang.models.game.Character;
 import com.chriscarr.bang.models.game.Role;
 import com.chriscarr.bang.userinterface.UserInterface;
 import junit.framework.TestCase;
@@ -367,9 +368,7 @@ public class TurnTest extends TestCase {
         List<Player> others = new ArrayList<>();
         for (Player otherPlayer : players) {
             others.add(otherPlayer);
-            Figure figure = new Figure();
-            figure.setName(Figure.CALAMITYJANET);
-            otherPlayer.setFigure(figure);
+            otherPlayer.setCharacter(Character.CALAMITY_JANET);
             otherPlayer.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         }
         others.remove(turn.getCurrentPlayer());
@@ -396,7 +395,7 @@ public class TurnTest extends TestCase {
         List<Player> others = new ArrayList<>();
         for (Player otherPlayer : players) {
             others.add(otherPlayer);
-            otherPlayer.getFigure().setName(Figure.CALAMITYJANET);
+            otherPlayer.setCharacter(Character.CALAMITY_JANET);
             otherPlayer.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         }
         others.remove(turn.getCurrentPlayer());
@@ -519,7 +518,7 @@ public class TurnTest extends TestCase {
         turn.setDiscard(new DiscardPile());
         List<Player> others = new ArrayList<>();
         for (Player otherPlayer : players) {
-            otherPlayer.getFigure().setName(Figure.CALAMITYJANET);
+            otherPlayer.setCharacter(Character.CALAMITY_JANET);
             otherPlayer.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
             others.add(otherPlayer);
         }
@@ -545,9 +544,7 @@ public class TurnTest extends TestCase {
         turn.setDiscard(new DiscardPile());
         List<Player> others = new ArrayList<>();
         for (Player otherPlayer : players) {
-            Figure otherFigure = new Figure();
-            otherFigure.setName(Figure.CALAMITYJANET);
-            otherPlayer.setFigure(otherFigure);
+            otherPlayer.setCharacter(Character.CALAMITY_JANET);
             otherPlayer.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
             others.add(otherPlayer);
         }
@@ -631,12 +628,10 @@ public class TurnTest extends TestCase {
         Player sheriff = turn.getCurrentPlayer();
         sheriff.getHand().add(new Duel(Card.CARDDUEL, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         for (Player player : players) {
-            Figure figure = new Figure();
-            figure.setName(Figure.CALAMITYJANET);
-            player.setFigure(figure);
+            player.setCharacter(Character.CALAMITY_JANET);
             player.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         }
-        sheriff.getFigure().setName("Joe Average");
+        sheriff.setCharacter(Character.RANDOM);
         UserInterface testUserInterface = new TestUserInterfaceBangBackOnce();
         turn.setUserInterface(testUserInterface);
         turn.setDiscard(new DiscardPile());
@@ -693,9 +688,7 @@ public class TurnTest extends TestCase {
         Player enemy = players.get(otherPlayer);
         enemy.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         sheriff.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-        Figure figure = new Figure();
-        figure.setName(Figure.CALAMITYJANET);
-        sheriff.setFigure(figure);
+        sheriff.setCharacter(Character.CALAMITY_JANET);
         assertEquals(enemy.getHand().size(), 1);
         assertEquals(sheriff.getHand().size(), 2);
         turn.play();
@@ -999,7 +992,7 @@ public class TurnTest extends TestCase {
         deck.add(card);
         DiscardPile discardPile = new DiscardPile();
         Player player = new Player();
-        player.setFigure(new Figure());
+        player.setCharacter(Character.RANDOM);
         Card drawnCard = Turn.draw(player, deck, discardPile, new TestUserInterface());
         assertEquals(drawnCard, card);
         assertEquals(discardPile.peek(), card);
@@ -1127,7 +1120,7 @@ public class TurnTest extends TestCase {
         turn.setSheriffManualTest();
         Player player = new Player();
         player.setInPlay(new InPlay());
-        player.setFigure(new Figure());
+        player.setCharacter(Character.RANDOM);
         Player player2 = new Player();
         assertFalse(Turn.isBarrelSave(player, deck, discardPile, new TestUserInterface(), 1, player2) != 0);
     }
@@ -1164,14 +1157,14 @@ public class TurnTest extends TestCase {
         turn.setUserInterface(new TestUserInterface());
         Player sheriff = turn.getCurrentPlayer();
         sheriff.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
-        sheriff.setFigure(new Figure());
+        sheriff.setCharacter(Character.RANDOM);
         Player player2 = new Player();
         assertFalse(Turn.isBarrelSave(sheriff, deck, discardPile, new TestUserInterface(), 1, player2) != 0);
     }
 
     public void testNoBeerPlayer() {
         Player player = new Player();
-        player.setFigure(new Figure());
+        player.setCharacter(Character.RANDOM);
         player.setHealth(2);
         Turn turn = new Turn();
         turn.damagePlayer(player, null, player, 1, null, null, null, null);
@@ -1188,17 +1181,14 @@ public class TurnTest extends TestCase {
         other1.setRole(Role.OUTLAW);
         Player other2 = new Player();
         other2.setRole(Role.SHERIFF);
-        Figure figure1 = new Figure();
-        Figure figure2 = new Figure();
-        figure1.setName("Jim Normal");
-        figure2.setName("Phil Average");
-        other1.setFigure(figure1);
-        other2.setFigure(figure2);
+        Character character1 = Character.RANDOM;
+        Character character2 = Character.RANDOM;
+        other1.setCharacter(character1);
+        other2.setCharacter(character2);
         players.add(other1);
         players.add(other2);
-        Figure figure = new Figure();
-        figure.setName("Testerson Smithe");
-        player.setFigure(figure);
+        Character character3 = Character.RANDOM;
+        player.setCharacter(character3);
         turn.setPlayers(players);
         player.setHealth(1);
         player.setHand(new Hand());
@@ -1221,22 +1211,16 @@ public class TurnTest extends TestCase {
         other1.setRole(Role.OUTLAW);
         Player other2 = new Player();
         other2.setRole(Role.SHERIFF);
-        Figure figure1 = new Figure();
-        Figure figure2 = new Figure();
-        figure1.setName("Jim Normal");
-        figure2.setName("Phil Average");
-        other1.setFigure(figure1);
-        other2.setFigure(figure2);
+        other1.setCharacter(Character.RANDOM);
+        other2.setCharacter(Character.RANDOM);
         players.add(other1);
         players.add(other2);
-        Figure figure = new Figure();
-        figure.setName("Testerson Smithe");
         turn.setPlayers(players);
         player.setHealth(1);
         turn.setUserInterface(new TestUserInterface());
         turn.setDiscard(new DiscardPile());
         player.getHand().add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
-        player.setFigure(new Figure());
+        player.setCharacter(Character.RANDOM);
         turn.damagePlayer(player, players, player, 1, null, null, new DiscardPile(), new TestUserInterface());
         assertTrue(players.contains(player));
     }
@@ -1252,23 +1236,17 @@ public class TurnTest extends TestCase {
         other1.setRole(Role.OUTLAW);
         Player other2 = new Player();
         other2.setRole(Role.SHERIFF);
-        Figure figure1 = new Figure();
-        Figure figure2 = new Figure();
-        figure1.setName("Jim Normal");
-        figure2.setName("Phil Average");
-        other1.setFigure(figure1);
-        other2.setFigure(figure2);
+        other1.setCharacter(Character.RANDOM);
+        other2.setCharacter(Character.RANDOM);
         players.add(other1);
         players.add(other2);
-        Figure figure = new Figure();
-        figure.setName("Testerson Smithe");
         players.add(player);
         turn.setPlayers(players);
         player.setHealth(1);
         turn.setUserInterface(new TestUserInterface());
         turn.setDiscard(new DiscardPile());
         player.getHand().add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
-        player.setFigure(new Figure());
+        player.setCharacter(Character.RANDOM);
         turn.damagePlayer(player, players, player, 1, null, null, new DiscardPile(), new NoBeerUserInterface());
         turn.setUserInterface(new NoBeerUserInterface());
         turn.setDiscard(new DiscardPile());
@@ -1279,7 +1257,7 @@ public class TurnTest extends TestCase {
         Player player = new Player();
         player.setHand(new Hand());
         player.setInPlay(new InPlay());
-        player.setFigure(new Figure());
+        player.setCharacter(Character.RANDOM);
         player.setRole(Role.SHERIFF);
         Turn turn = new Turn();
         List<Player> players = new ArrayList<>();
@@ -1288,13 +1266,13 @@ public class TurnTest extends TestCase {
         deputy.setHand(new Hand());
         deputy.setInPlay(new InPlay());
         deputy.setRole(Role.DEPUTY);
-        deputy.setFigure(new Figure());
+        deputy.setCharacter(Character.RANDOM);
         players.add(deputy);
         Player phil = new Player();
         phil.setHand(new Hand());
         phil.setInPlay(new InPlay());
         phil.setRole(Role.OUTLAW);
-        phil.setFigure(new Figure());
+        phil.setCharacter(Character.RANDOM);
         players.add(phil);
         turn.setPlayers(players);
         player.setHealth(1);
@@ -1322,7 +1300,7 @@ public class TurnTest extends TestCase {
         player.setHand(new Hand());
         player.setInPlay(new InPlay());
         player.setRole(Role.SHERIFF);
-        player.setFigure(new Figure());
+        player.setCharacter(Character.RANDOM);
         Turn turn = new Turn();
         Deck deck = Setup.setupDeck(false);
         turn.setDeck(deck);
@@ -1331,14 +1309,14 @@ public class TurnTest extends TestCase {
         Player deputy = new Player();
         deputy.setHand(new Hand());
         deputy.setInPlay(new InPlay());
-        deputy.setFigure(new Figure());
+        deputy.setCharacter(Character.RANDOM);
         deputy.setRole(Role.OUTLAW);
         players.add(deputy);
         Player phil = new Player();
         phil.setHand(new Hand());
         phil.setInPlay(new InPlay());
         phil.setRole(Role.OUTLAW);
-        phil.setFigure(new Figure());
+        phil.setCharacter(Character.RANDOM);
         players.add(phil);
         turn.setPlayers(players);
         player.setHealth(1);
@@ -1353,7 +1331,7 @@ public class TurnTest extends TestCase {
         player.setHand(new Hand());
         player.setInPlay(new InPlay());
         player.setRole(Role.SHERIFF);
-        player.setFigure(new Figure());
+        player.setCharacter(Character.RANDOM);
         Turn turn = new Turn();
         Deck deck = Setup.setupDeck(false);
         turn.setDeck(deck);
@@ -1362,14 +1340,14 @@ public class TurnTest extends TestCase {
         Player deputy = new Player();
         deputy.setHand(new Hand());
         deputy.setInPlay(new InPlay());
-        deputy.setFigure(new Figure());
+        deputy.setCharacter(Character.RANDOM);
         deputy.setRole(Role.DEPUTY);
         players.add(deputy);
         Player phil = new Player();
         phil.setHand(new Hand());
         phil.setInPlay(new InPlay());
         phil.setRole(Role.OUTLAW);
-        phil.setFigure(new Figure());
+        phil.setCharacter(Character.RANDOM);
         players.add(phil);
         turn.setPlayers(players);
         player.setHealth(1);
@@ -1383,7 +1361,7 @@ public class TurnTest extends TestCase {
         player.setHand(new Hand());
         player.setInPlay(new InPlay());
         player.setRole(Role.OUTLAW);
-        player.setFigure(new Figure());
+        player.setCharacter(Character.RANDOM);
         Turn turn = new Turn();
         Deck deck = Setup.setupDeck(false);
         turn.setDeck(deck);
@@ -1392,14 +1370,14 @@ public class TurnTest extends TestCase {
         Player deputy = new Player();
         deputy.setHand(new Hand());
         deputy.setInPlay(new InPlay());
-        deputy.setFigure(new Figure());
+        deputy.setCharacter(Character.RANDOM);
         deputy.setRole(Role.SHERIFF);
         players.add(deputy);
         Player phil = new Player();
         phil.setHand(new Hand());
         phil.setInPlay(new InPlay());
         phil.setRole(Role.OUTLAW);
-        phil.setFigure(new Figure());
+        phil.setCharacter(Character.RANDOM);
         players.add(phil);
         turn.setPlayers(players);
         player.setHealth(1);
@@ -1555,9 +1533,7 @@ public class TurnTest extends TestCase {
         turn.setPlayers(new ArrayList<>());
         Player player = new Player();
         player.setHand(new Hand());
-        Figure figure = new Figure();
-        figure.setName(Figure.BARTCASSIDY);
-        player.setFigure(figure);
+        player.setCharacter(Character.BART_CASSIDY);
         player.setMaxHealth(4);
         turn.damagePlayer(player, new ArrayList<>(), player, 1, player, deck, null, new TestUserInterface());
         assertEquals(player.getHand().size(), 1);
@@ -1567,9 +1543,7 @@ public class TurnTest extends TestCase {
         Turn turn = new Turn();
         Player player = new Player();
         player.setInPlay(new InPlay());
-        Figure figure = new Figure();
-        figure.setName(Figure.JOURDONNAIS);
-        player.setFigure(figure);
+        player.setCharacter(Character.JOURDONNAIS);
         Deck deck = new Deck();
         Card card = new Card();
         turn.setUserInterface(new TestUserInterface());
@@ -1585,9 +1559,7 @@ public class TurnTest extends TestCase {
         Turn turn = new Turn();
         Player player = new Player();
         player.setInPlay(new InPlay());
-        Figure figure = new Figure();
-        figure.setName(Figure.JOURDONNAIS);
-        player.setFigure(figure);
+        player.setCharacter(Character.JOURDONNAIS);
         Deck deck = new Deck();
         Card card = new Card();
         turn.setUserInterface(new TestUserInterface());
@@ -1604,9 +1576,7 @@ public class TurnTest extends TestCase {
         Turn turn = new Turn();
         Player player = new Player();
         player.setInPlay(new InPlay());
-        Figure figure = new Figure();
-        figure.setName(Figure.JOURDONNAIS);
-        player.setFigure(figure);
+        player.setCharacter(Character.JOURDONNAIS);
         player.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
         Deck deck = new Deck();
         Card card = new Card();
@@ -1627,9 +1597,7 @@ public class TurnTest extends TestCase {
         Turn turn = new Turn();
         Player player = new Player();
         player.setInPlay(new InPlay());
-        Figure figure = new Figure();
-        figure.setName(Figure.JOURDONNAIS);
-        player.setFigure(figure);
+        player.setCharacter(Character.JOURDONNAIS);
         player.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
         Deck deck = new Deck();
         Card card = new Card();
@@ -1650,9 +1618,7 @@ public class TurnTest extends TestCase {
         Turn turn = new Turn();
         Player player = new Player();
         player.setInPlay(new InPlay());
-        Figure figure = new Figure();
-        figure.setName(Figure.JOURDONNAIS);
-        player.setFigure(figure);
+        player.setCharacter(Character.JOURDONNAIS);
         player.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
         Deck deck = new Deck();
         Card card = new Card();
@@ -1673,9 +1639,7 @@ public class TurnTest extends TestCase {
         Turn turn = new Turn();
         Player player = new Player();
         player.setInPlay(new InPlay());
-        Figure figure = new Figure();
-        figure.setName(Figure.JOURDONNAIS);
-        player.setFigure(figure);
+        player.setCharacter(Character.JOURDONNAIS);
         player.getInPlay().add(new Card(Card.CARDBARREL, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
         Deck deck = new Deck();
         Card card = new Card();
@@ -1701,9 +1665,7 @@ public class TurnTest extends TestCase {
         turn.setSheriffManualTest();
         Player sheriff = turn.getCurrentPlayer();
         for (Player player : players) {
-            Figure figure = new Figure();
-            figure.setName(Figure.PAULREGRET);
-            player.setFigure(figure);
+            player.setCharacter(Character.PAUL_REGRET);
         }
         assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 1);
     }
@@ -1716,9 +1678,7 @@ public class TurnTest extends TestCase {
         turn.setDiscard(new DiscardPile());
         turn.setSheriffManualTest();
         Player sheriff = turn.getCurrentPlayer();
-        Figure figure = new Figure();
-        figure.setName(Figure.ROSEDOOLAN);
-        sheriff.setFigure(figure);
+        sheriff.setCharacter(Character.ROSE_DOOLAN);
         assertEquals(Turn.getPlayersWithinRange(sheriff, players, sheriff.getInPlay().getGunRange()).size(), 4);
     }
 
@@ -1732,9 +1692,7 @@ public class TurnTest extends TestCase {
         Player sheriff = turn.getCurrentPlayer();
         sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-        Figure figure = new Figure();
-        figure.setName(Figure.WILLYTHEKID);
-        sheriff.setFigure(figure);
+        sheriff.setCharacter(Character.WILLY_THE_KID);
         UserInterface testUserInterface = new TestUserInterfaceNoMiss();
         turn.setUserInterface(testUserInterface);
         turn.setDiscard(new DiscardPile());
@@ -1756,13 +1714,9 @@ public class TurnTest extends TestCase {
     public void testVultureSam() {
         Player player = new Player();
         player.setHand(new Hand());
-        Figure figure = new Figure();
-        figure.setName(Figure.VULTURESAM);
-        player.setFigure(figure);
+        player.setCharacter(Character.VULTURE_SAM);
         Player other = new Player();
-        Figure otherFigure = new Figure();
-        otherFigure.setName("Big Jim Test");
-        other.setFigure(otherFigure);
+        other.setCharacter(Character.RANDOM);
         Hand hand = new Hand();
         InPlay inPlay = new InPlay();
         other.setHand(hand);
@@ -1784,9 +1738,7 @@ public class TurnTest extends TestCase {
         Turn turn = new Turn();
         Deck deck = new Deck();
         Player player = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.LUCKYDUKE);
-        player.setFigure(figure);
+        player.setCharacter(Character.LUCKY_DUKE);
         Card card1 = new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE9, Card.TYPEITEM);
         Card card2 = new Beer(Card.CARDBEER, Card.SPADES, Card.VALUE9, Card.TYPEITEM);
         deck.add(card1);
@@ -1802,9 +1754,7 @@ public class TurnTest extends TestCase {
     public void testLuckyInvalidValid() {
         Deck deck = new Deck();
         Player player = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.LUCKYDUKE);
-        player.setFigure(figure);
+        player.setCharacter(Character.LUCKY_DUKE);
         Card card1 = new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE9, Card.TYPEITEM);
         Card card2 = new Beer(Card.CARDBEER, Card.SPADES, Card.VALUE9, Card.TYPEITEM);
         deck.add(card1);
@@ -1818,9 +1768,7 @@ public class TurnTest extends TestCase {
         Turn turn = new Turn();
         Deck deck = new Deck();
         Player player = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.LUCKYDUKE);
-        player.setFigure(figure);
+        player.setCharacter(Character.LUCKY_DUKE);
         Card card1 = new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE9, Card.TYPEITEM);
         Card card2 = new Beer(Card.CARDBEER, Card.SPADES, Card.VALUE9, Card.TYPEITEM);
         deck.add(card1);
@@ -1835,9 +1783,7 @@ public class TurnTest extends TestCase {
 
     public void testBlackJackHearts() {
         Player player = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.BLACKJACK);
-        player.setFigure(figure);
+        player.setCharacter(Character.BLACK_JACK);
         player.setHand(new Hand());
         Turn turn = new Turn();
         turn.setUserInterface(new TestUserInterface());
@@ -1854,9 +1800,7 @@ public class TurnTest extends TestCase {
 
     public void testBlackJackDiamonds() {
         Player player = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.BLACKJACK);
-        player.setFigure(figure);
+        player.setCharacter(Character.BLACK_JACK);
         player.setHand(new Hand());
         Turn turn = new Turn();
         turn.setUserInterface(new TestUserInterface());
@@ -1873,9 +1817,7 @@ public class TurnTest extends TestCase {
 
     public void testBlackJackDefault() {
         Player player = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.BLACKJACK);
-        player.setFigure(figure);
+        player.setCharacter(Character.BLACK_JACK);
         player.setHand(new Hand());
         Turn turn = new Turn();
         turn.setUserInterface(new TestUserInterface());
@@ -1892,9 +1834,7 @@ public class TurnTest extends TestCase {
 
     public void testPedroRamerez() {
         Player player = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.PEDRORAMIREZ);
-        player.setFigure(figure);
+        player.setCharacter(Character.PEDRO_RAMIREZ);
         player.setHand(new Hand());
         Turn turn = new Turn();
         Deck deck = new Deck();
@@ -1914,9 +1854,7 @@ public class TurnTest extends TestCase {
 
     public void testPedroRamerezDefault() {
         Player player = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.PEDRORAMIREZ);
-        player.setFigure(figure);
+        player.setCharacter(Character.PEDRO_RAMIREZ);
         player.setHand(new Hand());
         Turn turn = new Turn();
         Deck deck = new Deck();
@@ -1936,9 +1874,7 @@ public class TurnTest extends TestCase {
 
     public void testPedroRamerezDiscardEmpty() {
         Player player = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.PEDRORAMIREZ);
-        player.setFigure(figure);
+        player.setCharacter(Character.PEDRO_RAMIREZ);
         player.setHand(new Hand());
         Turn turn = new Turn();
         Deck deck = new Deck();
@@ -1956,15 +1892,11 @@ public class TurnTest extends TestCase {
 
     public void testJesseJones() {
         Player player = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.JESSEJONES);
-        player.setFigure(figure);
+        player.setCharacter(Character.JESSE_JONES);
         player.setHand(new Hand());
 
         Player other = new Player();
-        Figure otherFigure = new Figure();
-        otherFigure.setName(Figure.JESSEJONES);
-        other.setFigure(otherFigure);
+        other.setCharacter(Character.JESSE_JONES);
         Hand otherHand = new Hand();
         Card card1 = new Beer(Card.CARDBEER, Card.SPADES, Card.VALUE9, Card.TYPEITEM);
         otherHand.add(card1);
@@ -1989,15 +1921,11 @@ public class TurnTest extends TestCase {
 
     public void testJesseJonesDefault() {
         Player player = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.JESSEJONES);
-        player.setFigure(figure);
+        player.setCharacter(Character.JESSE_JONES);
         player.setHand(new Hand());
 
         Player other = new Player();
-        Figure otherFigure = new Figure();
-        otherFigure.setName(Figure.JESSEJONES);
-        other.setFigure(otherFigure);
+        other.setCharacter(Character.JESSE_JONES);
         other.setHand(new Hand());
 
         Turn turn = new Turn();
@@ -2027,9 +1955,7 @@ public class TurnTest extends TestCase {
         turn.setDiscard(new DiscardPile());
         turn.setSheriffManualTest();
         Player sheriff = turn.getCurrentPlayer();
-        Figure figure = new Figure();
-        figure.setName(Figure.CALAMITYJANET);
-        sheriff.setFigure(figure);
+        sheriff.setCharacter(Character.CALAMITY_JANET);
         sheriff.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         UserInterface testUserInterface = new TestUserInterfaceNoMiss();
         turn.setUserInterface(testUserInterface);
@@ -2072,9 +1998,7 @@ public class TurnTest extends TestCase {
         others.remove(sheriff);
 
         Player enemy = others.get(0);
-        Figure enemyFigure = new Figure();
-        enemyFigure.setName(Figure.CALAMITYJANET);
-        enemy.setFigure(enemyFigure);
+        enemy.setCharacter(Character.CALAMITY_JANET);
         enemy.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         turn.play();
         assertEquals(enemy.getHealth(), enemy.getMaxHealth());
@@ -2091,9 +2015,7 @@ public class TurnTest extends TestCase {
         turn.setDeck(deck);
         Player player = new Player();
         player.setHand(new Hand());
-        Figure figure = new Figure();
-        figure.setName(Figure.KITCARLSON);
-        player.setFigure(figure);
+        player.setCharacter(Character.KIT_CARLSON);
         turn.setUserInterface(new TestPlayOneUserInterfaceChoosePlayerBangBack());
         turn.drawCards(player, deck);
         assertEquals(2, player.getHand().size());
@@ -2103,15 +2025,13 @@ public class TurnTest extends TestCase {
 
     public void testElGringo() {
         Player elGringo = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.ELGRINGO);
+        elGringo.setCharacter(Character.EL_GRINGO);
         elGringo.setMaxHealth(4);
-        elGringo.setFigure(figure);
         Hand gringoHand = new Hand();
         elGringo.setHand(gringoHand);
         Player other = new Player();
         other.setMaxHealth(4);
-        other.setFigure(figure);
+        other.setCharacter(Character.EL_GRINGO);
         Hand otherHand = new Hand();
         otherHand.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         other.setHand(otherHand);
@@ -2124,9 +2044,7 @@ public class TurnTest extends TestCase {
 
     public void testElGringoOtherHasNone() {
         Player elGringo = new Player();
-        Figure figure = new Figure();
-        figure.setName(Figure.ELGRINGO);
-        elGringo.setFigure(figure);
+        elGringo.setCharacter(Character.EL_GRINGO);
         elGringo.setMaxHealth(4);
         Hand gringoHand = new Hand();
         elGringo.setHand(gringoHand);
@@ -2149,9 +2067,7 @@ public class TurnTest extends TestCase {
         turn.setDiscard(new DiscardPile());
         turn.setSheriffManualTest();
         Player sheriff = turn.getCurrentPlayer();
-        Figure figure = new Figure();
-        figure.setName(Figure.SUZYLAFAYETTE);
-        sheriff.setFigure(figure);
+        sheriff.setCharacter(Character.SUZY_LAFAYETTE);
         sheriff.getHand().add(new Gun(Card.CARDSCHOFIELD, Card.CLUBS, Card.VALUEQ, Card.TYPEGUN));
         UserInterface testUserInterface = new TestPlayOneUserInterface();
         turn.setUserInterface(testUserInterface);
@@ -2185,9 +2101,7 @@ public class TurnTest extends TestCase {
         Player sheriff = turn.getCurrentPlayer();
         sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-        Figure figure = new Figure();
-        figure.setName(Figure.SIDKETCHUM);
-        sheriff.setFigure(figure);
+        sheriff.setCharacter(Character.SID_KETCHUM);
         UserInterface testUserInterface = new TestUserInterfaceSpecial();
         turn.setUserInterface(testUserInterface);
         turn.setDiscard(new DiscardPile());
@@ -2209,9 +2123,7 @@ public class TurnTest extends TestCase {
         turn.setSheriffManualTest();
         Player sheriff = turn.getCurrentPlayer();
         sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-        Figure figure = new Figure();
-        figure.setName(Figure.SLABTHEKILLER);
-        sheriff.setFigure(figure);
+        sheriff.setCharacter(Character.SLAB_THE_KILLER);
         UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1();
         turn.setUserInterface(testUserInterface);
         turn.setDiscard(new DiscardPile());
@@ -2242,9 +2154,7 @@ public class TurnTest extends TestCase {
         turn.setSheriffManualTest();
         Player sheriff = turn.getCurrentPlayer();
         sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-        Figure figure = new Figure();
-        figure.setName(Figure.SLABTHEKILLER);
-        sheriff.setFigure(figure);
+        sheriff.setCharacter(Character.SLAB_THE_KILLER);
         UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1green();
         turn.setUserInterface(testUserInterface);
         turn.setDiscard(new DiscardPile());
@@ -2278,9 +2188,7 @@ public class TurnTest extends TestCase {
         turn.setSheriffManualTest();
         Player sheriff = turn.getCurrentPlayer();
         sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-        Figure figure = new Figure();
-        figure.setName(Figure.SLABTHEKILLER);
-        sheriff.setFigure(figure);
+        sheriff.setCharacter(Character.SLAB_THE_KILLER);
         UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1green2();
         turn.setUserInterface(testUserInterface);
         turn.setDiscard(new DiscardPile());
@@ -2314,9 +2222,7 @@ public class TurnTest extends TestCase {
         turn.setSheriffManualTest();
         Player sheriff = turn.getCurrentPlayer();
         sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-        Figure figure = new Figure();
-        figure.setName(Figure.SLABTHEKILLER);
-        sheriff.setFigure(figure);
+        sheriff.setCharacter(Character.SLAB_THE_KILLER);
         UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1green3();
         turn.setUserInterface(testUserInterface);
         turn.setDiscard(new DiscardPile());
@@ -2351,7 +2257,6 @@ public class TurnTest extends TestCase {
         turn.setSheriffManualTest();
         Player sheriff = turn.getCurrentPlayer();
         sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-        Figure figure = new Figure();
         UserInterface testUserInterface = new TestUserInterfaceBangBackTwicePlayer1();
         turn.setUserInterface(testUserInterface);
         turn.setDiscard(new DiscardPile());
@@ -2359,17 +2264,14 @@ public class TurnTest extends TestCase {
         List<Player> others = new ArrayList<>();
         for (Player otherPlayer : players) {
 
-            Figure otherFigure = new Figure();
-            otherFigure.setName(Figure.CALAMITYJANET);
-            otherPlayer.setFigure(otherFigure);
+            otherPlayer.setCharacter(Character.CALAMITY_JANET);
             int distance = AlivePlayers.getDistance(players.indexOf(sheriff), players.indexOf(otherPlayer), players.size());
             if (distance <= 1) {
                 others.add(otherPlayer);
             }
         }
         others.remove(sheriff);
-        figure.setName(Figure.SLABTHEKILLER);
-        sheriff.setFigure(figure);
+        sheriff.setCharacter(Character.SLAB_THE_KILLER);
         Player enemy = others.get(0);
         enemy.getHand().add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         enemy.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
@@ -2405,7 +2307,7 @@ public class TurnTest extends TestCase {
         Player sheriff = turn.getCurrentPlayer();
         sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         sheriff.getHand().add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-        sheriff.getFigure().setName(Figure.WILLYTHEKID);
+        sheriff.setCharacter(Character.WILLY_THE_KID);
         sheriff.getInPlay().setGun(new Gun(Card.CARDVOLCANIC, Card.CLUBS, Card.VALUEQ, Card.TYPEGUN));
         UserInterface testUserInterface = new TestUserInterfaceNoMiss();
         turn.setUserInterface(testUserInterface);

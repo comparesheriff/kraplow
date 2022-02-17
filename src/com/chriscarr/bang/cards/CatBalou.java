@@ -1,6 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
+import com.chriscarr.bang.models.game.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class CatBalou extends Card implements Playable {
     public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
         discardPile.add(this);
         Player other = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
-        if (Figure.APACHEKID.equals(other.getAbility()) && this.getSuit() == Card.DIAMONDS) {
+        if (Character.APACHE_KID.equals(other.getCharacter()) && this.getSuit() == Card.DIAMONDS) {
             userInterface.printInfo(other.getName() + " is unaffected by diamond Cat Balou");
             return true;
         }

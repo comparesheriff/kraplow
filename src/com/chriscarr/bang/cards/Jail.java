@@ -1,6 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
+import com.chriscarr.bang.models.game.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class Jail extends Card implements Playable {
                         UserInterface userInterface, Deck deck, DiscardPile discardPile, Turn turn) {
         Player target = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
         if (!(target instanceof CancelPlayer)) {
-            if (Figure.JOHNNYKISCH.equals(currentPlayer.getAbility())) {
+            if (Character.JOHNNY_KISCH.equals(currentPlayer.getCharacter())) {
                 for (Player player : players) {
                     int inPlayCount = player.getInPlay().count();
                     for (int inPlayIndex = 0; inPlayIndex < inPlayCount; inPlayIndex++) {

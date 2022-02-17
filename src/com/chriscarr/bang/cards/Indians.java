@@ -1,6 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
+import com.chriscarr.bang.models.game.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class Indians extends Card implements Playable {
         Player indianPlayer = Turn.getNextPlayer(currentPlayer, players);
         while (indianPlayer != currentPlayer) {
             Player nextPlayer = Turn.getNextPlayer(indianPlayer, players);
-            if (Figure.APACHEKID.equals(indianPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS) {
+            if (Character.APACHE_KID.equals(indianPlayer.getCharacter()) && this.getSuit() == Card.DIAMONDS) {
                 userInterface.printInfo(indianPlayer.getName() + " is unaffected by diamond Indians");
                 indianPlayer = nextPlayer;
                 continue;
@@ -44,7 +45,7 @@ public class Indians extends Card implements Playable {
             } else {
                 discardPile.add(indianPlayer.getHand().remove(bangPlayed));
                 userInterface.printInfo(indianPlayer.getName() + " repels the attack from " + currentPlayer.getName() + "'s " + Card.CARDINDIANS);
-                if (Figure.MOLLYSTARK.equals(indianPlayer.getAbility())) {
+                if (Character.MOLLY_STARK.equals(indianPlayer.getCharacter())) {
                     Hand otherHand = indianPlayer.getHand();
                     otherHand.add(deck.pull());
                     userInterface.printInfo(indianPlayer.getName() + " draws a card");

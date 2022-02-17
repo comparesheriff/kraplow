@@ -1,17 +1,17 @@
 package com.chriscarr.bang.test;
 
-import com.chriscarr.bang.Figure;
 import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
+import com.chriscarr.bang.models.game.Character;
 import com.chriscarr.bang.models.game.Role;
 import junit.framework.TestCase;
 
 public class PlayerTest extends TestCase {
     public void testPlayer() {
         Player player = new Player();
-        Figure setFigure = new Figure();
-        player.setFigure(setFigure);
+        Character setCharacter = Character.BELLE_STAR;
+        player.setCharacter(setCharacter);
         Role setRole = Role.SHERIFF;
         player.setRole(setRole);
         Hand setHand = new Hand();
@@ -19,12 +19,12 @@ public class PlayerTest extends TestCase {
         InPlay setInPlay = new InPlay();
         player.setInPlay(setInPlay);
 
-        Figure gotFigure = player.getFigure();
+        Character gotCharacter = player.getCharacter();
         Role gotRole = player.getRole();
         Hand gotHand = player.getHand();
         InPlay gotInPlay = player.getInPlay();
 
-        assertEquals(gotFigure, setFigure);
+        assertEquals(gotCharacter, setCharacter);
         assertEquals(gotRole, setRole);
         assertEquals(gotHand, setHand);
         assertEquals(gotInPlay, setInPlay);

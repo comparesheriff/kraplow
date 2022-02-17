@@ -1,6 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
+import com.chriscarr.bang.models.game.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class Gun extends Card {
         if (currentPlayer.hasGun()) {
             discardPile.add(currentPlayer.removeGun());
         }
-        if (Figure.JOHNNYKISCH.equals(currentPlayer.getAbility())) {
+        if (Character.JOHNNY_KISCH.equals(currentPlayer.getCharacter())) {
             for (Player player : players) {
                 if (player.getInPlay().getGunName().equals(this.getName())) {
                     Card gun = player.getInPlay().removeGun();

@@ -8,6 +8,7 @@ import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.gamestate.GameStateImpl;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
+import com.chriscarr.bang.models.game.Character;
 import com.chriscarr.bang.models.game.Role;
 import com.chriscarr.bang.userinterface.UserInterface;
 
@@ -116,19 +117,19 @@ public class Turn {
         boolean inJail;
         try {
             userInterface.printInfo(currentPlayer.getName() + "'s turn.");
-            if (Figure.VERACUSTER.equals(currentPlayer.getName())) {
+            if (Character.VERA_CUSTER.equals(currentPlayer.getCharacter())) {
                 List<Player> otherPlayers = new ArrayList<>();
                 for (Player other : players) {
                     if (!other.equals(currentPlayer)) {
                         otherPlayers.add(other);
                     }
                 }
-                userInterface.printInfo(Figure.VERACUSTER
+                userInterface.printInfo(Character.VERA_CUSTER.characterName()
                         + " will choose the abilities of another player");
                 Player chosenPlayer = getValidChosenPlayer(currentPlayer,
                         otherPlayers, userInterface);
-                currentPlayer.setAbility(chosenPlayer.getName());
-                userInterface.printInfo(currentPlayer.getFigure().getName()
+                currentPlayer.setCharacter(chosenPlayer.getCharacter());
+                userInterface.printInfo(currentPlayer.getCharacter().characterName()
                         + " chose the abilities of " + chosenPlayer.getName());
             }
 
@@ -186,7 +187,7 @@ public class Turn {
 
     public void drawCards(Player player, Deck deck) {
         Hand hand = player.getHand();
-        if (Figure.KITCARLSON.equals(player.getAbility())) {
+        if (Character.KIT_CARLSON.equals(player.getCharacter())) {
             List<Card> cards = pullCards(deck, 3, userInterface);
             Card cardToPutBack = chooseValidCardToPutBack(player, cards,
                     userInterface);
@@ -195,9 +196,9 @@ public class Turn {
             for (Card card : cards) {
                 hand.add(card);
             }
-            userInterface.printInfo(player.getFigure().getName()
+            userInterface.printInfo(player.getCharacter().characterName()
                     + " put a card back on the draw pile");
-        } else if (Figure.JESSEJONES.equals(player.getAbility())) {
+        } else if (Character.JESSE_JONES.equals(player.getCharacter())) {
             List<Player> otherPlayers = new ArrayList<>();
             for (Player other : players) {
                 if (!other.equals(player) && other.getHand().size() > 0) {
@@ -213,7 +214,7 @@ public class Turn {
                         otherPlayers, userInterface);
                 Card randomCard = chosenPlayer.removeRandom();
                 hand.add(randomCard);
-                userInterface.printInfo(player.getFigure().getName()
+                userInterface.printInfo(player.getCharacter().characterName()
                         + " drew a card from " + chosenPlayer.getName()
                         + " hand.");
             } else {
@@ -221,11 +222,11 @@ public class Turn {
                     userInterface.printInfo("Shuffling the deck");
                 }
                 hand.add(deck.pull());
-                userInterface.printInfo(player.getFigure().getName()
+                userInterface.printInfo(player.getCharacter().characterName()
                         + " drew a card from the deck.");
             }
             hand.add(deck.pull());
-        } else if (Figure.PATBRENNAN.equals(player.getAbility())) {
+        } else if (Character.PAT_BRENNAN.equals(player.getCharacter())) {
             boolean chosenFromPlayer = userInterface.chooseFromPlayer(player);
             if (chosenFromPlayer) {
                 List<Player> otherPlayers = new ArrayList<>();
@@ -258,31 +259,31 @@ public class Turn {
                 hand.add(deck.pull());
                 hand.add(deck.pull());
             }
-        } else if (Figure.PEDRORAMIREZ.equals(player.getAbility())) {
+        } else if (Character.PEDRO_RAMIREZ.equals(player.getCharacter())) {
             if (discardPile.canDrawFromDiscard()) {
                 boolean chosenDiscard = userInterface.chooseDiscard(player, discardPile.peek());
                 if (chosenDiscard) {
                     Card discardCard = discardPile.remove();
                     hand.add(discardCard);
-                    userInterface.printInfo(player.getFigure().getName() + " drew a "
+                    userInterface.printInfo(player.getCharacter().characterName() + " drew a "
                             + discardCard.getName()
                             + " from the discard pile.");
                 } else {
                     hand.add(deck.pull());
-                    userInterface.printInfo(player.getFigure().getName()
+                    userInterface.printInfo(player.getCharacter().characterName()
                             + " drew a card from the deck.");
                 }
             } else {
                 hand.add(deck.pull());
-                userInterface.printInfo(player.getFigure().getName()
+                userInterface.printInfo(player.getCharacter().characterName()
                         + " drew a card from the deck.");
             }
             hand.add(deck.pull());
-        } else if (Figure.PIXIEPETE.equals(player.getAbility())) {
+        } else if (Character.PIXIE_PETE.equals(player.getCharacter())) {
             hand.add(deck.pull());
             hand.add(deck.pull());
             hand.add(deck.pull());
-        } else if (Figure.BILLNOFACE.equals(player.getAbility())) {
+        } else if (Character.BILL_NOFACE.equals(player.getCharacter())) {
             hand.add(deck.pull());
             int cardsToDraw = player.getMaxHealth() - player.getHealth();
             while (cardsToDraw > 0) {
@@ -291,7 +292,7 @@ public class Turn {
             }
             userInterface.printInfo(player.getName()
                     + " drew " + (player.getMaxHealth() - player.getHealth() + 1) + " card(s) from the deck.");
-        } else if (Figure.CLAUSTHESAINT.equals(player.getAbility())) {
+        } else if (Character.CLAUS_THE_SAINT.equals(player.getCharacter())) {
             List<Card> cards = pullCards(deck, players.size() + 1, userInterface);
             Player generalPlayer = Turn.getNextPlayer(player, players);
             while (!generalPlayer.equals(player)) {
@@ -309,14 +310,14 @@ public class Turn {
             hand.add(deck.pull());
             Card secondCard = deck.pull();
             hand.add(secondCard);
-            if (Figure.BLACKJACK.equals(player.getAbility())) {
+            if (Character.BLACK_JACK.equals(player.getCharacter())) {
                 int suit = secondCard.getSuit();
-                userInterface.printInfo(player.getFigure().getName() + " drew a "
+                userInterface.printInfo(player.getCharacter().characterName() + " drew a "
                         + Card.suitToString(suit) + " "
                         + secondCard.getName());
                 if (suit == Card.HEARTS || suit == Card.DIAMONDS) {
                     hand.add(deck.pull());
-                    userInterface.printInfo(player.getFigure().getName()
+                    userInterface.printInfo(player.getCharacter().characterName()
                             + " drew a third card from the deck.");
                 }
             }
@@ -325,7 +326,7 @@ public class Turn {
 
     public void discard(Player player) {
         int maxHandSize = player.getHealth();
-        if (Figure.SEANMALLORY.equals(player.getAbility())) {
+        if (Character.SEAN_MALLORY.equals(player.getCharacter())) {
             maxHandSize = 10;
         }
         Hand hand = player.getHand();
@@ -355,7 +356,7 @@ public class Turn {
 
     public void play() {
         for (Player player : players) {
-            if (Figure.SUZYLAFAYETTE.equals(player.getAbility())) {
+            if (Character.SUZY_LAFAYETTE.equals(player.getCharacter())) {
                 Hand playerHand = player.getHand();
                 if (playerHand.isEmpty()) {
                     if (deck.size() == 0) {
@@ -379,7 +380,7 @@ public class Turn {
         }
         while (card < -1 || card > hand.size() + singleUseInPlay.size() - 1) {
             card = userInterface.askPlay(currentPlayer);
-            if (card > (hand.size() + singleUseInPlay.size() - 1) && Figure.CHUCKWENGAM.equals(currentPlayer.getAbility())) {
+            if (card > (hand.size() + singleUseInPlay.size() - 1) && Character.CHUCK_WENGAM.equals(currentPlayer.getCharacter())) {
                 if (currentPlayer.getHealth() > 1) {
                     currentPlayer.setHealth(currentPlayer.getHealth() - 1);
                     Hand playerHand = currentPlayer.getHand();
@@ -389,9 +390,9 @@ public class Turn {
                             + " traded one life for 2 cards.");
                     return;
                 }
-            } else if (card > (hand.size() + singleUseInPlay.size() - 1) && Figure.SIDKETCHUM.equals(currentPlayer.getAbility())) {
+            } else if (card > (hand.size() + singleUseInPlay.size() - 1) && Character.SID_KETCHUM.equals(currentPlayer.getCharacter())) {
                 discardTwoCardsForLife(currentPlayer, discardPile, userInterface);
-            } else if (card > (hand.size() - 1) && Figure.JOSEDELGADO.equals(currentPlayer.getAbility())) {
+            } else if (card > (hand.size() - 1) && Character.JOSE_DELGADO.equals(currentPlayer.getCharacter())) {
                 if (this.joseActions >= 2) {
                     userInterface.printInfo("Already used special abilitity twice this turn.");
                     return;
@@ -411,7 +412,7 @@ public class Turn {
                             + " traded one blue card for 2 cards.");
                     return;
                 }
-            } else if (card > (hand.size() - 1) && Figure.UNCLEWILL.equals(currentPlayer.getAbility())) {
+            } else if (card > (hand.size() - 1) && Character.UNCLE_WILL.equals(currentPlayer.getCharacter())) {
                 if (this.uncleWillActions >= 1) {
                     userInterface.printInfo("Already used special abilitity this turn.");
                     return;
@@ -444,7 +445,7 @@ public class Turn {
                 }
                 return;
 
-            } else if (card > (hand.size() + singleUseInPlay.size() - 1) && Figure.DOCHOLYDAY.equals(currentPlayer.getAbility())) {
+            } else if (card > (hand.size() + singleUseInPlay.size() - 1) && Character.DOC_HOLYDAY.equals(currentPlayer.getCharacter())) {
                 List<Card> cardsToDiscard = userInterface.chooseTwoDiscardForShoot(currentPlayer);
                 if (cardsToDiscard.size() == 2) {
                     int discardSuit = Card.DIAMONDS;
@@ -534,9 +535,9 @@ public class Turn {
                     } else if (Card.CARDDODGE.equals(card.getName())) {
                         return playedMiss;
                     } else if (Card.CARDBANG.equals(card.getName())
-                            && Figure.CALAMITYJANET.equals(player.getAbility())) {
+                            && Character.CALAMITY_JANET.equals(player.getCharacter())) {
                         return playedMiss;
-                    } else if (Figure.ELENAFUENTE.equals(player.getAbility())) {
+                    } else if (Character.ELENA_FUENTE.equals(player.getCharacter())) {
                         return playedMiss;
                     }
                 } else {
@@ -568,7 +569,7 @@ public class Turn {
                 if (Card.CARDBANG.equals(card.getName())) {
                     return playerShot;
                 } else if (Card.CARDMISSED.equals(card.getName())
-                        && Figure.CALAMITYJANET.equals(player.getAbility())) {
+                        && Character.CALAMITY_JANET.equals(player.getCharacter())) {
                     return playerShot;
                 }
             }
@@ -598,16 +599,16 @@ public class Turn {
             int distance = AlivePlayers.getDistance(players.indexOf(player),
                     players.indexOf(otherPlayer), players.size());
             if (otherPlayer.getInPlay().hasItem(Card.CARDMUSTANG)) {
-                if (!Figure.BELLESTAR.equals(player.getAbility())) {
+                if (!Character.BELLE_STAR.equals(player.getCharacter())) {
                     distance = distance + 1;
                 }
             }
             if (otherPlayer.getInPlay().hasItem(Card.CARDHIDEOUT)) {
-                if (!Figure.BELLESTAR.equals(player.getAbility())) {
+                if (!Character.BELLE_STAR.equals(player.getCharacter())) {
                     distance = distance + 1;
                 }
             }
-            if (Figure.PAULREGRET.equals(otherPlayer.getAbility())) {
+            if (Character.PAUL_REGRET.equals(otherPlayer.getCharacter())) {
                 distance = distance + 1;
             }
             if (player.getInPlay().hasItem(Card.CARDSCOPE)) {
@@ -616,7 +617,7 @@ public class Turn {
             if (player.getInPlay().hasItem(Card.CARDSILVER)) {
                 distance = distance - 1;
             }
-            if (Figure.ROSEDOOLAN.equals(player.getAbility())) {
+            if (Character.ROSE_DOOLAN.equals(player.getCharacter())) {
                 distance = distance - 1;
             }
             if (distance <= range) {
@@ -668,7 +669,7 @@ public class Turn {
 
     public static Card draw(Player player, Deck deck, DiscardPile discardPile,
                             UserInterface userInterface) {
-        if (Figure.LUCKYDUKE.equals(player.getAbility())) {
+        if (Character.LUCKY_DUKE.equals(player.getCharacter())) {
             List<Card> cards = pullCards(deck, 2, userInterface);
             int chosenCard = -1;
             while (chosenCard < 0 || chosenCard > (cards.size() - 1)) {
@@ -722,16 +723,16 @@ public class Turn {
     public static int isBarrelSave(Player player, Deck deck, DiscardPile discardPile,
                                    UserInterface userInterface, int missesRequired, Player shooter) {
         int misses = 0;
-        if (Figure.JOURDONNAIS.equals(player.getAbility())) {
+        if (Character.JOURDONNAIS.equals(player.getCharacter())) {
             userInterface.printInfo(player.getName()
                     + " is drawing to be saved by a barrel");
             Card drawn = draw(player, deck, discardPile, userInterface);
             if (drawn.getSuit() == Card.HEARTS) {
                 misses = misses + 1;
-                userInterface.printInfo(player.getFigure().getName() + " drew a "
+                userInterface.printInfo(player.getCharacter().characterName() + " drew a "
                         + Card.suitToString(Card.HEARTS) + " and was saved by his ability.");
             } else {
-                userInterface.printInfo(player.getFigure().getName() + " drew a "
+                userInterface.printInfo(player.getCharacter().characterName() + " drew a "
                         + Card.suitToString(drawn.getSuit())
                         + " and was not saved by his ability.");
             }
@@ -741,9 +742,9 @@ public class Turn {
         }
         InPlay currentInPlay = player.getInPlay();
         if (currentInPlay.hasItem(Card.CARDBARREL)) {
-            if (Figure.BELLESTAR.equals(shooter.getAbility())) {
+            if (Character.BELLE_STAR.equals(shooter.getCharacter())) {
                 userInterface.printInfo(player.getName()
-                        + "'s barrel has no affect on " + shooter.getFigure().getName());
+                        + "'s barrel has no affect on " + shooter.getCharacter().characterName());
             } else {
                 userInterface.printInfo(player.getName()
                         + " is drawing to be saved by a barrel");
@@ -771,7 +772,7 @@ public class Turn {
             while (!doNotPlayBeer && player.getHealth() <= 0) {
                 int playedBeer = validPlayBeer(player, userInterface);
                 if (playedBeer != -1) {
-                    if (Figure.TEQUILAJOE.equals(player.getAbility())) {
+                    if (Character.TEQUILA_JOE.equals(player.getCharacter())) {
                         player.setHealth(player.getHealth() + 2);
                         discardPile.add(player.getHand().remove(playedBeer));
                         userInterface.printInfo(player.getName() + " plays a beer and gains two lives.");
@@ -779,7 +780,7 @@ public class Turn {
                         player.setHealth(player.getHealth() + 1);
                         discardPile.add(player.getHand().remove(playedBeer));
                         userInterface.printInfo(player.getName() + " plays a beer and gains one life.");
-                        if (Figure.MOLLYSTARK.equals(player.getAbility())) {
+                        if (Character.MOLLY_STARK.equals(player.getCharacter())) {
                             Hand otherHand = player.getHand();
                             otherHand.add(deck.pull());
                             userInterface.printInfo(player.getName() + " draws a card");
@@ -794,23 +795,23 @@ public class Turn {
             handleDeath(player, damager, currentPlayer, players, userInterface,
                     deck, discardPile);
         } else {
-            if (Figure.BARTCASSIDY.equals(player.getAbility())) {
+            if (Character.BART_CASSIDY.equals(player.getCharacter())) {
                 for (int i = 0; i < damage; i++) {
                     if (deck.size() == 0) {
                         userInterface.printInfo("Shuffling the deck");
                     }
                     player.getHand().add(deck.pull());
                     userInterface
-                            .printInfo(player.getFigure().getName()
+                            .printInfo(player.getCharacter().characterName()
                                     + " draws a card from the deck because he was damaged.");
                 }
             } else if (damager != null
-                    && Figure.ELGRINGO.equals(player.getAbility())) {
+                    && Character.EL_GRINGO.equals(player.getCharacter())) {
                 Hand otherHand = damager.getHand();
                 if (otherHand.size() != 0) {
                     Hand playerHand = player.getHand();
                     playerHand.add(otherHand.removeRandom());
-                    userInterface.printInfo(player.getFigure().getName()
+                    userInterface.printInfo(player.getCharacter().characterName()
                             + " draws a card from " + damager.getName()
                             + " because he was damaged.");
                 }
@@ -889,7 +890,7 @@ public class Turn {
         List<Player> vultureSams = new ArrayList<>();
         Player vultureSam = null;
         for (Player alivePlayer : players) {
-            if (Figure.VULTURESAM.equals(alivePlayer.getAbility())) {
+            if (Character.VULTURE_SAM.equals(alivePlayer.getCharacter())) {
                 vultureSam = alivePlayer;
                 vultureSams.add(alivePlayer);
             }
@@ -912,7 +913,7 @@ public class Turn {
                 for (Card card : discardCards) {
                     vultureSam.getHand().add(card);
                 }
-                userInterface.printInfo(vultureSams.get(0).getFigure().getName() + " takes "
+                userInterface.printInfo(vultureSams.get(0).getCharacter().characterName() + " takes "
                         + player.getName() + "'s cards.");
             } else {
                 //Two vulture sams
@@ -938,7 +939,7 @@ public class Turn {
 
         }
         for (Player alivePlayer : players) {
-            if (Figure.GREGDIGGER.equals(alivePlayer.getAbility())) {
+            if (Character.GREG_DIGGER.equals(alivePlayer.getCharacter())) {
                 int bonusHealth = 0;
                 if (alivePlayer.getHealth() < alivePlayer.getMaxHealth()) {
                     alivePlayer.setHealth(alivePlayer.getHealth() + 1);
@@ -948,15 +949,15 @@ public class Turn {
                     alivePlayer.setHealth(alivePlayer.getHealth() + 1);
                     bonusHealth += 1;
                 }
-                userInterface.printInfo(alivePlayer.getFigure().getName() + " gets " + bonusHealth + " health.");
+                userInterface.printInfo(alivePlayer.getCharacter().characterName() + " gets " + bonusHealth + " health.");
             }
         }
         for (Player alivePlayer : players) {
-            if (Figure.HERBHUNTER.equals(alivePlayer.getAbility())) {
+            if (Character.HERB_HUNTER.equals(alivePlayer.getCharacter())) {
                 Hand herbHand = alivePlayer.getHand();
                 herbHand.add(deck.pull());
                 herbHand.add(deck.pull());
-                userInterface.printInfo(alivePlayer.getFigure().getName() + " draws 2 cards.");
+                userInterface.printInfo(alivePlayer.getCharacter().characterName() + " draws 2 cards.");
             }
         }
 
@@ -996,14 +997,14 @@ public class Turn {
     public static String getRoles(List<Player> players) {
         StringBuilder result = new StringBuilder();
         for (Player player : players) {
-            result.append(player.getFigure().getName()).append(" was a ").append(player.getRole().roleName()).append(". ");
+            result.append(player.getCharacter().characterName()).append(" was a ").append(player.getRole().roleName()).append(". ");
         }
         return result.toString();
     }
 
     public static void discardTwoCardsForLife(Player player, DiscardPile discardPile,
                                               UserInterface userInterface) {
-        if (Figure.SIDKETCHUM.equals(player.getAbility())) {
+        if (Character.SID_KETCHUM.equals(player.getCharacter())) {
             Hand hand = player.getHand();
             if (hand.size() >= 2) {
                 List<Card> cardsToDiscard = null;
@@ -1015,7 +1016,7 @@ public class Turn {
                     for (Card card : cardsToDiscard) {
                         hand.remove(card);
                         discardPile.add(card);
-                        userInterface.printInfo(player.getFigure().getName()
+                        userInterface.printInfo(player.getCharacter().characterName()
                                 + " discards " + card.getName()
                                 + " for life.");
                     }
@@ -1221,8 +1222,8 @@ public class Turn {
                     //TODO figure this out xxx its broken
                     boolean invalidCard = !card.getName().equals(Card.CARDMISSED) &&
                             !card.getName().equals(Card.CARDDODGE) &&
-                            (!card.getName().equals(Card.CARDBANG) || !Figure.CALAMITYJANET.equals(player.getAbility())) &&
-                            !Figure.ELENAFUENTE.equals(player.getAbility()) &&
+                            (!card.getName().equals(Card.CARDBANG) || !Character.CALAMITY_JANET.equals(player.getCharacter())) &&
+                            !Character.ELENA_FUENTE.equals(player.getCharacter()) &&
                             !(card instanceof SingleUseMissed);
                     if (invalidCard) {
                         validCards = false;

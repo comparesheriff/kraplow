@@ -3,6 +3,7 @@ package com.chriscarr.bang;
 import com.chriscarr.bang.cards.BangDeck;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameStateListener;
+import com.chriscarr.bang.models.game.Character;
 import com.chriscarr.bang.models.game.Role;
 import com.chriscarr.bang.userinterface.UserInterface;
 
@@ -27,7 +28,9 @@ public class Setup {
         deck.shuffle();
         DiscardPile discardPile = new DiscardPile();
         deck.setDiscard(discardPile);
-        players = getPlayers(countPlayers, deck, sidestep, pRole, pChar);
+        Role role = Role.getRole(pRole);
+        Character character = Character.getCharacter(pChar);
+        players = getPlayers(countPlayers, deck, sidestep, role, character);
         drawHands(players, deck);
         Turn turn = new Turn();
         turn.setDeck(deck);
@@ -60,42 +63,33 @@ public class Setup {
     }
 
     public static List<Player> getPlayers(int countCharacters, Deck deck) {
-        return getPlayers(countCharacters, deck, false, "random", "random");
+        return getPlayers(countCharacters, deck, false, Role.RANDOM, Character.RANDOM);
     }
 
-    public static List<Player> getPlayers(int countCharacters, Deck deck, boolean sidestep, String pRole, String pChar) {
-        ArrayList<Player> players = new ArrayList<>();
-        ArrayList<String> characterList = new ArrayList<>(Arrays.asList(Figure.CHARACTERS));
-        try {
-            if (sidestep) {
-                characterList.addAll(Arrays.asList(Figure.CHARACTERSSIDESTEP));
-            }
-        } catch (Exception e) {
-            Logger logger = Logger.getLogger(Setup.class.getName());
-            logger.log(Level.SEVERE, e.getMessage(), e);
-        }
+    public static List<Player> getPlayers(int countCharacters, Deck deck, boolean sidestep, Role pRole, Character pChar) {
+        List<Player> players = new ArrayList<>();
+        List<Character> characterList = Character.getCharacters(sidestep);
+
         Collections.shuffle(characterList);
         List<Role> newRoles = getNewRoles(countCharacters);
         Collections.shuffle(newRoles);
         for (int i = 0; i < countCharacters; i++) {
             Player player = new Player();
 
-            Figure figure = new Figure();
-            if (i == 0 && !pChar.equals("random") && characterList.contains(pChar)) {
+            if (i == 0 && !Character.RANDOM.equals(pChar) && characterList.contains(pChar)) { //refactor
                 characterList.remove(pChar);
                 characterList.add(0, pChar);
             }
-            figure.setName(characterList.get(i));
-            Role newRole = Role.getRole(pRole);
-            if (i == 0 && !Role.RANDOM.equals(newRole) && newRoles.contains(newRole)) {
-                newRoles.remove(newRole);
-                newRoles.remove(newRole);
+            Character character = characterList.get(i);
+            if (i == 0 && !Role.RANDOM.equals(pRole) && newRoles.contains(pRole)) {
+                newRoles.remove(pRole);
+                newRoles.add(0, pRole);
             }
             Role role = newRoles.get(i);
 
             player.setRole(role);
-            player.setFigure(figure);
-            int maxHealth = Figure.getStartingHealth(figure.getName());
+            player.setCharacter(character);
+            int maxHealth = character.startingHealth(); //refactor
             if (player.isSheriff()) {
                 maxHealth = maxHealth + 1;
             }
@@ -148,7 +142,7 @@ public class Setup {
         }
     }
 
-    public static List<Player> getNormalPlayers(int countCharacters) {
+    public static List<Player> getNormalPlayers(int countCharacters) { //refactor what is this function for?
         ArrayList<Player> players = new ArrayList<>();
 
         List<Role> roles = getNewRoles(countCharacters);
@@ -156,12 +150,10 @@ public class Setup {
         for (int i = 0; i < countCharacters; i++) {
             Player player = new Player();
 
-            Figure figure = new Figure();
-            figure.setName("Average Joe");
             Role role = roles.get(i);
             player.setRole(role);
-            player.setFigure(figure);
-            int maxHealth = Figure.getStartingHealth(figure.getName());
+            player.setCharacter(Character.RANDOM);
+            int maxHealth = Character.RANDOM.startingHealth();
             if (player.isSheriff()) {
                 maxHealth = maxHealth + 1;
             }

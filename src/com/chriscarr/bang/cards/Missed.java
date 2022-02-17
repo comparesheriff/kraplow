@@ -1,7 +1,7 @@
 package com.chriscarr.bang.cards;
 
-import com.chriscarr.bang.Figure;
 import com.chriscarr.bang.Player;
+import com.chriscarr.bang.models.game.Character;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class Missed extends Bang implements Playable {
     }
 
     public boolean canPlay(Player player, List<Player> players, int bangsPlayed) {
-        if (!Figure.CALAMITYJANET.equals(player.getAbility())) {
+        if (!Character.CALAMITY_JANET.equals(player.getCharacter())) {
             return false;
         } else {
             return super.canPlay(player, players, bangsPlayed);

@@ -14,7 +14,6 @@ public class AllTests {
         suite.addTestSuite(DeckTest.class);
         suite.addTestSuite(DiscardPileTest.class);
         suite.addTestSuite(InPlayTest.class);
-        suite.addTestSuite(FigureTest.class);
         suite.addTestSuite(CardTest.class);
         suite.addTestSuite(SetupTest.class);
         suite.addTestSuite(PlayerTest.class);

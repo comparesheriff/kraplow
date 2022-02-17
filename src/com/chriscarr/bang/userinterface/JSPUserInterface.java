@@ -5,6 +5,7 @@ import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.cards.SingleUseMissed;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateListener;
+import com.chriscarr.bang.models.game.Character;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,19 +120,19 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
                 handCards.append(name).append("^").append(Card.suitToString(card.getSuit())).append("^").append(Card.valueToString(card.getValue())).append("@").append(canPlay).append("@").append(targetString).append(", ");
             }
         }
-        if (Figure.CHUCKWENGAM.equals(player.getAbility())) {
+        if (Character.CHUCK_WENGAM.equals(player.getCharacter())) {
             handCards.append("loselifefor2cards" + "@true@").append(player.getName()).append("$").append(", ");
         }
-        if (Figure.JOSEDELGADO.equals(player.getAbility())) {
+        if (Character.JOSE_DELGADO.equals(player.getCharacter())) {
             handCards.append("discardbluetodraw2" + "@true@").append(player.getName()).append("$").append(", ");
         }
-        if (Figure.DOCHOLYDAY.equals(player.getAbility())) {
+        if (Character.DOC_HOLYDAY.equals(player.getCharacter())) {
             handCards.append("discardtwotoshoot" + "@true@").append(player.getName()).append("$").append(", ");
         }
-        if (Figure.SIDKETCHUM.equals(player.getAbility())) {
+        if (Character.SID_KETCHUM.equals(player.getCharacter())) {
             handCards.append("discardtwoforlife" + "@true@").append(player.getName()).append("$").append(", ");
         }
-        if (Figure.UNCLEWILL.equals(player.getAbility())) {
+        if (Character.UNCLE_WILL.equals(player.getCharacter())) {
             handCards.append("discardforgeneralstore" + "@true@").append(player.getName()).append("$").append(", ");
         }
         sendMessage(player.getName(), "askPlay " + handCards);
@@ -234,7 +235,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
         for (int i = 0; i < hand.size(); i++) {
             Card card = hand.get(i);
             String name = card.getName();
-            boolean canPlay = Card.CARDBANG.equals(name) || (Card.CARDMISSED.equals(name) && Figure.CALAMITYJANET.equals(player.getAbility()));
+            boolean canPlay = Card.CARDBANG.equals(name) || (Card.CARDMISSED.equals(name) && Character.CALAMITY_JANET.equals(player.getCharacter()));
             handCards.append(name).append("@").append(canPlay).append(", ");
         }
         sendMessage(player.getName(), "respondBang " + handCards);
@@ -264,7 +265,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
         for (int i = 0; i < hand.size(); i++) {
             Card card = hand.get(i);
             String name = card.getName();
-            boolean canPlay = Card.CARDMISSED.equals(name) || Card.CARDDODGE.equals(name) || Figure.ELENAFUENTE.equals(player.getAbility()) || (Card.CARDBANG.equals(name) && Figure.CALAMITYJANET.equals(player.getAbility()));
+            boolean canPlay = Card.CARDMISSED.equals(name) || Card.CARDDODGE.equals(name) || Character.ELENA_FUENTE.equals(player.getCharacter()) || (Card.CARDBANG.equals(name) && Character.CALAMITY_JANET.equals(player.getCharacter()));
             handCards.append(name).append("@").append(canPlay).append(", ");
         }
         InPlay inPlay = player.getInPlay();
@@ -303,7 +304,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
         for (int i = 0; i < hand.size(); i++) {
             boolean canPlay = false;
             String cardName = hand.get(i).getName();
-            if (Card.CARDMISSED.equals(cardName) || Card.CARDDODGE.equals(cardName) || Figure.ELENAFUENTE.equals(player.getAbility()) || (Card.CARDBANG.equals(cardName) && Figure.CALAMITYJANET.equals(player.getAbility()))) {
+            if (Card.CARDMISSED.equals(cardName) || Card.CARDDODGE.equals(cardName) || Character.ELENA_FUENTE.equals(player.getCharacter()) || (Card.CARDBANG.equals(cardName) && Character.CALAMITY_JANET.equals(player.getCharacter()))) {
                 canPlay = true;
             }
             handCards.append(cardName).append("@").append(canPlay).append(", ");

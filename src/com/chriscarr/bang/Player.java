@@ -2,6 +2,7 @@ package com.chriscarr.bang;
 
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameStateCard;
+import com.chriscarr.bang.models.game.Character;
 import com.chriscarr.bang.models.game.Role;
 
 import java.util.List;
@@ -13,13 +14,12 @@ public class Player {
     public static final int DEPUTY = 2;
     public static final int RENEGADE = 3;
 
-    private Figure figure;
+    private Character character;
     private Hand hand;
     private InPlay inPlay;
     private Role role;
     private int maxHealth;
     private int health;
-    private String ability;
 
     public void setInPlay(InPlay inPlay) {
         this.inPlay = inPlay;
@@ -27,15 +27,6 @@ public class Player {
 
     public void setHand(Hand hand) {
         this.hand = hand;
-    }
-
-    public void setFigure(Figure figure) {
-        this.figure = figure;
-        this.setAbility(figure.getName());
-    }
-
-    public Figure getFigure() {
-        return figure;
     }
 
     public Hand getHand() {
@@ -81,15 +72,7 @@ public class Player {
     }
 
     public String getName() {
-        return figure.getName();
-    }
-
-    public String getAbility() {
-        return this.ability;
-    }
-
-    public void setAbility(String ability) {
-        this.ability = ability;
+        return character.characterName();
     }
 
     public int getGunRange() {
@@ -145,7 +128,7 @@ public class Player {
     }
 
     public String getSpecialAbility() {
-        return Figure.getSpecialAbilityText(getName());
+        return character.abilityText();
     }
 
     public List<GameStateCard> getGameStateInPlay() {
@@ -153,4 +136,11 @@ public class Player {
     }
 
 
+    public Character getCharacter() {
+        return character;
+    }
+
+    public void setCharacter(Character character) {
+        this.character = character;
+    }
 }

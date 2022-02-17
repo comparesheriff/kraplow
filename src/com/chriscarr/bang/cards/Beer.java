@@ -1,6 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
+import com.chriscarr.bang.models.game.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Beer extends Card implements Playable {
             if (Turn.canPlayerHeal(currentPlayer)) {
                 currentPlayer.addHealth(1);
             }
-            if (Figure.TEQUILAJOE.equals(currentPlayer.getAbility())) {
+            if (Character.TEQUILA_JOE.equals(currentPlayer.getCharacter())) {
                 if (Turn.canPlayerHeal(currentPlayer)) {
                     currentPlayer.addHealth(1);
                 }
