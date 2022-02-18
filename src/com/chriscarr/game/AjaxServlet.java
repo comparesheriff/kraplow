@@ -5,6 +5,7 @@ import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
+import com.chriscarr.bang.models.servlet.MessageType;
 import com.chriscarr.bang.userinterface.JSPUserInterface;
 import com.chriscarr.bang.userinterface.Message;
 import com.chriscarr.bang.userinterface.WebGameUserInterface;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,338 +26,421 @@ public class AjaxServlet extends HttpServlet {
         response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
 
-        String messageType = request.getParameter("messageType");
-        if (messageType != null && !messageType.equals("")) {
-            if (messageType.equals("GETGAMESTATE")) {
-                String gameId = request.getParameter("gameId");
-                JSPUserInterface userInterface = (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
-                if (userInterface != null) {
-                    GameState gameState = userInterface.getGameState();
-                    if (gameState != null) {
-                        response.getWriter().write("<gamestate>");
-                        response.getWriter().write("<players>");
-                        for (GameStatePlayer player : gameState.getPlayers()) {
-                            if (userInterface instanceof WebGameUserInterface) {
-                                player.user = ((WebGameUserInterface) userInterface).userFigureNames.get(player.name);
-                            }
-                            writePlayer(player, response);
-                        }
-                        response.getWriter().write("</players>");
-                        if (gameState.timeout() != null) {
-                            response.getWriter().write("<timeout>" + gameState.timeout() + "</timeout>");
-                        }
-                        if (gameState.isGameOver()) {
-                            response.getWriter().write("<gameover/>");
-                            Cleanup cleanup = new Cleanup(Integer.parseInt(gameId));
-                            cleanup.start();
-                            WebGame.removeGame(Integer.parseInt(gameId));
-                        }
-                        response.getWriter().write("<currentname>");
-                        response.getWriter().write(gameState.getCurrentName());
-                        response.getWriter().write("</currentname>");
-                        response.getWriter().write("<decksize>");
-                        response.getWriter().write(Integer.toString(gameState.getDeckSize()));
-                        response.getWriter().write("</decksize>");
-                        GameStateCard topCard = gameState.discardTopCard();
-                        if (topCard != null) {
-                            response.getWriter().write("<discardtopcard>");
-                            writeCard(topCard, response);
-                            response.getWriter().write("</discardtopcard>");
-                        }
-                        response.getWriter().write("<roles>");
-                        ArrayList<String> roles = userInterface.getRoles();
-                        for (String role : roles) {
-                            response.getWriter().write("<role>" + role + "</role>");
-                        }
-                        response.getWriter().write("</roles>");
-                        response.getWriter().write("</gamestate>");
-                    } else {
-                        response.getWriter().write("<gamestate/>");
-                    }
-                } else {
-                    response.getWriter().write("<gamestate/>");
-                }
-            } else if (messageType.equals("JOIN")) {
-                String gameId = request.getParameter("gameId");
-                String handle = request.getParameter("handle");
-                String user = WebGame.join(Integer.parseInt(gameId), handle);
-                if (user != null) {
-                    response.getWriter().write("<joininfo>");
-                    response.getWriter().write("<user>");
-                    response.getWriter().write(user);
-                    response.getWriter().write("</user>");
-                    response.getWriter().write("<gameid>");
-                    response.getWriter().write(gameId);
-                    response.getWriter().write("</gameid>");
-                    response.getWriter().write("</joininfo>");
-                } else {
-                    response.getWriter().write("<fail/>");
-                }
-            } else if (messageType.equals("JOINAI")) {
-                String gameId = request.getParameter("gameId");
-                String handle = request.getParameter("handle");
-                String user = WebGame.joinAI(Integer.parseInt(gameId), handle);
-                if (user != null) {
-                    response.getWriter().write("<joininfo>");
-                    response.getWriter().write("<user>");
-                    response.getWriter().write(user);
-                    response.getWriter().write("</user>");
-                    response.getWriter().write("<gameid>");
-                    response.getWriter().write(gameId);
-                    response.getWriter().write("</gameid>");
-                    response.getWriter().write("</joininfo>");
-                } else {
-                    response.getWriter().write("<fail/>");
-                }
-            } else if (messageType.equals("LEAVE")) {
-                String user = request.getParameter("user");
-                String gameId = request.getParameter("gameId");
-                WebGame.leave(Integer.parseInt(gameId), user);
-                response.getWriter().write("<ok/>");
-            } else if (messageType.equals("COUNTPLAYERS")) {
-                String gameId = request.getParameter("gameId");
-                response.getWriter().write("<count>");
-                response.getWriter().write("<playercount>");
-                if (gameId != null && !gameId.equals("null")) {
-                    response.getWriter().write(Integer.toString(WebGame.getCountPlayers(Integer.parseInt(gameId))));
-                } else {
-                    response.getWriter().write("0");
-                }
-                response.getWriter().write("</playercount>");
-                response.getWriter().write("<players>");
-                List<String> joinedPlayers = WebGame.getJoinedPlayers(Integer.parseInt(gameId)); //refactor nullcheck
-                for (String playerHandle : joinedPlayers) {
-                    response.getWriter().write("<playerName>");
-                    response.getWriter().write(playerHandle);
-                    response.getWriter().write("</playerName>");
-                }
-                response.getWriter().write("</players>");
-                response.getWriter().write("</count>");
-            } else if (messageType.equals("GETGUESTCOUNTER")) {
-                response.getWriter().write("<guestcounter>");
-                response.getWriter().write(Integer.toString(WebGame.getNextGuestCounter()));
-                response.getWriter().write("</guestcounter>");
-            } else if (messageType.equals("AVAILABLEGAMES")) {
-                response.getWriter().write("<gameids>");
-                List<Integer> availableGames = WebGame.getAvailableGames();
-                for (Integer availableGame : availableGames) {
-                    response.getWriter().write("<game>");
-                    response.getWriter().write("<gameid>");
-                    response.getWriter().write(Integer.toString(availableGame));
-                    response.getWriter().write("</gameid>");
-                    response.getWriter().write("<playercount>");
-                    response.getWriter().write(Integer.toString(WebGame.getCountPlayers(availableGame)));
-                    response.getWriter().write("</playercount>");
-                    response.getWriter().write("<canjoin>");
-                    response.getWriter().write(Boolean.toString(WebGame.canJoin(availableGame)));
-                    response.getWriter().write("</canjoin>");
-                    response.getWriter().write("<players>");
-                    List<String> joinedPlayers = WebGame.getJoinedPlayers(availableGame);
-                    for (String playerHandle : joinedPlayers) {
-                        response.getWriter().write("<playerName>");
-                        response.getWriter().write(playerHandle);
-                        response.getWriter().write("</playerName>");
-                    }
-                    response.getWriter().write("</players>");
-                    response.getWriter().write("</game>");
-                }
-                response.getWriter().write("</gameids>");
-            } else if (messageType.equals("CANSTART")) {
-                String gameId = request.getParameter("gameId");
-                if (WebGame.canStart(Integer.parseInt(gameId))) {
-                    response.getWriter().write("<yes/>");
-                } else {
-                    response.getWriter().write("<no/>");
-                }
-            } else if (messageType.equals("CHAT")) {
-                String chat = request.getParameter("chat");
-                chat = chat.replace(">", "");
-                chat = chat.replace("<", "");
-                System.out.println("chat:" + chat);
-                String gameId = request.getParameter("gameid");
-                if (gameId == null) {
-                    gameId = "lobby";
-                }
-                WebGame.addChat(chat, gameId);
-                response.getWriter().write("<ok/>");
-            } else if (messageType.equals("GETCHAT")) {
-                String guestCounter = request.getParameter("guestCounter");
-                String handle = request.getParameter("handle");
-                String gameId = request.getParameter("gameid");
-                if (gameId == null) {
-                    gameId = "lobby";
-                }
-                WebGame.updateSession(guestCounter, handle);
-                List<ChatMessage> chatLog = WebGame.getChatLog(gameId);
-                response.getWriter().write("<chats>");
-                for (ChatMessage chat : chatLog) {
-                    response.getWriter().write("<chatmessage>");
-                    response.getWriter().write("<chat>");
-                    response.getWriter().write(chat.message);
-                    response.getWriter().write("</chat>");
-                    response.getWriter().write("<timestamp>");
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                    response.getWriter().write(sdf.format(chat.timestamp));
-                    response.getWriter().write("</timestamp>");
-                    response.getWriter().write("</chatmessage>");
-                }
-                List<Session> sessions = WebGame.getSessions();
-                for (Session session : sessions) {
-                    response.getWriter().write("<session>");
-                    String outHandle = session.handle;
-                    if (outHandle == null) {
-                        outHandle = "Unknown";
-                    }
-                    response.getWriter().write(outHandle);
-                    response.getWriter().write("</session>");
-                }
-                response.getWriter().write("</chats>");
-            } else if (messageType.equals("START")) {
-                String gameId = request.getParameter("gameId");
-                String aiSleepMs = request.getParameter("aiSleepMs");
-                String pRole = request.getParameter("prole");
-                String pChar = request.getParameter("pchar");
-                WebGame.start(Integer.parseInt(gameId), Integer.parseInt(aiSleepMs), pRole, pChar);
-                response.getWriter().write("<ok/>");
-            } else if (messageType.equals("CREATE")) {
-                String visibility = request.getParameter("visibility");
-                boolean sidestep = request.getParameterMap().containsKey("sidestep");
-                int gameId = WebGame.create(visibility, sidestep);
-                response.getWriter().write("<gameid>");
-                response.getWriter().write(Integer.toString(gameId));
-                response.getWriter().write("</gameid>");
-            } else if (messageType.equals("GETMESSAGE")) {
-                String user = request.getParameter("user");
-                String gameId = request.getParameter("gameId");
-                JSPUserInterface userInterface = (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
-                if (userInterface != null) {
-                    List<Message> messages = ((WebGameUserInterface) userInterface).getMessages(user);
-                    if (!messages.isEmpty()) {
-                        System.out.println("Got message " + messages.get(0));
-                        response.getWriter().write("<message>");
-                        response.getWriter().write("<id>");
-                        response.getWriter().write(Integer.toString(messages.get(0).getId()));
-                        response.getWriter().write("</id>");
-                        response.getWriter().write("<text>");
-                        response.getWriter().write(messages.get(0).getMessage());
-                        response.getWriter().write("</text>");
-                        response.getWriter().write("<hand>");
-                        if (userInterface.isPlayerAlive(((WebGameUserInterface) userInterface).getPlayerForUser(user))) {
-                            Hand hand = userInterface.getHandForUser(((WebGameUserInterface) userInterface).getPlayerForUser(user));
-                            for (int i = 0; i < hand.size(); i++) {
-                                Card card = (Card) hand.get(i);
-                                response.getWriter().write("<card>");
-                                response.getWriter().write(card.getName());
-                                response.getWriter().write("</card>");
-                            }
-                        }
-                        response.getWriter().write("</hand>");
-                        response.getWriter().write("</message>");
-                    } else {
-                        response.getWriter().write("<ok/>");
-                    }
-                } else {
-                    response.getWriter().write("<ok/>");
-                }
-            } else if (messageType.equals("SENDRESPONSE")) {
-                System.out.println("Sent Response");
-                String user = request.getParameter("user");
-                String responseMessage = request.getParameter("response");
-                String gameId = request.getParameter("gameId");
-                String messageId = request.getParameter("messageId");
-                System.out.println("Response " + messageId);
-                JSPUserInterface userInterface = (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
-                if (userInterface != null) {
-                    List<Message> messages = ((WebGameUserInterface) userInterface).getMessages(user);
-                    if (!messages.isEmpty()) {
-                        Object removed = messages.remove(0);
-                        System.out.println("Removed " + removed);
-                        if (!"".equals(responseMessage)) {
-                            ((WebGameUserInterface) userInterface).addResponse(user, responseMessage);
-                        }
-                    }
-                }
-                response.getWriter().write("<ok/>");
-            } else if (messageType.equals("GETPLAYERINFO")) {
-                String user = request.getParameter("user");
-                String gameId = request.getParameter("gameId");
-                JSPUserInterface userInterface = (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
-                if (userInterface != null) {
-                    String name = ((WebGameUserInterface) userInterface).getPlayerForUser(user);
-                    String role = userInterface.getRoleForName(name);
-                    String goal = userInterface.getGoalForName(name);
-                    response.getWriter().write("<userinfo>");
-                    response.getWriter().write("<name>");
-                    response.getWriter().write(name);
-                    response.getWriter().write("</name>");
-                    response.getWriter().write("<role>");
-                    response.getWriter().write(role);
-                    response.getWriter().write("</role>");
-                    response.getWriter().write("<goal>");
-                    response.getWriter().write(goal);
-                    response.getWriter().write("</goal>");
-                    response.getWriter().write("</userinfo>");
-                } else {
-                    response.getWriter().write("<ok/>");
-                }
+        String messageTypeParam = request.getParameter("messageType");
+        MessageType messageType = null;
+        try {
+            messageType = MessageType.valueOf(messageTypeParam);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        if (messageType == null) {
+            return;
+        }
+        PrintWriter writer = response.getWriter();
+        String gameId = request.getParameter("gameId");
+        String handle = request.getParameter("handle");
+        String user = request.getParameter("user");
+        String chat = request.getParameter("chat");
+        String guestCounter = request.getParameter("guestCounter");
+        String aiSleepMs = request.getParameter("aiSleepMs");
+        String pRole = request.getParameter("prole");
+        String pChar = request.getParameter("pchar");
+        String visibility = request.getParameter("visibility");
+        boolean sidestep = request.getParameterMap().containsKey("sidestep");
+        String responseMessage = request.getParameter("response");
+        String messageId = request.getParameter("messageId");
+        switch (messageType) {
+            case GETGAMESTATE: {
+                handleGetGameState(gameId, writer);
+                break;
             }
+            case JOIN: {
+                handleJoin(gameId, handle, writer);
+                break;
+            }
+            case JOINAI: {
+                handleJoinAI(gameId, handle, writer);
+                break;
+            }
+            case LEAVE: {
+                handleLeave(gameId, user, writer);
+                break;
+            }
+            case COUNTPLAYERS: {
+                handleCountPlayers(gameId, writer);
+                break;
+            }
+            case GETGUESTCOUNTER:
+                handleGetGuestCounter(writer);
+                break;
+            case AVAILABLEGAMES:
+                handleAvailableGames(writer);
+                break;
+            case CANSTART: {
+                handleCanStart(gameId, writer);
+                break;
+            }
+            case CHAT: {
+                handleChat(gameId, chat, writer);
+                break;
+            }
+            case GETCHAT: {
+                handleGetChat(gameId, handle, guestCounter, writer);
+                break;
+            }
+            case START: {
+                handleStart(gameId, aiSleepMs, pRole, pChar, writer);
+                break;
+            }
+            case CREATE: {
+                handleCreate(visibility, sidestep, writer);
+                break;
+            }
+            case GETMESSAGE: {
+                handleGetMessage(gameId, user, writer);
+                break;
+            }
+            case SENDRESPONSE: {
+                handleSendResponse(gameId, user, messageId, responseMessage, writer);
+                break;
+            }
+            case GETPLAYERINFO: {
+                handleGetPlayerInfo(gameId, user, writer);
+                break;
+            }
+        }
+
+    }
+
+    private void handleGetPlayerInfo(String gameId, String user, PrintWriter writer) {
+        JSPUserInterface userInterface = (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
+        if (userInterface != null) {
+            String name = ((WebGameUserInterface) userInterface).getPlayerForUser(user);
+            String role = userInterface.getRoleForName(name);
+            String goal = userInterface.getGoalForName(name);
+            writer.write("<userinfo>");
+            writer.write("<name>");
+            writer.write(name);
+            writer.write("</name>");
+            writer.write("<role>");
+            writer.write(role);
+            writer.write("</role>");
+            writer.write("<goal>");
+            writer.write(goal);
+            writer.write("</goal>");
+            writer.write("</userinfo>");
+        } else {
+            writer.write("<ok/>");
         }
     }
 
-    private void writePlayer(GameStatePlayer player, HttpServletResponse response) throws IOException {
-        response.getWriter().write("<player>");
-        response.getWriter().write("<handle>");
-        response.getWriter().write(player.user);
-        response.getWriter().write("</handle>");
-        response.getWriter().write("<name>");
-        response.getWriter().write(player.name);
-        response.getWriter().write("</name>");
-        response.getWriter().write("<specialability>");
-        response.getWriter().write(player.specialAbility);
-        response.getWriter().write("</specialability>");
-        response.getWriter().write("<health>");
-        response.getWriter().write(Integer.toString(player.health));
-        response.getWriter().write("</health>");
-        response.getWriter().write("<maxhealth>");
-        response.getWriter().write(Integer.toString(player.maxHealth));
-        response.getWriter().write("</maxhealth>");
-        response.getWriter().write("<handsize>");
-        response.getWriter().write(Integer.toString(player.handSize));
-        response.getWriter().write("</handsize>");
+    private void handleSendResponse(String gameId, String user, String messageId, String responseMessage, PrintWriter writer) {
+        System.out.println("Sent Response");
+        System.out.println("Response " + messageId);
+        JSPUserInterface userInterface = (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
+        if (userInterface != null) {
+            List<Message> messages = ((WebGameUserInterface) userInterface).getMessages(user);
+            if (!messages.isEmpty()) {
+                Object removed = messages.remove(0);
+                System.out.println("Removed " + removed);
+                if (!"".equals(responseMessage)) {
+                    ((WebGameUserInterface) userInterface).addResponse(user, responseMessage);
+                }
+            }
+        }
+        writer.write("<ok/>");
+    }
+
+    private void handleGetMessage(String gameId, String user, PrintWriter writer) {
+        JSPUserInterface userInterface = (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
+        if (userInterface != null) {
+            List<Message> messages = ((WebGameUserInterface) userInterface).getMessages(user);
+            if (!messages.isEmpty()) {
+                System.out.println("Got message " + messages.get(0));
+                writer.write("<message>");
+                writer.write("<id>");
+                writer.write(Integer.toString(messages.get(0).getId()));
+                writer.write("</id>");
+                writer.write("<text>");
+                writer.write(messages.get(0).getMessage());
+                writer.write("</text>");
+                writer.write("<hand>");
+                if (userInterface.isPlayerAlive(((WebGameUserInterface) userInterface).getPlayerForUser(user))) {
+                    Hand hand = userInterface.getHandForUser(((WebGameUserInterface) userInterface).getPlayerForUser(user));
+                    for (int i = 0; i < hand.size(); i++) {
+                        Card card = hand.get(i);
+                        writer.write("<card>");
+                        writer.write(card.getName());
+                        writer.write("</card>");
+                    }
+                }
+                writer.write("</hand>");
+                writer.write("</message>");
+            } else {
+                writer.write("<ok/>");
+            }
+        } else {
+            writer.write("<ok/>");
+        }
+    }
+
+    private void handleCreate(String visibility, boolean sidestep, PrintWriter writer) {
+        int gameId = WebGame.create(visibility, sidestep);
+        writer.write("<gameid>");
+        writer.write(Integer.toString(gameId));
+        writer.write("</gameid>");
+    }
+
+    private void handleStart(String gameId, String aiSleepMs, String pRole, String pChar, PrintWriter writer) {
+        WebGame.start(Integer.parseInt(gameId), Integer.parseInt(aiSleepMs), pRole, pChar);
+        writer.write("<ok/>");
+    }
+
+    private void handleGetChat(String gameId, String handle, String guestCounter, PrintWriter writer) {
+        if (gameId == null) {
+            gameId = "lobby";
+        }
+        WebGame.updateSession(guestCounter, handle);
+        List<ChatMessage> chatLog = WebGame.getChatLog(gameId);
+        writer.write("<chats>");
+        for (ChatMessage chat : chatLog) {
+            writer.write("<chatmessage>");
+            writer.write("<chat>");
+            writer.write(chat.message);
+            writer.write("</chat>");
+            writer.write("<timestamp>");
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            writer.write(sdf.format(chat.timestamp));
+            writer.write("</timestamp>");
+            writer.write("</chatmessage>");
+        }
+        List<Session> sessions = WebGame.getSessions();
+        for (Session session : sessions) {
+            writer.write("<session>");
+            String outHandle = session.handle;
+            if (outHandle == null) {
+                outHandle = "Unknown";
+            }
+            writer.write(outHandle);
+            writer.write("</session>");
+        }
+        writer.write("</chats>");
+    }
+
+    private void handleChat(String gameId, String chat, PrintWriter writer) {
+        chat = chat.replace(">", "");
+        chat = chat.replace("<", "");
+        System.out.println("chat:" + chat);
+        if (gameId == null) {
+            gameId = "lobby";
+        }
+        WebGame.addChat(chat, gameId);
+        writer.write("<ok/>");
+    }
+
+    private void handleCanStart(String gameId, PrintWriter writer) {
+        if (WebGame.canStart(Integer.parseInt(gameId))) {
+            writer.write("<yes/>");
+        } else {
+            writer.write("<no/>");
+        }
+    }
+
+    private void handleAvailableGames(PrintWriter writer) {
+        writer.write("<gameids>");
+        List<Integer> availableGames = WebGame.getAvailableGames();
+        for (Integer availableGame : availableGames) {
+            writer.write("<game>");
+            writer.write("<gameid>");
+            writer.write(Integer.toString(availableGame));
+            writer.write("</gameid>");
+            writer.write("<playercount>");
+            writer.write(Integer.toString(WebGame.getCountPlayers(availableGame)));
+            writer.write("</playercount>");
+            writer.write("<canjoin>");
+            writer.write(Boolean.toString(WebGame.canJoin(availableGame)));
+            writer.write("</canjoin>");
+            writer.write("<players>");
+            List<String> joinedPlayers = WebGame.getJoinedPlayers(availableGame);
+            for (String playerHandle : joinedPlayers) {
+                writer.write("<playerName>");
+                writer.write(playerHandle);
+                writer.write("</playerName>");
+            }
+            writer.write("</players>");
+            writer.write("</game>");
+        }
+        writer.write("</gameids>");
+    }
+
+    private void handleGetGuestCounter(PrintWriter writer) {
+        writer.write("<guestcounter>");
+        writer.write(Integer.toString(WebGame.getNextGuestCounter()));
+        writer.write("</guestcounter>");
+    }
+
+    private void handleCountPlayers(String gameId, PrintWriter writer) {
+        writer.write("<count>");
+        writer.write("<playercount>");
+        if (gameId != null && !gameId.equals("null")) {
+            writer.write(Integer.toString(WebGame.getCountPlayers(Integer.parseInt(gameId))));
+        } else {
+            writer.write("0");
+        }
+        writer.write("</playercount>");
+        writer.write("<players>");
+        List<String> joinedPlayers = WebGame.getJoinedPlayers(Integer.parseInt(gameId)); //refactor nullcheck
+
+        for (String playerHandle : joinedPlayers) {
+            writer.write("<playerName>");
+            writer.write(playerHandle);
+            writer.write("</playerName>");
+        }
+        writer.write("</players>");
+        writer.write("</count>");
+    }
+
+    private void handleLeave(String gameId, String user, PrintWriter writer) {
+        WebGame.leave(Integer.parseInt(gameId), user);
+        writer.write("<ok/>");
+    }
+
+    private void handleJoinAI(String gameId, String handle, PrintWriter writer) {
+        String user = WebGame.joinAI(Integer.parseInt(gameId), handle);
+        if (user != null) {
+            writer.write("<joininfo>");
+            writer.write("<user>");
+            writer.write(user);
+            writer.write("</user>");
+            writer.write("<gameid>");
+            writer.write(gameId);
+            writer.write("</gameid>");
+            writer.write("</joininfo>");
+        } else {
+            writer.write("<fail/>");
+        }
+    }
+
+    private void handleJoin(String gameId, String handle, PrintWriter writer) {
+        String user = WebGame.join(Integer.parseInt(gameId), handle);
+        if (user != null) {
+            writer.write("<joininfo>");
+            writer.write("<user>");
+            writer.write(user);
+            writer.write("</user>");
+            writer.write("<gameid>");
+            writer.write(gameId);
+            writer.write("</gameid>");
+            writer.write("</joininfo>");
+        } else {
+            writer.write("<fail/>");
+        }
+    }
+
+    private void handleGetGameState(String gameId, PrintWriter writer) {
+        JSPUserInterface userInterface = (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
+        if (userInterface != null) {
+            GameState gameState = userInterface.getGameState();
+            if (gameState != null) {
+                writer.write("<gamestate>");
+                writer.write("<players>");
+                for (GameStatePlayer player : gameState.getPlayers()) {
+                    if (userInterface instanceof WebGameUserInterface) {
+                        player.user = ((WebGameUserInterface) userInterface).userFigureNames.get(player.name);
+                    }
+                    writePlayer(player, writer);
+                }
+                writer.write("</players>");
+                if (gameState.timeout() != null) {
+                    writer.write("<timeout>" + gameState.timeout() + "</timeout>");
+                }
+                if (gameState.isGameOver()) {
+                    writer.write("<gameover/>");
+                    Cleanup cleanup = new Cleanup(Integer.parseInt(gameId));
+                    cleanup.start();
+                    WebGame.removeGame(Integer.parseInt(gameId));
+                }
+                writer.write("<currentname>");
+                writer.write(gameState.getCurrentName());
+                writer.write("</currentname>");
+                writer.write("<decksize>");
+                writer.write(Integer.toString(gameState.getDeckSize()));
+                writer.write("</decksize>");
+                GameStateCard topCard = gameState.discardTopCard();
+                if (topCard != null) {
+                    writer.write("<discardtopcard>");
+                    writeCard(topCard, writer);
+                    writer.write("</discardtopcard>");
+                }
+                writer.write("<roles>");
+                ArrayList<String> roles = userInterface.getRoles();
+                for (String role : roles) {
+                    writer.write("<role>" + role + "</role>");
+                }
+                writer.write("</roles>");
+                writer.write("</gamestate>");
+            } else {
+                writer.write("<gamestate/>");
+            }
+        } else {
+            writer.write("<gamestate/>");
+        }
+    }
+
+    private void writePlayer(GameStatePlayer player, PrintWriter writer) {
+        writer.write("<player>");
+        writer.write("<handle>");
+        writer.write(player.user);
+        writer.write("</handle>");
+        writer.write("<name>");
+        writer.write(player.name);
+        writer.write("</name>");
+        writer.write("<specialability>");
+        writer.write(player.specialAbility);
+        writer.write("</specialability>");
+        writer.write("<health>");
+        writer.write(Integer.toString(player.health));
+        writer.write("</health>");
+        writer.write("<maxhealth>");
+        writer.write(Integer.toString(player.maxHealth));
+        writer.write("</maxhealth>");
+        writer.write("<handsize>");
+        writer.write(Integer.toString(player.handSize));
+        writer.write("</handsize>");
         if (player.isSheriff) {
-            response.getWriter().write("<issheriff/>");
+            writer.write("<issheriff/>");
         }
         if (player.gun != null) {
-            response.getWriter().write("<gun>");
-            writeCard(player.gun, response);
-            response.getWriter().write("</gun>");
+            writer.write("<gun>");
+            writeCard(player.gun, writer);
+            writer.write("</gun>");
         }
         List<GameStateCard> inPlay = player.inPlay;
         if (inPlay != null && !inPlay.isEmpty()) {
-            response.getWriter().write("<inplay>");
+            writer.write("<inplay>");
             for (GameStateCard inPlayCard : inPlay) {
-                response.getWriter().write("<inplaycard>");
-                writeCard(inPlayCard, response);
-                response.getWriter().write("</inplaycard>");
+                writer.write("<inplaycard>");
+                writeCard(inPlayCard, writer);
+                writer.write("</inplaycard>");
             }
-            response.getWriter().write("</inplay>");
+            writer.write("</inplay>");
         }
-        response.getWriter().write("</player>");
+        writer.write("</player>");
     }
 
-    private void writeCard(GameStateCard card, HttpServletResponse response) throws IOException {
-        response.getWriter().write("<name>");
-        response.getWriter().write(card.name);
-        response.getWriter().write("</name>");
-        response.getWriter().write("<suit>");
-        response.getWriter().write(card.suit);
-        response.getWriter().write("</suit>");
-        response.getWriter().write("<value>");
-        response.getWriter().write(card.value);
-        response.getWriter().write("</value>");
-        response.getWriter().write("<type>");
-        response.getWriter().write(card.type);
-        response.getWriter().write("</type>");
+    private void writeCard(GameStateCard card, PrintWriter writer) {
+        writer.write("<name>");
+        writer.write(card.name);
+        writer.write("</name>");
+        writer.write("<suit>");
+        writer.write(card.suit);
+        writer.write("</suit>");
+        writer.write("<value>");
+        writer.write(card.value);
+        writer.write("</value>");
+        writer.write("<type>");
+        writer.write(card.type);
+        writer.write("</type>");
     }
 
     class Cleanup extends Thread {
@@ -368,8 +453,7 @@ public class AjaxServlet extends HttpServlet {
         public void run() {
             try {
                 Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                //ignore
+            } catch (InterruptedException ignored) {
             }
             WebInit.remove(gameId);
         }
