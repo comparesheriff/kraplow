@@ -1,0 +1,30 @@
+export {stateMachine}
+
+const stateMachine = {
+    "gameStateResult": null,
+    "flash": null,
+    "info": "",
+    "robotIndex": 0,
+    "isSidestep": false,
+    "numAI": null,
+    "messageId": null,
+    "user": null,
+    "playerCount": null,
+    "startable": false,
+    "autostart": false,
+    "started": false,
+    "playerName": null,
+    "role": null,
+    "goal": null,
+    "selected": ",",
+    "gameId": null,
+    "gameOver": false,
+    "availableGames": null,
+    "playerCounts": null,
+    "playerHandles": null,
+    "gamePlayerHandles": null,
+    "canJoins": null,
+    "previousAvailable": null,
+    "guestCounter": null,
+    "setupResult": null
+}
