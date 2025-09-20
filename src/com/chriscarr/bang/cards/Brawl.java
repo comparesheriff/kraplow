@@ -48,7 +48,7 @@ public class Brawl extends Card implements Playable {
 		while(brawlPlayer != currentPlayer){
 			Player nextPlayer = Turn.getNextPlayer(brawlPlayer, players);
 
-			if(brawlPlayer.getInPlay().count() == 0 && !brawlPlayer.getInPlay().hasGun() && brawlPlayer.getHand().size() == 0){
+			if(brawlPlayer.getInPlay().count() == 0 && !brawlPlayer.getInPlay().hasGun() && brawlPlayer.getHand().isEmpty()){
 				userInterface.printInfo(brawlPlayer.getName() + " has nothing to discard");
 				brawlPlayer = nextPlayer;
 				continue;
@@ -56,7 +56,7 @@ public class Brawl extends Card implements Playable {
 
 			int chosenCard = -3;
 			while(chosenCard < -2 || chosenCard > brawlPlayer.getInPlay().size() - 1){
-				chosenCard = userInterface.askOthersCard(currentPlayer, brawlPlayer.getInPlay(), brawlPlayer.getHand().size() > 0);
+				chosenCard = userInterface.askOthersCard(currentPlayer, brawlPlayer.getInPlay(), !brawlPlayer.getHand().isEmpty());
 			}
 			if(chosenCard == -1){
 				Object card = brawlPlayer.getHand().removeRandom();

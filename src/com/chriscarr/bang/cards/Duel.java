@@ -27,8 +27,7 @@ public class Duel extends Card implements Playable {
 	 * @see com.chriscarr.bang.Playable#targets(com.chriscarr.bang.Player, java.util.List)
 	 */
 	public List<Player> targets(Player player, List<Player> players){
-		List<Player> targets = Turn.others(player, players);
-		return targets;
+        return Turn.others(player, players);
 	}
 	
 	/* (non-Javadoc)
@@ -38,7 +37,7 @@ public class Duel extends Card implements Playable {
 		discard.add(this);
 		List<Player> targets = Turn.others(currentPlayer, players);
 		CancelPlayer cancelPlayer = new CancelPlayer();
-		targets.add(0, cancelPlayer);
+		targets.addFirst(cancelPlayer);
 		Player other = Turn.getValidChosenPlayer(currentPlayer, targets, userInterface);
 		if(!(other instanceof CancelPlayer)){
 			if(Figure.APACHEKID.equals(other.getAbility()) && this.getSuit() == Card.DIAMONDS){

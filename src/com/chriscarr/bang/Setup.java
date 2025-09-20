@@ -62,9 +62,8 @@ public class Setup {
 	}
 
 	public static List<Player> getPlayers(int countCharacters, Deck deck, boolean sidestep, String pRole, String pChar) {
-		ArrayList<Player> players = new ArrayList<Player>();
-		ArrayList<String> characterList = new ArrayList<String>();
-		characterList.addAll(Arrays.asList(Figure.CHARACTERS));
+		ArrayList<Player> players = new ArrayList<>();
+        ArrayList<String> characterList = new ArrayList<>(Arrays.asList(Figure.CHARACTERS));
 		try{
 			if(sidestep){
 				characterList.addAll(Arrays.asList(Figure.CHARACTERSSIDESTEP));
@@ -82,12 +81,12 @@ public class Setup {
 			Figure figure = new Figure();
 			if(i == 0 && !pChar.equals("random") && characterList.contains(pChar)){
 				characterList.remove(pChar);
-				characterList.add(0, pChar);
+				characterList.addFirst(pChar);
 			}
 			figure.setName(characterList.get(i));
 			if(i == 0 && !pRole.equals("random") && roles.contains(Player.stringToRole(pRole))){
 				roles.remove(Player.stringToRole(pRole));
-				roles.add(0, Player.stringToRole(pRole));
+				roles.addFirst(Player.stringToRole(pRole));
 			}
 			int role = roles.get(i);
 			
@@ -112,7 +111,7 @@ public class Setup {
 	}
 	
 	public static List<Integer> getRoles(int countPlayers){
-		List<Integer> roles = new ArrayList<Integer>();
+		List<Integer> roles = new ArrayList<>();
 		roles.add(Player.SHERIFF);
 		roles.add(Player.OUTLAW);
 		roles.add(Player.OUTLAW);
@@ -147,7 +146,7 @@ public class Setup {
 	}
 
 	public static List<Player> getNormalPlayers(int countCharacters) {
-		ArrayList<Player> players = new ArrayList<Player>();
+		ArrayList<Player> players = new ArrayList<>();
 				
 		List<Integer> roles = getRoles(countCharacters);
 		Collections.shuffle(roles);

@@ -5,18 +5,18 @@ import java.util.List;
 
 public class Discard {
 
-	List<Object> cards = new ArrayList<Object>();
+	List<Object> cards = new ArrayList<>();
 	
 	public void add(Object object) {
 		cards.add(object);
 	}
 
 	public Object peek() {
-		return cards.get(cards.size() - 1);
+		return cards.getLast();
 	}
 
 	public Object remove() {
-		return cards.remove(cards.size() - 1);
+		return cards.removeLast();
 	}
 
 	public boolean isEmpty() {

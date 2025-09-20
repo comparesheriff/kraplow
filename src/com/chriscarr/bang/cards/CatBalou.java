@@ -41,7 +41,7 @@ public class CatBalou extends Card implements Playable {
 		}
 		int chosenCard = -3;
 		while(chosenCard < -2 || chosenCard > other.getInPlay().size() - 1){
-			chosenCard = userInterface.askOthersCard(currentPlayer, other.getInPlay(), other.getHand().size() > 0);
+			chosenCard = userInterface.askOthersCard(currentPlayer, other.getInPlay(), !other.getHand().isEmpty());
 		}
 		if(chosenCard == -1){
 			Object card = other.getHand().removeRandom();

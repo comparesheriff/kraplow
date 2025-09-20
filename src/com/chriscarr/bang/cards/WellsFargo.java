@@ -31,7 +31,7 @@ public class WellsFargo extends Card implements Playable {
 
 	@Override
 	public List<Player> targets(Player player, List<Player> players) {
-		List<Player> targets = new ArrayList<Player>();
+		List<Player> targets = new ArrayList<>();
 		targets.add(player);
 		return targets;
 	}

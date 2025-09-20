@@ -28,22 +28,22 @@ public class WebGameUserInterface extends JSPUserInterface {
 	List<String> infoHistory;
 
 	public WebGameUserInterface(List<String> users, int aiSleepMs) {
-		infoHistory = new ArrayList<String>();
-		timedOutPlayers = new ArrayList<String>();
+		infoHistory = new ArrayList<>();
+		timedOutPlayers = new ArrayList<>();
 		this.aiSleepMs = aiSleepMs;
-		messages = new ConcurrentHashMap<String, List<Message>>();
-		responses = new ConcurrentHashMap<String, List<Message>>();
+		messages = new ConcurrentHashMap<>();
+		responses = new ConcurrentHashMap<>();
 		for (String user : users) {
-			messages.put(user, new ArrayList<Message>());
-			responses.put(user, new ArrayList<Message>());
+			messages.put(user, new ArrayList<>());
+			responses.put(user, new ArrayList<>());
 		}
 	}
 
 	//This is the AI logic
 	public String somethingAI(String player, String message) {
 		String lastMessage = "";
-		if(infoHistory.size() > 0) {
-			lastMessage = infoHistory.get(infoHistory.size() - 1);
+		if(!infoHistory.isEmpty()) {
+			lastMessage = infoHistory.getLast();
 		}
 		
 		try {
@@ -61,10 +61,10 @@ public class WebGameUserInterface extends JSPUserInterface {
 				}
 			}
 			
-			if(splitMessage[0].indexOf("true") != -1){
+			if(splitMessage[0].contains("true")){
 				return "-1";
 			}
-			if(splitMessage[1].indexOf("true") != -1){
+			if(splitMessage[1].contains("true")){
 				return "-2";
 			}
 			return "0";
@@ -295,18 +295,14 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 	
 	private boolean isThisGunBetter(String thisGun, String thatGun){
-		Map<String, Integer> gunRank = new HashMap<String, Integer>();
+		Map<String, Integer> gunRank = new HashMap<>();
 		gunRank.put("Colt .45", 0);
 		gunRank.put(Card.CARDVOLCANIC, 1);
 		gunRank.put(Card.CARDSCHOFIELD, 2);
 		gunRank.put(Card.CARDREMINGTON, 3);
 		gunRank.put(Card.CARDREVCARBINE, 4);
 		gunRank.put(Card.CARDWINCHESTER, 5);
-		if(gunRank.get(thisGun) - gunRank.get(thatGun) > 0){
-			return true;
-		} else {
-			return false;
-		}
+        return gunRank.get(thisGun) - gunRank.get(thatGun) > 0;
 	}
 	
 
@@ -314,11 +310,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 		int role = player.getRole();
 		if(role == Player.DEPUTY || (role == Player.RENEGADE && turn.countPlayers() > 2)){
 			Player sheriff = turn.getSheriff();
-			if(sheriff.getHealth() > 3){
-				return true;
-			} else {
-				return false;
-			}
+            return sheriff.getHealth() > 3;
 		}
 		return true;
 	}
@@ -327,17 +319,9 @@ public class WebGameUserInterface extends JSPUserInterface {
 		int role = player.getRole();
 		if(role == Player.DEPUTY || (role == Player.RENEGADE && turn.countPlayers() > 2)){
 			Player sheriff = turn.getSheriff();
-			if(sheriff.getHealth() < 3){
-				return true;
-			} else {
-				return false;
-			}
+            return sheriff.getHealth() < 3;
 		}
-		if(player.getHealth() < player.getMaxHealth()){
-			return true;
-		} else {
-			return false;
-		}
+        return player.getHealth() < player.getMaxHealth();
 	}
 	
 	public boolean playerGotCardIWantToTake(Player me, Player them){
@@ -354,18 +338,15 @@ public class WebGameUserInterface extends JSPUserInterface {
 		if(inPlay.hasItem(Card.CARDDYNAMITE)){
 			cardsInPlay--;
 		}
-		if(cardsInPlay > 0){
-			return true;
-		}
-		return false;
-	}
+        return cardsInPlay > 0;
+    }
 	
 	public int whoToHurt(Player player, String namesString){
 		return whoToHurtCardTake(player, namesString, false);
 	}
 	
 	public int whoToHurtCardTake(Player player, String namesString, boolean takeCard){
-		ArrayList<Integer> targets = new ArrayList<Integer>();
+		ArrayList<Integer> targets = new ArrayList<>();
 		int role = player.getRole();
 		String[] names = namesString.split("\\$");
 		for(int i = 0; i < names.length; i++){
@@ -403,12 +384,12 @@ public class WebGameUserInterface extends JSPUserInterface {
 				}
 			}
 		}
-		if(targets.size() == 0){
+		if(targets.isEmpty()){
 			return -1;
 		} else {
 			//Random target instead of first
 			Collections.shuffle(targets);
-			return targets.get(0);
+			return targets.getFirst();
 		}
 	}
 	
@@ -423,7 +404,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 		playerMessages.add(new MessageImpl(player + "-" + message));
 		if (userFigureNames.get(player).contains("AI") || timedOutPlayers.contains(userFigureNames.get(player))) {
 			while (messages.isEmpty()) {
-				
+				//should something be happening here?
 			}
 			addResponse(userFigureNames.get(player), somethingAI(player,
 					message));
@@ -433,7 +414,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 	public void addResponse(String user, String message) {
 		System.out.println("Response " + user + " " + message);
 		if (!getMessages(user).isEmpty()) {
-			System.out.println("Response " + getMessages(user).get(0));
+			System.out.println("Response " + getMessages(user).getFirst());
 		}
 		List<Message> playerResponses = responses.get(user);
 		playerResponses.add(new MessageImpl(message));
@@ -455,8 +436,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 
 	public GameState getGameState() {
-		GameState gameState = super.getGameState(gameOver);
-		return gameState;
+        return super.getGameState(gameOver);
 	}
 
 	private void setupMap() {
@@ -464,25 +444,25 @@ public class WebGameUserInterface extends JSPUserInterface {
 		List<GameStatePlayer> players = gameState.getPlayers();
 		Set<String> keys = messages.keySet();
 		Iterator<String> userIter = keys.iterator();
-		userFigureNames = new ConcurrentHashMap<String, String>();
-		figureNamesUser = new ConcurrentHashMap<String, String>();
+		userFigureNames = new ConcurrentHashMap<>();
+		figureNamesUser = new ConcurrentHashMap<>();
 		//If there is only one human put them first so they can get there prefered role and character if chosen
 		//More than one leave it mixed
 		int humanCount = 0;
-		ArrayList<String> humanFirstList = new ArrayList<String>();
-		ArrayList<String> sameOrderList = new ArrayList<String>();
+		ArrayList<String> humanFirstList = new ArrayList<>();
+		ArrayList<String> sameOrderList = new ArrayList<>();
 		while(userIter.hasNext()){
 			String user = userIter.next();
 			sameOrderList.add(user);
 			if(user.length() >= 2 && ("AI".equals(user.substring(user.length() - 2)))){
 				humanFirstList.add(user);
 			} else {
-				humanFirstList.add(0, user);
+				humanFirstList.addFirst(user);
 				humanCount += 1;
 			}
 		}
 		
-		ArrayList<String> usersList = null;
+		ArrayList<String> usersList;
 		if(humanCount == 1){
 			usersList = humanFirstList;
 		} else {
@@ -503,6 +483,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 		int waitCount = 0;
 		while (responses.get(userFigureNames.get(player)).isEmpty()) {
 			try {
+				//why wait?
 				Thread.sleep(wait);
 				waitCount += wait;
 				if (waitCount > maxWait) {
@@ -518,7 +499,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 	}
 
 	public String removeResponse(String player) {
-		return responses.get(userFigureNames.get(player)).remove(0)
+		return responses.get(userFigureNames.get(player)).removeFirst()
 				.getMessage();
 	}
 

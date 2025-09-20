@@ -32,7 +32,7 @@ public class Conestoga extends SingleUse implements Playable{
 		if(!(otherPlayer instanceof CancelPlayer)){
 			int chosenCard = -3;
 			while(chosenCard < -2 || chosenCard > otherPlayer.getInPlay().size() - 1){
-				chosenCard = userInterface.askOthersCard(currentPlayer, otherPlayer.getInPlay(), otherPlayer.getHand().size() > 0);
+				chosenCard = userInterface.askOthersCard(currentPlayer, otherPlayer.getInPlay(), !otherPlayer.getHand().isEmpty());
 			}
 			Hand hand = currentPlayer.getHand();
 			if(chosenCard == -1){

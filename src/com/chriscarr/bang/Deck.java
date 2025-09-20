@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Deck {
 
-	private List<Object> cards = new ArrayList<Object>();
+	private final List<Object> cards = new ArrayList<>();
 	private Discard discard;
 	
 	public void add(Object card) {
@@ -14,13 +14,13 @@ public class Deck {
 	}
 
 	public Object pull() {
-		if(cards.size() == 0){
+		if(cards.isEmpty()){
 			while(!discard.isEmpty()){
 				cards.add(discard.remove());
 			}
 			shuffle();
 		}
-		return cards.remove(cards.size() - 1);
+		return cards.removeLast();
 	}
 
 	public boolean isEmpty() {

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class BangDeck {
 	public static ArrayList<Card> makeDeck(){
-		ArrayList<Card> cards = new ArrayList<Card>();
+		ArrayList<Card> cards = new ArrayList<>();
 		//Blue cards
 		cards.add(new Card(Card.CARDBARREL, Card.SPADES, Card.VALUEQ, Card.TYPEITEM));
 		cards.add(new Card(Card.CARDSCOPE, Card.SPADES, Card.VALUEA, Card.TYPEITEM));
@@ -103,7 +103,7 @@ public class BangDeck {
 	}
 
 	public static ArrayList<Card> makeSidestepDeck(){
-		ArrayList<Card> cards = new ArrayList<Card>();
+		ArrayList<Card> cards = new ArrayList<>();
 		//Blue cards
 		cards.add(new Gun(Card.CARDREMINGTON, Card.DIAMONDS, Card.VALUE6, Card.TYPEGUN));
 		cards.add(new Gun(Card.CARDREVCARBINE, Card.SPADES, Card.VALUE5, Card.TYPEGUN));

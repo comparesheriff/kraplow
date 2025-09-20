@@ -10,8 +10,8 @@ import com.chriscarr.bang.userinterface.UserInterface;
 
 public class WebInit {
 	
-	private static Map<Integer, UserInterface> userInterfaces = new HashMap<Integer, UserInterface>();
-	private static Map<Integer, GameStateListener> gameStateListeners = new HashMap<Integer, GameStateListener>();	
+	private static final Map<Integer, UserInterface> userInterfaces = new HashMap<>();
+	private static final Map<Integer, GameStateListener> gameStateListeners = new HashMap<>();
 		
 	public void setup(int numPlayers, UserInterface userInterface, GameStateListener gameStateListener, int gameId, boolean sidestep, String pRole, String pChar){
 		Thread gameThread = new GameThread(numPlayers, userInterface, gameStateListener, sidestep, pRole, pChar);
@@ -29,7 +29,7 @@ public class WebInit {
 		gameStateListeners.remove(gameId);
 	}
 	
-	class GameThread extends Thread{		
+	static class GameThread extends Thread{
 		int numPlayers;
 		UserInterface userInterface;
 		GameStateListener gameStateListener;

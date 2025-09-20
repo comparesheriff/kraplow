@@ -2,6 +2,8 @@ package com.chriscarr.bang.cards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import com.chriscarr.bang.CancelPlayer;
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
@@ -130,17 +132,13 @@ public class Card implements Playable{
 	}
 
 	public static int getRange(String gunName){
-		if(gunName.equals(CARDREVCARBINE)){
-			return 5;
-		} else if(gunName.equals(CARDWINCHESTER)){
-			return 4;
-		} else if(gunName.equals(CARDREMINGTON)){
-			return 3;
-		} else if(gunName.equals(CARDSCHOFIELD)){
-			return 2;
-		} else {
-			return 1;
-		}
+        return switch (gunName) {
+            case CARDREVCARBINE -> 5;
+            case CARDWINCHESTER -> 4;
+            case CARDREMINGTON -> 3;
+            case CARDSCHOFIELD -> 2;
+            default -> 1;
+        };
 	}
 
 	public static boolean multiBang(String gunName) {
@@ -149,9 +147,7 @@ public class Card implements Playable{
 
 	public static boolean isExplode(Card drawnCard) {
 		if(drawnCard.suit == SPADES){
-			if(drawnCard.value < 8){
-				return true;
-			}
+            return drawnCard.value < 8;
 		}
 		return false;
 	}
@@ -215,7 +211,7 @@ public class Card implements Playable{
 				int inPlayCount = player.getInPlay().count();
 				for(int inPlayIndex = 0; inPlayIndex < inPlayCount; inPlayIndex++){
 					Card peeked = (Card)player.getInPlay().peek(inPlayIndex);
-					if(peeked.getName() == this.getName()){
+					if(Objects.equals(peeked.getName(), this.getName())){
 						Card removed = (Card)player.getInPlay().remove(inPlayIndex);
 						discard.add(removed);
 						userInterface.printInfo(currentPlayer.getName() + " plays a " + this.getName() + " and forces " + player.getName() + " to discard one from play.");
@@ -229,7 +225,7 @@ public class Card implements Playable{
 
 	@Override
 	public List<Player> targets(Player player, List<Player> players) {
-		List<Player> targets = new ArrayList<Player>();
+		List<Player> targets = new ArrayList<>();
 		targets.add(player);
 		return targets;
 	}
@@ -247,7 +243,7 @@ public class Card implements Playable{
 	}
 
 	public boolean shoot(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard, Player targetPlayer){
-		Player otherPlayer = null;
+		Player otherPlayer;
 		if(targetPlayer == null){
 			otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
 		} else {
@@ -263,16 +259,13 @@ public class Card implements Playable{
 				return true;
 			}
 			int missesRequired = 1;
-			if(this.getName() == Card.CARDBANG && Figure.SLABTHEKILLER.equals(currentPlayer.getAbility())){
+			if(Objects.equals(this.getName(), Card.CARDBANG) && Figure.SLABTHEKILLER.equals(currentPlayer.getAbility())){
 				missesRequired = 2;
 			}
 			int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discard, userInterface, missesRequired, currentPlayer);
 			missesRequired = missesRequired - barrelMisses;
-			boolean canPlaySingleUse = true;
-			if(Figure.BELLESTAR.equals(currentPlayer.getAbility())){
-				canPlaySingleUse = false;
-			}
-			if(missesRequired <= 0){
+			boolean canPlaySingleUse = !Figure.BELLESTAR.equals(currentPlayer.getAbility());
+            if(missesRequired <= 0){
 				if(!skipDiscard){
 					discard.add(this);
 				}
@@ -318,9 +311,9 @@ public class Card implements Playable{
 			} else if(missesRequired == 2){
 				Hand hand = otherPlayer.getHand();
 				InPlay inPlay = otherPlayer.getInPlay();
-				List<Object> cardsToDiscard = null;
+				List<Object> cardsToDiscard;
 				cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);
-				if(cardsToDiscard.size() == 0){
+				if(cardsToDiscard.isEmpty()){
 					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 					userInterface.printInfo(otherPlayer.getName() + " loses a health.");
 				} else {

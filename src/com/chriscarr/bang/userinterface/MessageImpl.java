@@ -4,7 +4,7 @@ public class MessageImpl implements Message {
 
 	static int nextId = 0;
 	private String message;
-	private int id;
+	private final int id;
 	
 	public MessageImpl(String info) {
 		setMessage(info);

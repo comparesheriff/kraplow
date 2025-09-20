@@ -1,6 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.chriscarr.bang.CancelPlayer;
 import com.chriscarr.bang.Deck;
@@ -24,14 +25,14 @@ public class Jail extends Card implements Playable {
 	@Override
 	public boolean play(Player currentPlayer, List<Player> players,
 			UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
-		Object target = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
+		Player target = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
 		if(!(target instanceof CancelPlayer)){
 			if (Figure.JOHNNYKISCH.equals(currentPlayer.getAbility())) {
 				for (Player player : players) {
 					int inPlayCount = player.getInPlay().count();
 					for(int inPlayIndex = 0; inPlayIndex < inPlayCount; inPlayIndex++){
 						Card peeked = (Card)player.getInPlay().peek(inPlayIndex);
-						if(peeked.getName() == this.getName()){
+						if(Objects.equals(peeked.getName(), this.getName())){
 							Card removed = (Card)player.getInPlay().remove(inPlayIndex);
 							discard.add(removed);
 							userInterface.printInfo(currentPlayer.getName() + " plays a " + this.getName() + " and forces " + player.getName() + " to discard one from play.");
@@ -40,9 +41,8 @@ public class Jail extends Card implements Playable {
 				}
 			}
 
-			Player targetPlayer = (Player)target;
-			targetPlayer.addInPlay(this);
-			userInterface.printInfo(currentPlayer.getName() + " put " + targetPlayer.getName() + " in jail.");
+            target.addInPlay(this);
+			userInterface.printInfo(currentPlayer.getName() + " put " + target.getName() + " in jail.");
 			return true;
 		} else {
 			currentPlayer.getHand().add(this);

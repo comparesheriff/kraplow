@@ -85,17 +85,13 @@ public class Player {
 	}
 
 	public static Integer stringToRole(String roleName){
-		if(roleName.equals("Sheriff")){
-			return SHERIFF;
-		} else if(roleName.equals("Outlaw")){
-			return OUTLAW;
-		} else if(roleName.equals("Deputy")){
-			return DEPUTY;
-		} else if(roleName.equals("Renegade")){
-			return RENEGADE;
-		} else { 
-			throw new RuntimeException("Invalid Role");
-		}
+        return switch (roleName) {
+            case "Sheriff" -> SHERIFF;
+            case "Outlaw" -> OUTLAW;
+            case "Deputy" -> DEPUTY;
+            case "Renegade" -> RENEGADE;
+            default -> throw new RuntimeException("Invalid Role");
+        };
 	}
 	
 	public static String roleToGoal(int role) {
