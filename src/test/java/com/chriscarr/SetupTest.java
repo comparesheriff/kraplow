@@ -17,16 +17,16 @@ public class SetupTest extends TestCase {
 		for(int i = 0; i < 80; i++){
 			pulled = (Card) deck.pull();
 		}
-		assertEquals(pulled.getName(), Card.CARDBARREL);
-		assertEquals(pulled.getSuit(), Card.SPADES);
-		assertEquals(pulled.getValue(), Card.VALUEQ);
-		assertEquals(pulled.getType(), Card.TYPEITEM);
+		assertEquals(Card.CARDBARREL, pulled.getName());
+		assertEquals(Card.SPADES, pulled.getSuit());
+		assertEquals(Card.VALUEQ, pulled.getValue());
+		assertEquals(Card.TYPEITEM, pulled.getType());
 	}
 	
 	public void testSetupPlayers(){
 		Deck deck = Setup.setupDeck(false);
 		List<Player> players = Setup.getPlayers(7, deck);
-		assertEquals(players.size(), 7);
+		assertEquals(7, players.size());
 	}
 	
 	public void testSetupPlayersHealth(){

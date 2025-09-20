@@ -15,12 +15,12 @@ public class HandTest extends TestCase{
 	
 	public void testHandSize(){
 		Hand hand = new Hand();
-		assertEquals(hand.size(), 0);
+		assertEquals(0, hand.size());
 	}
 	
 	public void testHandSizeOne(){
 		Hand hand = new Hand();
 		hand.add(new Object());
-		assertEquals(hand.size(), 1);
+		assertEquals(1, hand.size());
 	}
 }

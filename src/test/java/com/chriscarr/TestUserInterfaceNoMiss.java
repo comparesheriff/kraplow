@@ -47,7 +47,7 @@ public class TestUserInterfaceNoMiss extends TestUserInterface implements
 
 	@Override
 	public int askPlay(Player player) {
-		if(player.getHand().size() > 0){
+		if(!player.getHand().isEmpty()){
 			return 0;
 		} else {
 			return -1;

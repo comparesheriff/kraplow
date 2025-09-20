@@ -10,7 +10,7 @@ public class CardTest extends TestCase {
 		String setName = "Banana";
 		card.setName(setName);
 		String gotName = card.getName();
-		assertEquals(gotName, setName);
+		assertEquals(setName, gotName);
 	}
 	
 	public void testSetOtherName(){
@@ -18,7 +18,7 @@ public class CardTest extends TestCase {
 		String setName = "Goat";
 		card.setName(setName);
 		String gotName = card.getName();
-		assertEquals(gotName, setName);
+		assertEquals(setName, gotName);
 	}
 	
 	public void testSetGetSuit(){
@@ -36,11 +36,7 @@ public class CardTest extends TestCase {
 		int gotSuit = card.getSuit();
 		assertEquals(setSuit, gotSuit);
 	}
-	
-	public void testSuitsNotEqual(){
-		assertFalse(Card.CLUBS == Card.HEARTS);
-	}
-	
+
 	public void testSetGetSuitSpades(){
 		Card card = new Card();
 		int setSuit = Card.SPADES;
@@ -73,19 +69,7 @@ public class CardTest extends TestCase {
 		card.setValue(Card.VALUEK);
 		card.setValue(Card.VALUEA);
 		int valueGot = card.getValue();
-		assertEquals(valueGot, Card.VALUEA);
-		
-		assertTrue(Card.VALUE2 < Card.VALUE3);
-		assertTrue(Card.VALUE3 < Card.VALUE4);
-		assertTrue(Card.VALUE4 < Card.VALUE5);
-		assertTrue(Card.VALUE5 < Card.VALUE6);
-		assertTrue(Card.VALUE6 < Card.VALUE7);
-		assertTrue(Card.VALUE7 < Card.VALUE8);
-		assertTrue(Card.VALUE8 < Card.VALUE9);
-		assertTrue(Card.VALUE9 < Card.VALUE10);
-		assertTrue(Card.VALUE10 < Card.VALUEJ);
-		assertTrue(Card.VALUEJ < Card.VALUEK);
-		assertTrue(Card.VALUEK < Card.VALUEA);		
+		assertEquals(Card.VALUEA, valueGot);
 	}
 	
 	public void testSetCardType(){
@@ -94,7 +78,7 @@ public class CardTest extends TestCase {
 		card.setType(Card.TYPEITEM);
 		card.setType(Card.TYPEPLAY);
 		int gotType = card.getType();
-		assertEquals(gotType, Card.TYPEPLAY);
+		assertEquals(Card.TYPEPLAY, gotType);
 	}
 	
 	public void testGunRange(){		

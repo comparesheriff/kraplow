@@ -27,7 +27,7 @@ public class TestUserInterface implements UserInterface {
 	@Override
 	public List<Object> chooseTwoDiscardForShoot(Player player) {
 		// TODO Auto-generated method stub
-		return new ArrayList<Object>();
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class TestUserInterface implements UserInterface {
 
 	@Override
 	public List<Object> chooseTwoDiscardForLife(Player player) {
-		List<Object> cards = new ArrayList<Object>();
+		List<Object> cards = new ArrayList<>();
 		Hand hand = player.getHand();
 		cards.add(hand.get(0));
 		cards.add(hand.get(1));
@@ -119,7 +119,7 @@ public class TestUserInterface implements UserInterface {
 
 	@Override
 	public List<Object> respondTwoMiss(Player player) {
-		return new ArrayList<Object>();
+		return new ArrayList<>();
 	}
 	
 

@@ -25,7 +25,7 @@ public class PlayerTest extends TestCase {
 		InPlay gotInPlay = player.getInPlay();
 		
 		assertEquals(gotFigure, setFigure);
-		assertEquals(gotRole, setRole);
+		assertEquals(setRole, gotRole);
 		assertEquals(gotHand, setHand);
 		assertEquals(gotInPlay, setInPlay);
 	}

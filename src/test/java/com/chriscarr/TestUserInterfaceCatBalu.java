@@ -95,7 +95,7 @@ public class TestUserInterfaceCatBalu extends TestUserInterface implements
 	
 	@Override
 	public List<Object> respondTwoMiss(Player player) {
-		List<Object> result = new ArrayList<Object>();
+		List<Object> result = new ArrayList<>();
 		Hand hand = player.getHand();
 		result.add(hand.get(0));
 		result.add(hand.get(1));
