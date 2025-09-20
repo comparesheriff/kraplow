@@ -1,56 +1,11 @@
-<?xml version="1.0" ?> 
-<project name="Kraplow" default="war">
-
-	<!-- Exposing environmental variables to Ant -->
-	<property environment="env"/>
-	<!-- Stick configurable properties in this file instead of hard coding them -->
-	<property file = "build.properties"/>
-
-	<path id="compile.classpath">
-		<fileset dir="WebContent/WEB-INF/lib">
-			<include name="*.jar"/>
-		</fileset>
-	</path>
-	
-	<target name="init">
-		<mkdir dir="build/classes"/>
-		<mkdir dir="dist" />
-	</target>
-	
-	<target name="compile" depends="init" >
-		<javac destdir="build/classes" debug="true" srcdir="src">
-			<classpath refid="compile.classpath"/>
-		</javac>
-	</target>
-	
-	<target name="war" depends="compile">
-		<war destfile="dist/westerncardgame.war" webxml="WebContent/WEB-INF/web.xml">
-			<fileset dir="WebContent"/>
-			<lib dir="WebContent/WEB-INF/lib"/>
-			<classes dir="build/classes"/>
-		</war>
-	</target>
-
-	<target name = "deploy" depends = "war" description = "Deploy application .war to the appserver">
-		<copy todir = "${deploy.path}" preservelastmodified = "true">
-			<fileset dir = "dist">
-				<include name = "*.war"/>
-			</fileset>
-		</copy>
-	</target>
-
-	<target name = "test">
-		<junit haltonfailure = "true" printsummary = "true">
-			<classpath location="${junit.home}/junit-${junit.version}.jar" />
-			<formatter type="plain" usefile="false" />
-			<classpath location="build/classes"/>
-			<test name = "com.chriscarr.bang.test.AllTests"/>
-		</junit>
-	</target>
-
-	<target name="clean">
-		<delete dir="dist" />
-		<delete dir="build" />
-	</target>
-	
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Kraplow" default="migrate">
+  <target name="migrate" description="Ant build is disabled. Use Maven.">
+    <echo>====================================================</echo>
+    <echo>This project now builds with Maven.</echo>
+    <echo>Run: mvn clean package</echo>
+    <echo>WAR: target/westerncardgame.war</echo>
+    <echo>====================================================</echo>
+    <fail message="Ant build disabled. Use Maven (mvn clean package)."/>
+  </target>
 </project>
