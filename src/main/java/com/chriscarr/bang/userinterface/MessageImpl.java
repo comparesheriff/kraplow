@@ -1,4 +1,4 @@
-package java.com.chriscarr.bang.userinterface;
+package com.chriscarr.bang.userinterface;
 
 public class MessageImpl implements Message {
 

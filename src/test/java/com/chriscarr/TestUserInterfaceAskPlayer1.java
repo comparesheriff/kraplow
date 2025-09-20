@@ -1,12 +1,12 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import java.com.chriscarr.bang.Hand;
-import java.com.chriscarr.bang.InPlay;
-import java.com.chriscarr.bang.Player;
-import java.com.chriscarr.bang.userinterface.UserInterface;
+import com.chriscarr.bang.Hand;
+import com.chriscarr.bang.InPlay;
+import com.chriscarr.bang.Player;
+import com.chriscarr.bang.userinterface.UserInterface;
 
 public class TestUserInterfaceAskPlayer1 extends TestUserInterface implements
 		UserInterface {

@@ -1,4 +1,4 @@
-package java.com.chriscarr.game;
+package com.chriscarr.game;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import java.com.chriscarr.bang.userinterface.WebGameUserInterface;
+import com.chriscarr.bang.userinterface.WebGameUserInterface;
 
 public class WebGame {
 	private static int gameCounter = 0;

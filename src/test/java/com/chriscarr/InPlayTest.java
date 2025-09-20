@@ -1,7 +1,7 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
-import java.com.chriscarr.bang.InPlay;
-import java.com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.InPlay;
+import com.chriscarr.bang.cards.Card;
 
 import junit.framework.TestCase;
 

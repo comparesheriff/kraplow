@@ -1,8 +1,8 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
 import java.util.List;
 
-import java.com.chriscarr.bang.Player;
+import com.chriscarr.bang.Player;
 
 public class DukeUserInterface extends TestUserInterface {
 	boolean returnedInvalidLess = false;

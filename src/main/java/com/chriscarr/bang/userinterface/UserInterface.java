@@ -1,9 +1,9 @@
-package java.com.chriscarr.bang.userinterface;
+package com.chriscarr.bang.userinterface;
 
 import java.util.List;
 
-import java.com.chriscarr.bang.InPlay;
-import java.com.chriscarr.bang.Player;
+import com.chriscarr.bang.InPlay;
+import com.chriscarr.bang.Player;
 
 public interface UserInterface {
 

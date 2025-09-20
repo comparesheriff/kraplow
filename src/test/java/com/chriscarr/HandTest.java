@@ -1,6 +1,6 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
-import java.com.chriscarr.bang.Hand;
+import com.chriscarr.bang.Hand;
 
 import junit.framework.TestCase;
 

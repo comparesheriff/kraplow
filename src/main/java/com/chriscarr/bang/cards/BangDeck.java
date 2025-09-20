@@ -1,4 +1,4 @@
-package java.com.chriscarr.bang.cards;
+package com.chriscarr.bang.cards;
 
 import java.util.ArrayList;
 

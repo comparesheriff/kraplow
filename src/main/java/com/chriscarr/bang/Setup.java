@@ -1,4 +1,4 @@
-package java.com.chriscarr.bang;
+package com.chriscarr.bang;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,10 +6,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.*;
 
-import java.com.chriscarr.bang.cards.BangDeck;
-import java.com.chriscarr.bang.cards.Card;
-import java.com.chriscarr.bang.gamestate.GameStateListener;
-import java.com.chriscarr.bang.userinterface.UserInterface;
+import com.chriscarr.bang.cards.BangDeck;
+import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.gamestate.GameStateListener;
+import com.chriscarr.bang.userinterface.UserInterface;
 
 public class Setup {
 	

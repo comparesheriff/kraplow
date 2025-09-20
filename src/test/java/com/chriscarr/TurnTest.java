@@ -1,10 +1,10 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
 import junit.framework.TestCase;
 
-import java.com.chriscarr.bang.*;
-import java.com.chriscarr.bang.cards.*;
-import java.com.chriscarr.bang.userinterface.UserInterface;
+import com.chriscarr.bang.*;
+import com.chriscarr.bang.cards.*;
+import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.ArrayList;
 import java.util.List;
 

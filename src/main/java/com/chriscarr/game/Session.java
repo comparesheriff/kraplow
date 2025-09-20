@@ -1,4 +1,4 @@
-package java.com.chriscarr.game;
+package com.chriscarr.game;
 
 public class Session {
 	public Long lastUpdated;

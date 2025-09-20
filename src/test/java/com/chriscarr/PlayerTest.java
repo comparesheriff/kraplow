@@ -1,9 +1,9 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
-import java.com.chriscarr.bang.Figure;
-import java.com.chriscarr.bang.Hand;
-import java.com.chriscarr.bang.InPlay;
-import java.com.chriscarr.bang.Player;
+import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Hand;
+import com.chriscarr.bang.InPlay;
+import com.chriscarr.bang.Player;
 
 import junit.framework.TestCase;
 

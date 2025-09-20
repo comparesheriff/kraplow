@@ -1,6 +1,6 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
-import java.com.chriscarr.bang.Discard;
+import com.chriscarr.bang.Discard;
 
 import junit.framework.TestCase;
 

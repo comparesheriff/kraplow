@@ -1,6 +1,6 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
-import java.com.chriscarr.bang.Player;
+import com.chriscarr.bang.Player;
 
 public class NoBeerUserInterface extends TestUserInterface {
 	public int respondBeer(Player player) {

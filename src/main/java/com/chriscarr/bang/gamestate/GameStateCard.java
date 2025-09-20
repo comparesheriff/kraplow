@@ -1,4 +1,4 @@
-package java.com.chriscarr.bang.gamestate;
+package com.chriscarr.bang.gamestate;
 
 public class GameStateCard {
 	public String name;

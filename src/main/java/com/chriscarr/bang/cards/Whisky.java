@@ -1,14 +1,14 @@
-package java.com.chriscarr.bang.cards;
+package com.chriscarr.bang.cards;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import java.com.chriscarr.bang.Deck;
-import java.com.chriscarr.bang.Discard;
-import java.com.chriscarr.bang.Hand;
-import java.com.chriscarr.bang.Player;
-import java.com.chriscarr.bang.Turn;
-import java.com.chriscarr.bang.userinterface.UserInterface;
+import com.chriscarr.bang.Deck;
+import com.chriscarr.bang.Discard;
+import com.chriscarr.bang.Hand;
+import com.chriscarr.bang.Player;
+import com.chriscarr.bang.Turn;
+import com.chriscarr.bang.userinterface.UserInterface;
 
 public class Whisky extends Card implements Playable {
 	public Whisky(String name, int suit, int value, int type) {

@@ -1,14 +1,14 @@
-package java.com.chriscarr.bang;
+package com.chriscarr.bang;
 
-import java.com.chriscarr.bang.cards.Bang;
-import java.com.chriscarr.bang.cards.Card;
-import java.com.chriscarr.bang.cards.SingleUse;
-import java.com.chriscarr.bang.cards.SingleUseMissed;
-import java.com.chriscarr.bang.gamestate.GameState;
-import java.com.chriscarr.bang.gamestate.GameStateCard;
-import java.com.chriscarr.bang.gamestate.GameStateImpl;
-import java.com.chriscarr.bang.gamestate.GameStatePlayer;
-import java.com.chriscarr.bang.userinterface.UserInterface;
+import com.chriscarr.bang.cards.Bang;
+import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.SingleUse;
+import com.chriscarr.bang.cards.SingleUseMissed;
+import com.chriscarr.bang.gamestate.GameState;
+import com.chriscarr.bang.gamestate.GameStateCard;
+import com.chriscarr.bang.gamestate.GameStateImpl;
+import com.chriscarr.bang.gamestate.GameStatePlayer;
+import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;

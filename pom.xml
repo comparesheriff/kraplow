@@ -71,8 +71,8 @@
 
   <build>
     <!-- Point Maven at the legacy layout and protect main-compile from picking up tests -->
-    <sourceDirectory>src/main</sourceDirectory>
-    <testSourceDirectory>src/test</testSourceDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
 
     <plugins>
       <plugin>

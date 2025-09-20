@@ -1,12 +1,12 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
 import java.util.List;
 
-import java.com.chriscarr.bang.Deck;
-import java.com.chriscarr.bang.Hand;
-import java.com.chriscarr.bang.Player;
-import java.com.chriscarr.bang.Setup;
-import java.com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.Deck;
+import com.chriscarr.bang.Hand;
+import com.chriscarr.bang.Player;
+import com.chriscarr.bang.Setup;
+import com.chriscarr.bang.cards.Card;
 
 import junit.framework.TestCase;
 

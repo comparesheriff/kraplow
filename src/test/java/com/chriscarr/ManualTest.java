@@ -1,7 +1,7 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
-import java.com.chriscarr.bang.Setup;
-import java.com.chriscarr.bang.userinterface.ManualUserInterface;
+import com.chriscarr.bang.Setup;
+import com.chriscarr.bang.userinterface.ManualUserInterface;
 
 public class ManualTest {
 

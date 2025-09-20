@@ -1,8 +1,8 @@
-package java.com.chriscarr.bang.gamestate;
+package com.chriscarr.bang.gamestate;
 
 import java.util.List;
 
-import java.com.chriscarr.bang.Turn;
+import com.chriscarr.bang.Turn;
 
 public class GameStateImpl implements GameState {
 

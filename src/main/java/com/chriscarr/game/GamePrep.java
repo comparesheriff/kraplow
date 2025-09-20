@@ -1,4 +1,4 @@
-package java.com.chriscarr.game;
+package com.chriscarr.game;
 
 import java.util.ArrayList;
 import java.util.List;

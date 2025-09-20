@@ -1,13 +1,13 @@
-package java.com.chriscarr.game;
+package com.chriscarr.game;
 
-import java.com.chriscarr.bang.Hand;
-import java.com.chriscarr.bang.cards.Card;
-import java.com.chriscarr.bang.gamestate.GameState;
-import java.com.chriscarr.bang.gamestate.GameStateCard;
-import java.com.chriscarr.bang.gamestate.GameStatePlayer;
-import java.com.chriscarr.bang.userinterface.JSPUserInterface;
-import java.com.chriscarr.bang.userinterface.Message;
-import java.com.chriscarr.bang.userinterface.WebGameUserInterface;
+import com.chriscarr.bang.Hand;
+import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.gamestate.GameState;
+import com.chriscarr.bang.gamestate.GameStateCard;
+import com.chriscarr.bang.gamestate.GameStatePlayer;
+import com.chriscarr.bang.userinterface.JSPUserInterface;
+import com.chriscarr.bang.userinterface.Message;
+import com.chriscarr.bang.userinterface.WebGameUserInterface;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

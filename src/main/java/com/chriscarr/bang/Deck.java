@@ -1,4 +1,4 @@
-package java.com.chriscarr.bang;
+package com.chriscarr.bang;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
 import junit.framework.*;
 

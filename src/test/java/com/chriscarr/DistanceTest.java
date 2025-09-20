@@ -1,6 +1,6 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
-import java.com.chriscarr.bang.AlivePlayers;
+import com.chriscarr.bang.AlivePlayers;
 
 import junit.framework.TestCase;
 

@@ -1,4 +1,4 @@
-package java.com.chriscarr.bang;
+package com.chriscarr.bang;
 
 public class EndOfGameException extends RuntimeException {
 

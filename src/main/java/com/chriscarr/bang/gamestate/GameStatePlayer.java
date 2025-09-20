@@ -1,4 +1,4 @@
-package java.com.chriscarr.bang.gamestate;
+package com.chriscarr.bang.gamestate;
 
 import java.util.List;
 

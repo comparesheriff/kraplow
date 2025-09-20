@@ -1,4 +1,4 @@
-package java.com.chriscarr.bang;
+package com.chriscarr.bang;
 
 public class CancelPlayer extends Player {
 	public String getName(){

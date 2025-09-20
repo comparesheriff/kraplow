@@ -1,6 +1,6 @@
-package java.com.chriscarr;
+package com.chriscarr;
 
-import java.com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.Card;
 
 import junit.framework.TestCase;
 

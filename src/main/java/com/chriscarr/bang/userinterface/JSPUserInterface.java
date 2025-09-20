@@ -1,17 +1,17 @@
-package java.com.chriscarr.bang.userinterface;
+package com.chriscarr.bang.userinterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import java.com.chriscarr.bang.Figure;
-import java.com.chriscarr.bang.Hand;
-import java.com.chriscarr.bang.InPlay;
-import java.com.chriscarr.bang.Player;
-import java.com.chriscarr.bang.Turn;
-import java.com.chriscarr.bang.cards.Card;
-import java.com.chriscarr.bang.cards.SingleUseMissed;
-import java.com.chriscarr.bang.gamestate.GameState;
-import java.com.chriscarr.bang.gamestate.GameStateListener;
+import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Hand;
+import com.chriscarr.bang.InPlay;
+import com.chriscarr.bang.Player;
+import com.chriscarr.bang.Turn;
+import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.SingleUseMissed;
+import com.chriscarr.bang.gamestate.GameState;
+import com.chriscarr.bang.gamestate.GameStateListener;
 
 public class JSPUserInterface implements UserInterface, GameStateListener {
 
