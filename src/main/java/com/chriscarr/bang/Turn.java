@@ -1,9 +1,6 @@
 package com.chriscarr.bang;
 
-import com.chriscarr.bang.cards.Bang;
-import com.chriscarr.bang.cards.Card;
-import com.chriscarr.bang.cards.SingleUse;
-import com.chriscarr.bang.cards.SingleUseMissed;
+import com.chriscarr.bang.cards.*;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.gamestate.GameStateImpl;
@@ -304,11 +301,11 @@ public class Turn {
             Card secondCard = deck.pull();
             hand.add(secondCard);
             if (Character.BLACKJACK.equals(player.getCharacter())) {
-                int suit = secondCard.getSuit();
+                CardSuit suit = secondCard.getSuit();
                 userInterface.printInfo(player.getCharacter().getName() + " drew a "
-                        + Card.suitToString(suit) + " "
+                        + suit.getLabel() + " "
                         + secondCard.getName());
-                if (suit == Card.HEARTS || suit == Card.DIAMONDS) {
+                if (suit == CardSuit.HEARTS || suit == CardSuit.DIAMONDS) {
                     hand.add(deck.pull());
                     userInterface.printInfo(player.getCharacter().getName()
                             + " drew a third card from the deck.");
@@ -394,7 +391,7 @@ public class Turn {
                     return;
                 }
                 Card playedCard = hand.get(cardIndex);
-                if (playedCard.getType() == Card.TYPEGUN || playedCard.getType() == Card.TYPEITEM) {
+                if (playedCard.getType() == CardType.GUN || playedCard.getType() == CardType.ITEM) {
                     this.joseActions += 1;
                     hand.remove(cardIndex);
                     discard.add(playedCard);
@@ -440,9 +437,9 @@ public class Turn {
             } else if (card > (hand.size() + singleUseInPlay.size() - 1) && Character.DOCHOLYDAY.equals(currentPlayer.getCharacter())) {
                 List<Card> cardsToDiscard = userInterface.chooseTwoDiscardForShoot(currentPlayer);
                 if (cardsToDiscard.size() == 2) {
-                    int discardSuit = Card.DIAMONDS;
+                    CardSuit discardSuit = CardSuit.DIAMONDS;
                     for (Card discardcard : cardsToDiscard) {
-                        if (discardcard.getSuit() != Card.DIAMONDS) {
+                        if (discardcard.getSuit() != CardSuit.DIAMONDS) {
                             discardSuit = discardcard.getSuit();
                         }
                         hand.remove(discardcard);
@@ -451,7 +448,7 @@ public class Turn {
                                 + " discards " + discardcard.getName()
                                 + " for shoot.");
                     }
-                    Bang tempBang = new Bang(Card.CARDBANG, discardSuit, Card.VALUE7, Card.TYPEPLAY);
+                    Bang tempBang = new Bang(Card.CARDBANG, discardSuit, CardValue.SEVEN, CardType.PLAY);
                     boolean success = tempBang.play(currentPlayer, players, userInterface, deck, discard, this, true);
                     if (!success) {
                         hand.add(discard.removeLast());
@@ -669,8 +666,8 @@ public class Turn {
             discard.addAll(cards);
             Card drawnCard = cards.get(chosenCard);
             userInterface.printInfo(player.getName() + " drew a "
-                    + Card.valueToString(drawnCard.getValue()) + " of "
-                    + Card.suitToString(drawnCard.getSuit()) + " "
+                    + drawnCard.getValue().getLabel() + " of "
+                    + drawnCard.getSuit().getLabel() + " "
                     + drawnCard.getName());
             return cards.get(chosenCard);
         } else {
@@ -679,8 +676,8 @@ public class Turn {
             }
             Card card = deck.pull();
             userInterface.printInfo(player.getName() + " drew a "
-                    + Card.valueToString(card.getValue()) + " of "
-                    + Card.suitToString(card.getSuit()) + " "
+                    + card.getValue().getLabel() + " of "
+                    + card.getSuit().getLabel() + " "
                     + card.getName());
             discard.add(card);
             return card;
@@ -695,7 +692,7 @@ public class Turn {
                     + " is drawing to break out of jail");
             Card drawn = draw(currentPlayer, deck, discard,
                     userInterface);
-            boolean inJail = drawn.getSuit() != Card.HEARTS;
+            boolean inJail = drawn.getSuit() != CardSuit.HEARTS;
             discard.add(jailCard);
             if (inJail) {
                 userInterface.printInfo(currentPlayer.getName()
@@ -716,14 +713,13 @@ public class Turn {
             userInterface.printInfo(player.getName()
                     + " is drawing to be saved by a barrel");
             Card drawn = draw(player, deck, discard, userInterface);
-            if (drawn.getSuit() == Card.HEARTS) {
+            if (drawn.getSuit() == CardSuit.HEARTS) {
                 misses = misses + 1;
                 userInterface.printInfo(player.getCharacter().getName() + " drew a "
-                        + Card.suitToString(Card.HEARTS) + " and was saved by his ability.");
+                        + CardSuit.HEARTS.getLabel() + " and was saved by his ability.");
             } else {
                 userInterface.printInfo(player.getCharacter().getName() + " drew a "
-                        + Card.suitToString(drawn.getSuit())
-                        + " and was not saved by his ability.");
+                        + drawn.getSuit().getLabel() + " and was not saved by his ability.");
             }
         }
         if (misses >= missesRequired) {
@@ -738,13 +734,13 @@ public class Turn {
                 userInterface.printInfo(player.getName()
                         + " is drawing to be saved by a barrel");
                 Card drawn = draw(player, deck, discard, userInterface);
-                if (drawn.getSuit() == Card.HEARTS) {
+                if (drawn.getSuit() == CardSuit.HEARTS) {
                     misses = misses + 1;
                     userInterface.printInfo(player.getName() + " drew a "
-                            + Card.suitToString(Card.HEARTS) + " and was saved by their barrel.");
+                            + CardSuit.HEARTS.getLabel() + " and was saved by their barrel.");
                 } else {
                     userInterface.printInfo(player.getName() + " drew a "
-                            + Card.suitToString(drawn.getSuit())
+                            + drawn.getSuit().getLabel()
                             + " and was not saved by their barrel.");
                 }
             }
@@ -1146,9 +1142,9 @@ public class Turn {
         }
         GameStateCard card = new GameStateCard();
         card.name = fromCard.getName();
-        card.suit = Card.suitToString(fromCard.getSuit());
-        card.value = Card.valueToString(fromCard.getValue());
-        card.type = Card.typeToString(fromCard.getType());
+        card.suit = fromCard.getSuit().getLabel();
+        card.value = fromCard.getValue().getLabel();
+        card.type = fromCard.getType().getTypeName();
         return card;
     }
 

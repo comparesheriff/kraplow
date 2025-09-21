@@ -7,161 +7,160 @@ public class BangDeck {
     public static ArrayList<Card> makeDeck() {
         ArrayList<Card> cards = new ArrayList<>();
         //Blue cards
-        cards.add(new Card(Card.CARDBARREL, Card.SPADES, Card.VALUEQ, Card.TYPEITEM));
-        cards.add(new Card(Card.CARDSCOPE, Card.SPADES, Card.VALUEA, Card.TYPEITEM));
-        cards.add(new Card(Card.CARDMUSTANG, Card.HEARTS, Card.VALUE8, Card.TYPEITEM));
-        cards.add(new Card(Card.CARDMUSTANG, Card.HEARTS, Card.VALUE9, Card.TYPEITEM));
-        cards.add(new Jail(Card.CARDJAIL, Card.SPADES, Card.VALUEJ, Card.TYPEITEM));
-        cards.add(new Jail(Card.CARDJAIL, Card.SPADES, Card.VALUE10, Card.TYPEITEM));
-        cards.add(new Jail(Card.CARDJAIL, Card.HEARTS, Card.VALUE4, Card.TYPEITEM));
-        cards.add(new Card(Card.CARDDYNAMITE, Card.HEARTS, Card.VALUE2, Card.TYPEITEM));
-        cards.add(new Gun(Card.CARDSCHOFIELD, Card.SPADES, Card.VALUEK, Card.TYPEGUN));
-        cards.add(new Gun(Card.CARDSCHOFIELD, Card.CLUBS, Card.VALUEJ, Card.TYPEGUN));
-        cards.add(new Gun(Card.CARDSCHOFIELD, Card.CLUBS, Card.VALUEQ, Card.TYPEGUN));
-        cards.add(new Gun(Card.CARDVOLCANIC, Card.SPADES, Card.VALUE10, Card.TYPEGUN));
-        cards.add(new Gun(Card.CARDVOLCANIC, Card.CLUBS, Card.VALUE10, Card.TYPEGUN));
-        cards.add(new Gun(Card.CARDREMINGTON, Card.CLUBS, Card.VALUEK, Card.TYPEGUN));
-        cards.add(new Gun(Card.CARDWINCHESTER, Card.SPADES, Card.VALUE8, Card.TYPEGUN));
-        cards.add(new Card(Card.CARDBARREL, Card.SPADES, Card.VALUEK, Card.TYPEITEM));
-        cards.add(new Gun(Card.CARDREVCARBINE, Card.CLUBS, Card.VALUEA, Card.TYPEGUN));
+        cards.add(new Card(Card.CARDBARREL, CardSuit.SPADES, CardValue.QUEEN, CardType.ITEM));
+        cards.add(new Card(Card.CARDSCOPE, CardSuit.SPADES, CardValue.ACE, CardType.ITEM));
+        cards.add(new Card(Card.CARDMUSTANG, CardSuit.HEARTS, CardValue.EIGHT, CardType.ITEM));
+        cards.add(new Card(Card.CARDMUSTANG, CardSuit.HEARTS, CardValue.NINE, CardType.ITEM));
+        cards.add(new Jail(Card.CARDJAIL, CardSuit.SPADES, CardValue.JACK, CardType.ITEM));
+        cards.add(new Jail(Card.CARDJAIL, CardSuit.SPADES, CardValue.TEN, CardType.ITEM));
+        cards.add(new Jail(Card.CARDJAIL, CardSuit.HEARTS, CardValue.FOUR, CardType.ITEM));
+        cards.add(new Card(Card.CARDDYNAMITE, CardSuit.HEARTS, CardValue.TWO, CardType.ITEM));
+        cards.add(new Gun(Card.CARDSCHOFIELD, CardSuit.SPADES, CardValue.KING, CardType.GUN));
+        cards.add(new Gun(Card.CARDSCHOFIELD, CardSuit.CLUBS, CardValue.JACK, CardType.GUN));
+        cards.add(new Gun(Card.CARDSCHOFIELD, CardSuit.CLUBS, CardValue.QUEEN, CardType.GUN));
+        cards.add(new Gun(Card.CARDVOLCANIC, CardSuit.SPADES, CardValue.TEN, CardType.GUN));
+        cards.add(new Gun(Card.CARDVOLCANIC, CardSuit.CLUBS, CardValue.TEN, CardType.GUN));
+        cards.add(new Gun(Card.CARDREMINGTON, CardSuit.CLUBS, CardValue.KING, CardType.GUN));
+        cards.add(new Gun(Card.CARDWINCHESTER, CardSuit.SPADES, CardValue.EIGHT, CardType.GUN));
+        cards.add(new Card(Card.CARDBARREL, CardSuit.SPADES, CardValue.KING, CardType.ITEM));
+        cards.add(new Gun(Card.CARDREVCARBINE, CardSuit.CLUBS, CardValue.ACE, CardType.GUN));
         //Brown cards
-        cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE7, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUE8, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUE9, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE3, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUEK, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUE6, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUE10, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE4, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUEA, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUEQ, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE5, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.HEARTS, Card.VALUEA, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE9, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUE5, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE6, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUE2, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.HEARTS, Card.VALUEQ, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUEJ, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.HEARTS, Card.VALUEK, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE8, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUE4, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE2, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.SPADES, Card.VALUEA, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUE3, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.DIAMONDS, Card.VALUE7, Card.TYPEPLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.SEVEN, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.EIGHT, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.NINE, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.THREE, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.KING, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.SIX, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.TEN, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.FOUR, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.ACE, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.QUEEN, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.FIVE, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.HEARTS, CardValue.ACE, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.NINE, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.FIVE, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.SIX, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.TWO, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.HEARTS, CardValue.QUEEN, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.JACK, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.HEARTS, CardValue.KING, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.EIGHT, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.FOUR, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.TWO, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.SPADES, CardValue.ACE, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.THREE, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.SEVEN, CardType.PLAY));
 
-        cards.add(new Missed(Card.CARDMISSED, Card.SPADES, Card.VALUE7, Card.TYPEPLAY));
-        cards.add(new Missed(Card.CARDMISSED, Card.SPADES, Card.VALUE3, Card.TYPEPLAY));
-        cards.add(new Missed(Card.CARDMISSED, Card.SPADES, Card.VALUE5, Card.TYPEPLAY));
-        cards.add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEK, Card.TYPEPLAY));
-        cards.add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEA, Card.TYPEPLAY));
-        cards.add(new Missed(Card.CARDMISSED, Card.SPADES, Card.VALUE8, Card.TYPEPLAY));
-        cards.add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEJ, Card.TYPEPLAY));
-        cards.add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
-        cards.add(new Missed(Card.CARDMISSED, Card.SPADES, Card.VALUE6, Card.TYPEPLAY));
-        cards.add(new Missed(Card.CARDMISSED, Card.CLUBS, Card.VALUE10, Card.TYPEPLAY));
-        cards.add(new Missed(Card.CARDMISSED, Card.SPADES, Card.VALUE2, Card.TYPEPLAY));
-        cards.add(new Missed(Card.CARDMISSED, Card.SPADES, Card.VALUE4, Card.TYPEPLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.SEVEN, CardType.PLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.THREE, CardType.PLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.FIVE, CardType.PLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.CLUBS, CardValue.KING, CardType.PLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.CLUBS, CardValue.ACE, CardType.PLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.EIGHT, CardType.PLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.CLUBS, CardValue.JACK, CardType.PLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.CLUBS, CardValue.QUEEN, CardType.PLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.SIX, CardType.PLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.CLUBS, CardValue.TEN, CardType.PLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.TWO, CardType.PLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.FOUR, CardType.PLAY));
 
-        cards.add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE6, Card.TYPEPLAY));
-        cards.add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE7, Card.TYPEPLAY));
-        cards.add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE8, Card.TYPEPLAY));
-        cards.add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE9, Card.TYPEPLAY));
-        cards.add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE10, Card.TYPEPLAY));
-        cards.add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUEJ, Card.TYPEPLAY));
+        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.SIX, CardType.PLAY));
+        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.SEVEN, CardType.PLAY));
+        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.EIGHT, CardType.PLAY));
+        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.NINE, CardType.PLAY));
+        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.TEN, CardType.PLAY));
+        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.JACK, CardType.PLAY));
 
-        cards.add(new Panic(Card.CARDPANIC, Card.DIAMONDS, Card.VALUE8, Card.TYPEPLAY));
-        cards.add(new Panic(Card.CARDPANIC, Card.HEARTS, Card.VALUEJ, Card.TYPEPLAY));
-        cards.add(new Panic(Card.CARDPANIC, Card.HEARTS, Card.VALUEQ, Card.TYPEPLAY));
-        cards.add(new Panic(Card.CARDPANIC, Card.HEARTS, Card.VALUEA, Card.TYPEPLAY));
+        cards.add(new Panic(Card.CARDPANIC, CardSuit.DIAMONDS, CardValue.EIGHT, CardType.PLAY));
+        cards.add(new Panic(Card.CARDPANIC, CardSuit.HEARTS, CardValue.JACK, CardType.PLAY));
+        cards.add(new Panic(Card.CARDPANIC, CardSuit.HEARTS, CardValue.QUEEN, CardType.PLAY));
+        cards.add(new Panic(Card.CARDPANIC, CardSuit.HEARTS, CardValue.ACE, CardType.PLAY));
 
-        cards.add(new CatBalou(Card.CARDCATBALOU, Card.DIAMONDS, Card.VALUE10, Card.TYPEPLAY));
-        cards.add(new CatBalou(Card.CARDCATBALOU, Card.DIAMONDS, Card.VALUE9, Card.TYPEPLAY));
-        cards.add(new CatBalou(Card.CARDCATBALOU, Card.DIAMONDS, Card.VALUEJ, Card.TYPEPLAY));
-        cards.add(new CatBalou(Card.CARDCATBALOU, Card.HEARTS, Card.VALUEK, Card.TYPEPLAY));
+        cards.add(new CatBalou(Card.CARDCATBALOU, CardSuit.DIAMONDS, CardValue.TEN, CardType.PLAY));
+        cards.add(new CatBalou(Card.CARDCATBALOU, CardSuit.DIAMONDS, CardValue.NINE, CardType.PLAY));
+        cards.add(new CatBalou(Card.CARDCATBALOU, CardSuit.DIAMONDS, CardValue.JACK, CardType.PLAY));
+        cards.add(new CatBalou(Card.CARDCATBALOU, CardSuit.HEARTS, CardValue.KING, CardType.PLAY));
 
-        cards.add(new Duel(Card.CARDDUEL, Card.CLUBS, Card.VALUE8, Card.TYPEPLAY));
-        cards.add(new Duel(Card.CARDDUEL, Card.DIAMONDS, Card.VALUEQ, Card.TYPEPLAY));
-        cards.add(new Duel(Card.CARDDUEL, Card.SPADES, Card.VALUEJ, Card.TYPEPLAY));
+        cards.add(new Duel(Card.CARDDUEL, CardSuit.CLUBS, CardValue.EIGHT, CardType.PLAY));
+        cards.add(new Duel(Card.CARDDUEL, CardSuit.DIAMONDS, CardValue.QUEEN, CardType.PLAY));
+        cards.add(new Duel(Card.CARDDUEL, CardSuit.SPADES, CardValue.JACK, CardType.PLAY));
 
-        cards.add(new Stagecoach(Card.CARDSTAGECOACH, Card.SPADES, Card.VALUE9, Card.TYPEPLAY));
-        cards.add(new Stagecoach(Card.CARDSTAGECOACH, Card.SPADES, Card.VALUE9, Card.TYPEPLAY));
+        cards.add(new Stagecoach(Card.CARDSTAGECOACH, CardSuit.SPADES, CardValue.NINE, CardType.PLAY));
+        cards.add(new Stagecoach(Card.CARDSTAGECOACH, CardSuit.SPADES, CardValue.NINE, CardType.PLAY));
 
-        cards.add(new Indians(Card.CARDINDIANS, Card.DIAMONDS, Card.VALUEK, Card.TYPEPLAY));
-        cards.add(new Indians(Card.CARDINDIANS, Card.DIAMONDS, Card.VALUEA, Card.TYPEPLAY));
+        cards.add(new Indians(Card.CARDINDIANS, CardSuit.DIAMONDS, CardValue.KING, CardType.PLAY));
+        cards.add(new Indians(Card.CARDINDIANS, CardSuit.DIAMONDS, CardValue.ACE, CardType.PLAY));
 
-        cards.add(new GeneralStore(Card.CARDGENERALSTORE, Card.SPADES, Card.VALUEQ, Card.TYPEPLAY));
-        cards.add(new GeneralStore(Card.CARDGENERALSTORE, Card.SPADES, Card.VALUEQ, Card.TYPEPLAY));
+        cards.add(new GeneralStore(Card.CARDGENERALSTORE, CardSuit.SPADES, CardValue.QUEEN, CardType.PLAY));
+        cards.add(new GeneralStore(Card.CARDGENERALSTORE, CardSuit.SPADES, CardValue.QUEEN, CardType.PLAY));
 
-        cards.add(new Gatling(Card.CARDGATLING, Card.HEARTS, Card.VALUE10, Card.TYPEPLAY));
+        cards.add(new Gatling(Card.CARDGATLING, CardSuit.HEARTS, CardValue.TEN, CardType.PLAY));
 
-        cards.add(new Saloon(Card.CARDSALOON, Card.HEARTS, Card.VALUE5, Card.TYPEPLAY));
+        cards.add(new Saloon(Card.CARDSALOON, CardSuit.HEARTS, CardValue.FIVE, CardType.PLAY));
 
-        cards.add(new WellsFargo(Card.CARDWELLSFARGO, Card.HEARTS, Card.VALUE3, Card.TYPEPLAY));
+        cards.add(new WellsFargo(Card.CARDWELLSFARGO, CardSuit.HEARTS, CardValue.THREE, CardType.PLAY));
         return cards;
     }
 
     public static ArrayList<Card> makeSidestepDeck() {
         ArrayList<Card> cards = new ArrayList<>();
         //Blue cards
-        cards.add(new Gun(Card.CARDREMINGTON, Card.DIAMONDS, Card.VALUE6, Card.TYPEGUN));
-        cards.add(new Gun(Card.CARDREVCARBINE, Card.SPADES, Card.VALUE5, Card.TYPEGUN));
-        cards.add(new Card(Card.CARDBARREL, Card.CLUBS, Card.VALUEA, Card.TYPEITEM));
-        cards.add(new Card(Card.CARDDYNAMITE, Card.CLUBS, Card.VALUE10, Card.TYPEITEM));
-        cards.add(new Card(Card.CARDMUSTANG, Card.HEARTS, Card.VALUE5, Card.TYPEITEM));
-        cards.add(new Card(Card.CARDSILVER, Card.DIAMONDS, Card.VALUE10, Card.TYPEITEM));
-        cards.add(new Card(Card.CARDHIDEOUT, Card.DIAMONDS, Card.VALUEK, Card.TYPEITEM));
-        cards.add(new Card(Card.CARDHIDEOUT, Card.DIAMONDS, Card.VALUEK, Card.TYPEITEM));
+        cards.add(new Gun(Card.CARDREMINGTON, CardSuit.DIAMONDS, CardValue.SIX, CardType.GUN));
+        cards.add(new Gun(Card.CARDREVCARBINE, CardSuit.SPADES, CardValue.FIVE, CardType.GUN));
+        cards.add(new Card(Card.CARDBARREL, CardSuit.CLUBS, CardValue.ACE, CardType.ITEM));
+        cards.add(new Card(Card.CARDDYNAMITE, CardSuit.CLUBS, CardValue.TEN, CardType.ITEM));
+        cards.add(new Card(Card.CARDMUSTANG, CardSuit.HEARTS, CardValue.FIVE, CardType.ITEM));
+        cards.add(new Card(Card.CARDSILVER, CardSuit.DIAMONDS, CardValue.TEN, CardType.ITEM));
+        cards.add(new Card(Card.CARDHIDEOUT, CardSuit.DIAMONDS, CardValue.KING, CardType.ITEM));
+        cards.add(new Card(Card.CARDHIDEOUT, CardSuit.DIAMONDS, CardValue.KING, CardType.ITEM));
 
         //Green cards
-        cards.add(new Conestoga(Card.CARDCONESTOGA, Card.DIAMONDS, Card.VALUE9, Card.TYPESINGLEUSEITEM));
-        cards.add(new BuffaloRifle(Card.CARDBUFFALORIFLE, Card.CLUBS, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
-        cards.add(new CanCan(Card.CARDCANCAN, Card.CLUBS, Card.VALUEJ, Card.TYPESINGLEUSEITEM));
-        cards.add(new Howitzer(Card.CARDHOWITZER, Card.SPADES, Card.VALUE9, Card.TYPESINGLEUSEITEM));
-        cards.add(new Canteen(Card.CARDCANTEEN, Card.HEARTS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
-        cards.add(new Knife(Card.CARDKNIFE, Card.HEARTS, Card.VALUE8, Card.TYPESINGLEUSEITEM));
-        cards.add(new Pepperbox(Card.CARDPEPPERBOX, Card.CLUBS, Card.VALUE10, Card.TYPESINGLEUSEITEM));
-        cards.add(new Derringer(Card.CARDDERRINGER, Card.SPADES, Card.VALUE7, Card.TYPESINGLEUSEITEM));
-        cards.add(new PonyExpress(Card.CARDPONYEXPRESS, Card.DIAMONDS, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
-        cards.add(new SingleUseMissed(Card.CARDSOMBRERO, Card.CLUBS, Card.VALUE7, Card.TYPESINGLEUSEITEM));
-        cards.add(new SingleUseMissed(Card.CARDBIBLE, Card.HEARTS, Card.VALUE10, Card.TYPESINGLEUSEITEM));
-        cards.add(new SingleUseMissed(Card.CARDIRONPLATE, Card.DIAMONDS, Card.VALUEA, Card.TYPESINGLEUSEITEM));
-        cards.add(new SingleUseMissed(Card.CARDIRONPLATE, Card.SPADES, Card.VALUEQ, Card.TYPESINGLEUSEITEM));
-        cards.add(new SingleUseMissed(Card.CARDTENGALLONHAT, Card.DIAMONDS, Card.VALUEJ, Card.TYPESINGLEUSEITEM));
+        cards.add(new Conestoga(Card.CARDCONESTOGA, CardSuit.DIAMONDS, CardValue.NINE, CardType.SINGLE_USE_ITEM));
+        cards.add(new BuffaloRifle(Card.CARDBUFFALORIFLE, CardSuit.CLUBS, CardValue.QUEEN, CardType.SINGLE_USE_ITEM));
+        cards.add(new CanCan(Card.CARDCANCAN, CardSuit.CLUBS, CardValue.JACK, CardType.SINGLE_USE_ITEM));
+        cards.add(new Howitzer(Card.CARDHOWITZER, CardSuit.SPADES, CardValue.NINE, CardType.SINGLE_USE_ITEM));
+        cards.add(new Canteen(Card.CARDCANTEEN, CardSuit.HEARTS, CardValue.SEVEN, CardType.SINGLE_USE_ITEM));
+        cards.add(new Knife(Card.CARDKNIFE, CardSuit.HEARTS, CardValue.EIGHT, CardType.SINGLE_USE_ITEM));
+        cards.add(new Pepperbox(Card.CARDPEPPERBOX, CardSuit.CLUBS, CardValue.TEN, CardType.SINGLE_USE_ITEM));
+        cards.add(new Derringer(Card.CARDDERRINGER, CardSuit.SPADES, CardValue.SEVEN, CardType.SINGLE_USE_ITEM));
+        cards.add(new PonyExpress(Card.CARDPONYEXPRESS, CardSuit.DIAMONDS, CardValue.QUEEN, CardType.SINGLE_USE_ITEM));
+        cards.add(new SingleUseMissed(Card.CARDSOMBRERO, CardSuit.CLUBS, CardValue.SEVEN, CardType.SINGLE_USE_ITEM));
+        cards.add(new SingleUseMissed(Card.CARDBIBLE, CardSuit.HEARTS, CardValue.TEN, CardType.SINGLE_USE_ITEM));
+        cards.add(new SingleUseMissed(Card.CARDIRONPLATE, CardSuit.DIAMONDS, CardValue.ACE, CardType.SINGLE_USE_ITEM));
+        cards.add(new SingleUseMissed(Card.CARDIRONPLATE, CardSuit.SPADES, CardValue.QUEEN, CardType.SINGLE_USE_ITEM));
+        cards.add(new SingleUseMissed(Card.CARDTENGALLONHAT, CardSuit.DIAMONDS, CardValue.JACK, CardType.SINGLE_USE_ITEM));
 
         //Brown cards
-        cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE5, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEK, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUE6, Card.TYPEPLAY));
-        cards.add(new Bang(Card.CARDBANG, Card.SPADES, Card.VALUE8, Card.TYPEPLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.FIVE, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.KING, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.SIX, CardType.PLAY));
+        cards.add(new Bang(Card.CARDBANG, CardSuit.SPADES, CardValue.EIGHT, CardType.PLAY));
 
-        cards.add(new Missed(Card.CARDMISSED, Card.DIAMONDS, Card.VALUE8, Card.TYPEPLAY));
+        cards.add(new Missed(Card.CARDMISSED, CardSuit.DIAMONDS, CardValue.EIGHT, CardType.PLAY));
 
-        cards.add(new Beer(Card.CARDBEER, Card.HEARTS, Card.VALUE6, Card.TYPEPLAY));
-        cards.add(new Beer(Card.CARDBEER, Card.SPADES, Card.VALUE6, Card.TYPEPLAY));
+        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.SIX, CardType.PLAY));
+        cards.add(new Beer(Card.CARDBEER, CardSuit.SPADES, CardValue.SIX, CardType.PLAY));
 
-        cards.add(new Panic(Card.CARDPANIC, Card.HEARTS, Card.VALUEJ, Card.TYPEPLAY));
+        cards.add(new Panic(Card.CARDPANIC, CardSuit.HEARTS, CardValue.JACK, CardType.PLAY));
 
-        cards.add(new CatBalou(Card.CARDCATBALOU, Card.CLUBS, Card.VALUE8, Card.TYPEPLAY));
+        cards.add(new CatBalou(Card.CARDCATBALOU, CardSuit.CLUBS, CardValue.EIGHT, CardType.PLAY));
 
-        cards.add(new Indians(Card.CARDINDIANS, Card.DIAMONDS, Card.VALUE5, Card.TYPEPLAY));
+        cards.add(new Indians(Card.CARDINDIANS, CardSuit.DIAMONDS, CardValue.FIVE, CardType.PLAY));
 
-        cards.add(new RagTime(Card.CARDRAGTIME, Card.HEARTS, Card.VALUE9, Card.TYPEPLAY));
+        cards.add(new RagTime(Card.CARDRAGTIME, CardSuit.HEARTS, CardValue.NINE, CardType.PLAY));
 
-        cards.add(new Dodge(Card.CARDDODGE, Card.DIAMONDS, Card.VALUE7, Card.TYPEPLAY));
-        cards.add(new Dodge(Card.CARDDODGE, Card.HEARTS, Card.VALUEK, Card.TYPEPLAY));
+        cards.add(new Dodge(Card.CARDDODGE, CardSuit.DIAMONDS, CardValue.SEVEN, CardType.PLAY));
+        cards.add(new Dodge(Card.CARDDODGE, CardSuit.HEARTS, CardValue.KING, CardType.PLAY));
 
-        cards.add(new Whisky(Card.CARDWHISKY, Card.HEARTS, Card.VALUEQ, Card.TYPEPLAY));
+        cards.add(new Whisky(Card.CARDWHISKY, CardSuit.HEARTS, CardValue.QUEEN, CardType.PLAY));
 
-        cards.add(new Punch(Card.CARDPUNCH, Card.SPADES, Card.VALUE10, Card.TYPEPLAY));
+        cards.add(new Punch(Card.CARDPUNCH, CardSuit.SPADES, CardValue.TEN, CardType.PLAY));
 
-        cards.add(new Tequila(Card.CARDTEQUILA, Card.CLUBS, Card.VALUE9, Card.TYPEPLAY));
+        cards.add(new Tequila(Card.CARDTEQUILA, CardSuit.CLUBS, CardValue.NINE, CardType.PLAY));
 
-        cards.add(new Brawl(Card.CARDBRAWL, Card.SPADES, Card.VALUEJ, Card.TYPEPLAY));
+        cards.add(new Brawl(Card.CARDBRAWL, CardSuit.SPADES, CardValue.JACK, CardType.PLAY));
 
-        cards.add(new Springfield(Card.CARDSPRINGFIELD, Card.SPADES, Card.VALUEJ, Card.TYPEPLAY));
-
+        cards.add(new Springfield(Card.CARDSPRINGFIELD, CardSuit.SPADES, CardValue.JACK, CardType.PLAY));
 
         return cards;
     }

@@ -10,27 +10,6 @@ import java.util.Objects;
 
 public class Card implements Playable {
 
-    public static final int HEARTS = 0;
-    public static final int CLUBS = 1;
-    public static final int SPADES = 2;
-    public static final int DIAMONDS = 3;
-    public static final int VALUE2 = 0;
-    public static final int VALUE3 = 1;
-    public static final int VALUE4 = 2;
-    public static final int VALUE5 = 3;
-    public static final int VALUE6 = 4;
-    public static final int VALUE7 = 5;
-    public static final int VALUE8 = 6;
-    public static final int VALUE9 = 7;
-    public static final int VALUE10 = 8;
-    public static final int VALUEJ = 9;
-    public static final int VALUEQ = 10;
-    public static final int VALUEK = 11;
-    public static final int VALUEA = 12;
-    public static final int TYPEGUN = 0;
-    public static final int TYPEITEM = 1;
-    public static final int TYPEPLAY = 2;
-    public static final int TYPESINGLEUSEITEM = 3;
     public static final String CARDBARREL = "Barrel";
     public static final String CARDSCOPE = "Scope";
     public static final String CARDMUSTANG = "Mustang";
@@ -78,15 +57,15 @@ public class Card implements Playable {
 
 
     private String name;
-    private int suit;
-    private int value;
-    private int type;
+    private CardSuit suit;
+    private CardValue value;
+    private CardType type;
 
     public Card() {
 
     }
 
-    public Card(String name, int suit, int value, int type) {
+    public Card(String name, CardSuit suit, CardValue value, CardType type) {
         this.name = name;
         this.suit = suit;
         this.value = value;
@@ -101,27 +80,27 @@ public class Card implements Playable {
         return name;
     }
 
-    public void setSuit(int suit) {
+    public void setSuit(CardSuit suit) {
         this.suit = suit;
     }
 
-    public int getSuit() {
+    public CardSuit getSuit() {
         return suit;
     }
 
-    public void setValue(int value) {
+    public void setValue(CardValue value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public CardValue getValue() {
         return value;
     }
 
-    public void setType(int type) {
+    public void setType(CardType type) {
         this.type = type;
     }
 
-    public int getType() {
+    public CardType getType() {
         return type;
     }
 
@@ -140,56 +119,10 @@ public class Card implements Playable {
     }
 
     public static boolean isExplode(Card drawnCard) {
-        if (drawnCard.suit == SPADES) {
-            return drawnCard.value < 8;
+        if (drawnCard.suit == CardSuit.SPADES) {
+            return drawnCard.value.getValue() < 8;
         }
         return false;
-    }
-
-    public static String suitToString(int suit) {
-        if (suit == HEARTS) {
-            return "Hearts";
-        } else if (suit == CLUBS) {
-            return "Clubs";
-        } else if (suit == SPADES) {
-            return "Spades";
-        } else if (suit == DIAMONDS) {
-            return "Diamonds";
-        } else {
-            throw new RuntimeException("Invalid Suit");
-        }
-    }
-
-    public static String valueToString(int value) {
-        if (value == VALUE2) {
-            return "2";
-        } else if (value == VALUE3) {
-            return "3";
-        } else if (value == VALUE4) {
-            return "4";
-        } else if (value == VALUE5) {
-            return "5";
-        } else if (value == VALUE6) {
-            return "6";
-        } else if (value == VALUE7) {
-            return "7";
-        } else if (value == VALUE8) {
-            return "8";
-        } else if (value == VALUE9) {
-            return "9";
-        } else if (value == VALUE10) {
-            return "10";
-        } else if (value == VALUEJ) {
-            return "J";
-        } else if (value == VALUEQ) {
-            return "Q";
-        } else if (value == VALUEK) {
-            return "K";
-        } else if (value == VALUEA) {
-            return "A";
-        } else {
-            throw new RuntimeException("Invalid value");
-        }
     }
 
     @Override
@@ -224,14 +157,6 @@ public class Card implements Playable {
         return targets;
     }
 
-    public static String typeToString(int type) {
-        if (TYPEGUN == type || TYPEITEM == type || TYPESINGLEUSEITEM == type) {
-            return "Item";
-        } else {
-            return "Play";
-        }
-    }
-
     public boolean shoot(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard) {
         return shoot(currentPlayer, players, userInterface, deck, discard, turn, skipDiscard, null);
     }
@@ -245,7 +170,7 @@ public class Card implements Playable {
         }
         if (!(otherPlayer instanceof CancelPlayer)) {
             userInterface.printInfo(currentPlayer.getName() + " Shoots " + otherPlayer.getName());
-            if (Character.APACHEKID.equals(otherPlayer.getCharacter()) && this.getSuit() == Card.DIAMONDS) {
+            if (Character.APACHEKID.equals(otherPlayer.getCharacter()) && this.getSuit() == CardSuit.DIAMONDS) {
                 userInterface.printInfo(otherPlayer.getName() + " is unaffected by diamond " + this.getName());
                 if (!skipDiscard) {
                     discard.add(this);

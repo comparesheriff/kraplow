@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Whisky extends Card implements Playable {
-    public Whisky(String name, int suit, int value, int type) {
+    public Whisky(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

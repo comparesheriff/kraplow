@@ -3,6 +3,7 @@ package com.chriscarr.bang.userinterface;
 import com.chriscarr.bang.*;
 import com.chriscarr.bang.Character;
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.CardType;
 import com.chriscarr.bang.cards.SingleUseMissed;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateListener;
@@ -104,11 +105,11 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
             for (String otherName : targets) {
                 targetString.append(otherName).append("$");
             }
-            handCards.append(name).append("^").append(Card.suitToString(card.getSuit())).append("^").append(Card.valueToString(card.getValue())).append("@").append(canPlay).append("@").append(targetString).append(", ");
+            handCards.append(name).append("^").append(card.getSuit().getLabel()).append("^").append(card.getValue().getLabel()).append("@").append(canPlay).append("@").append(targetString).append(", ");
         }
         InPlay inPlay = player.getInPlay();
         for (Card card : inPlay) {
-            if (card.getType() == Card.TYPESINGLEUSEITEM) {
+            if (card.getType() == CardType.SINGLE_USE_ITEM) {
                 String name = card.getName();
                 boolean canPlay = turn.canPlay(player, card);
                 List<String> targets = turn.targets(player, card);
@@ -116,7 +117,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
                 for (String otherName : targets) {
                     targetString.append(otherName).append("$");
                 }
-                handCards.append(name).append("^").append(Card.suitToString(card.getSuit())).append("^").append(Card.valueToString(card.getValue())).append("@").append(canPlay).append("@").append(targetString).append(", ");
+                handCards.append(name).append("^").append(card.getSuit().getLabel()).append("^").append(card.getValue().getLabel()).append("@").append(canPlay).append("@").append(targetString).append(", ");
             }
         }
         if (Character.CHUCKWENGAM.equals(player.getCharacter())) {
@@ -154,7 +155,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
     public int chooseCardToPutBack(Player player, List<Card> cards) {
         StringBuilder cardString = new StringBuilder();
         for (Card card : cards) {
-            cardString.append(card.getName()).append("^").append(Card.suitToString(card.getSuit())).append("^").append(Card.valueToString(card.getValue())).append(", ");
+            cardString.append(card.getName()).append("^").append(card.getSuit().getLabel()).append("^").append(card.getValue().getLabel()).append(", ");
         }
         sendMessage(player.getName(), "chooseCardToPutBack " + cardString);
         waitForResponse(player.getName());
@@ -173,7 +174,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
     public int chooseDrawCard(Player player, List<Card> cards) {
         StringBuilder cardString = new StringBuilder();
         for (Card card : cards) {
-            cardString.append(card.getName()).append("^").append(Card.suitToString(card.getSuit())).append("^").append(Card.valueToString(card.getValue())).append(", ");
+            cardString.append(card.getName()).append("^").append(card.getSuit().getLabel()).append("^").append(card.getValue().getLabel()).append(", ");
         }
         sendMessage(player.getName(), "chooseDrawCard " + cardString);
         waitForResponse(player.getName());

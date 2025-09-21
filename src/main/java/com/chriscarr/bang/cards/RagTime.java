@@ -6,7 +6,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class RagTime extends Card implements Playable {
-    public RagTime(String name, int suit, int value, int type) {
+    public RagTime(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

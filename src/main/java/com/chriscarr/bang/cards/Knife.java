@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Knife extends SingleUse implements Playable {
 
-    public Knife(String name, int suit, int value, int type) {
+    public Knife(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

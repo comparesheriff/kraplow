@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Canteen extends SingleUse implements Playable {
 
-    public Canteen(String name, int suit, int value, int type) {
+    public Canteen(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

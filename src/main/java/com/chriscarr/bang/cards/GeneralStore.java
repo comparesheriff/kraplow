@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GeneralStore extends Card implements Playable {
-    public GeneralStore(String name, int suit, int value, int type) {
+    public GeneralStore(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

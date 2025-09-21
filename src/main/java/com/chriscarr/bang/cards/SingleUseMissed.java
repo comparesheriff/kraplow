@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SingleUseMissed extends SingleUse implements Playable {
 
-    public SingleUseMissed(String name, int suit, int value, int type) {
+    public SingleUseMissed(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

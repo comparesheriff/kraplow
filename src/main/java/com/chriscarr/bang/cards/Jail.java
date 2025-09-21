@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class Jail extends Card implements Playable {
 
-    public Jail(String name, int suit, int value, int type) {
+    public Jail(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

@@ -7,7 +7,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class Bang extends Card implements Playable {
-    public Bang(String name, int suit, int value, int type) {
+    public Bang(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

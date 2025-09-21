@@ -11,7 +11,7 @@ import java.util.List;
 
 public class WellsFargo extends Card implements Playable {
 
-    public WellsFargo(String name, int suit, int value, int type) {
+    public WellsFargo(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

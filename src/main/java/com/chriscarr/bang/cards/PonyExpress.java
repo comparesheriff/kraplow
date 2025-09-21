@@ -7,7 +7,7 @@ import java.util.List;
 
 public class PonyExpress extends SingleUse implements Playable {
 
-    public PonyExpress(String name, int suit, int value, int type) {
+    public PonyExpress(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

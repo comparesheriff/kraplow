@@ -1,8 +1,7 @@
 package com.chriscarr;
 
 import com.chriscarr.bang.InPlay;
-import com.chriscarr.bang.cards.Card;
-import com.chriscarr.bang.cards.Gun;
+import com.chriscarr.bang.cards.*;
 import junit.framework.TestCase;
 
 public class InPlayTest extends TestCase {
@@ -13,13 +12,13 @@ public class InPlayTest extends TestCase {
 
     public void testDoesHaveGun() {
         InPlay inPlay = new InPlay();
-        inPlay.setGun(new Gun("", 0, 0, 0));
+        inPlay.setGun(new Gun(Card.CARDVOLCANIC, CardSuit.SPADES, CardValue.ACE, CardType.GUN));
         assertTrue(inPlay.hasGun());
     }
 
     public void testRemoveGun() {
         InPlay inPlay = new InPlay();
-        Gun gun = new Gun("", 0, 0, 0);
+        Gun gun = new Gun(Card.CARDSCHOFIELD, CardSuit.HEARTS, CardValue.KING, CardType.GUN);
         inPlay.setGun(gun);
         Gun removedGun = inPlay.removeGun();
         assertEquals(removedGun, gun);
@@ -27,7 +26,7 @@ public class InPlayTest extends TestCase {
 
     public void testRemovedGun() {
         InPlay inPlay = new InPlay();
-        Gun gun = new Gun("", 0, 0, 0);
+        Gun gun = new Gun(Card.CARDREMINGTON, CardSuit.DIAMONDS, CardValue.QUEEN, CardType.GUN);
         inPlay.setGun(gun);
         inPlay.removeGun();
         assertFalse(inPlay.hasGun());
@@ -62,7 +61,7 @@ public class InPlayTest extends TestCase {
     public void testSameNameReject() {
         InPlay inPlay = new InPlay();
         assertFalse(inPlay.hasItem(Card.CARDBARREL));
-        inPlay.add(new Card(Card.CARDBARREL, Card.SPADES, Card.VALUEQ, Card.TYPEITEM));
+        inPlay.add(new Card(Card.CARDBARREL, CardSuit.SPADES, CardValue.QUEEN, CardType.ITEM));
         assertTrue(inPlay.hasItem(Card.CARDBARREL));
         assertFalse(inPlay.hasItem(Card.CARDSCOPE));
     }

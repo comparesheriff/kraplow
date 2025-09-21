@@ -9,7 +9,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class Punch extends Card implements Playable {
-    public Punch(String name, int suit, int value, int type) {
+    public Punch(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Derringer extends SingleUse implements Playable {
 
-    public Derringer(String name, int suit, int value, int type) {
+    public Derringer(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

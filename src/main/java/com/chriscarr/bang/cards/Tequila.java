@@ -6,7 +6,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class Tequila extends Card implements Playable {
-    public Tequila(String name, int suit, int value, int type) {
+    public Tequila(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

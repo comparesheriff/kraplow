@@ -7,7 +7,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class Panic extends Card implements Playable {
-    public Panic(String name, int suit, int value, int type) {
+    public Panic(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -31,7 +31,7 @@ public class Panic extends Card implements Playable {
      */
     public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
         Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
-        if (Character.APACHEKID.equals(otherPlayer.getCharacter()) && this.getSuit() == Card.DIAMONDS) {
+        if (Character.APACHEKID.equals(otherPlayer.getCharacter()) && this.getSuit() == CardSuit.DIAMONDS) {
             userInterface.printInfo(otherPlayer.getName() + " is unaffected by diamond Panic!");
             return true;
         }

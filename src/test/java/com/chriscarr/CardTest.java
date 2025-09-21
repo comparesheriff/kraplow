@@ -1,6 +1,9 @@
 package com.chriscarr;
 
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.CardSuit;
+import com.chriscarr.bang.cards.CardType;
+import com.chriscarr.bang.cards.CardValue;
 import junit.framework.TestCase;
 
 public class CardTest extends TestCase {
@@ -22,62 +25,62 @@ public class CardTest extends TestCase {
 
     public void testSetGetSuit() {
         Card card = new Card();
-        int setSuit = Card.HEARTS;
+        CardSuit setSuit = CardSuit.HEARTS;
         card.setSuit(setSuit);
-        int gotSuit = card.getSuit();
+        CardSuit gotSuit = card.getSuit();
         assertEquals(setSuit, gotSuit);
     }
 
     public void testSetGetSuitClubs() {
         Card card = new Card();
-        int setSuit = Card.CLUBS;
+        CardSuit setSuit = CardSuit.CLUBS;
         card.setSuit(setSuit);
-        int gotSuit = card.getSuit();
+        CardSuit gotSuit = card.getSuit();
         assertEquals(setSuit, gotSuit);
     }
 
     public void testSetGetSuitSpades() {
         Card card = new Card();
-        int setSuit = Card.SPADES;
+        CardSuit setSuit = CardSuit.SPADES;
         card.setSuit(setSuit);
-        int gotSuit = card.getSuit();
+        CardSuit gotSuit = card.getSuit();
         assertEquals(setSuit, gotSuit);
     }
 
     public void testSetGetSuitDiamonds() {
         Card card = new Card();
-        int setSuit = Card.DIAMONDS;
+        CardSuit setSuit = CardSuit.DIAMONDS;
         card.setSuit(setSuit);
-        int gotSuit = card.getSuit();
+        CardSuit gotSuit = card.getSuit();
         assertEquals(setSuit, gotSuit);
     }
 
     public void testSetGetValue() {
         Card card = new Card();
-        card.setValue(Card.VALUE2);
-        card.setValue(Card.VALUE3);
-        card.setValue(Card.VALUE4);
-        card.setValue(Card.VALUE5);
-        card.setValue(Card.VALUE6);
-        card.setValue(Card.VALUE7);
-        card.setValue(Card.VALUE8);
-        card.setValue(Card.VALUE9);
-        card.setValue(Card.VALUE10);
-        card.setValue(Card.VALUEJ);
-        card.setValue(Card.VALUEQ);
-        card.setValue(Card.VALUEK);
-        card.setValue(Card.VALUEA);
-        int valueGot = card.getValue();
-        assertEquals(Card.VALUEA, valueGot);
+        card.setValue(CardValue.TWO);
+        card.setValue(CardValue.THREE);
+        card.setValue(CardValue.FOUR);
+        card.setValue(CardValue.FIVE);
+        card.setValue(CardValue.SIX);
+        card.setValue(CardValue.SEVEN);
+        card.setValue(CardValue.EIGHT);
+        card.setValue(CardValue.NINE);
+        card.setValue(CardValue.TEN);
+        card.setValue(CardValue.JACK);
+        card.setValue(CardValue.QUEEN);
+        card.setValue(CardValue.KING);
+        card.setValue(CardValue.ACE);
+        CardValue valueGot = card.getValue();
+        assertEquals(CardValue.ACE, valueGot);
     }
 
     public void testSetCardType() {
         Card card = new Card();
-        card.setType(Card.TYPEGUN);
-        card.setType(Card.TYPEITEM);
-        card.setType(Card.TYPEPLAY);
-        int gotType = card.getType();
-        assertEquals(Card.TYPEPLAY, gotType);
+        card.setType(CardType.GUN);
+        card.setType(CardType.ITEM);
+        card.setType(CardType.PLAY);
+        CardType gotType = card.getType();
+        assertEquals(CardType.PLAY, gotType);
     }
 
     public void testGunRange() {

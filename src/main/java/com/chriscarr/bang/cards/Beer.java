@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Beer extends Card implements Playable {
 
-    public Beer(String name, int suit, int value, int type) {
+    public Beer(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

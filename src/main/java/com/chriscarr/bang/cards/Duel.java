@@ -7,7 +7,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class Duel extends Card implements Playable {
-    public Duel(String name, int suit, int value, int type) {
+    public Duel(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -35,7 +35,7 @@ public class Duel extends Card implements Playable {
         targets.addFirst(cancelPlayer);
         Player other = Turn.getValidChosenPlayer(currentPlayer, targets, userInterface);
         if (!(other instanceof CancelPlayer)) {
-            if (Character.APACHEKID.equals(other.getCharacter()) && this.getSuit() == Card.DIAMONDS) {
+            if (Character.APACHEKID.equals(other.getCharacter()) && this.getSuit() == CardSuit.DIAMONDS) {
                 userInterface.printInfo(other.getName() + " is unaffected by diamond Duel");
                 return true;
             }

@@ -7,7 +7,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class Indians extends Card implements Playable {
-    public Indians(String name, int suit, int value, int type) {
+    public Indians(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -33,7 +33,7 @@ public class Indians extends Card implements Playable {
         Player indianPlayer = Turn.getNextPlayer(currentPlayer, players);
         while (indianPlayer != currentPlayer) {
             Player nextPlayer = Turn.getNextPlayer(indianPlayer, players);
-            if (Character.APACHEKID.equals(indianPlayer.getCharacter()) && this.getSuit() == Card.DIAMONDS) {
+            if (Character.APACHEKID.equals(indianPlayer.getCharacter()) && this.getSuit() == CardSuit.DIAMONDS) {
                 userInterface.printInfo(indianPlayer.getName() + " is unaffected by diamond Indians");
                 indianPlayer = nextPlayer;
                 continue;

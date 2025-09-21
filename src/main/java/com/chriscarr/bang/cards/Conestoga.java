@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Conestoga extends SingleUse implements Playable {
 
-    public Conestoga(String name, int suit, int value, int type) {
+    public Conestoga(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -20,7 +20,7 @@ public class Conestoga extends SingleUse implements Playable {
                             UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 
         Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
-        if (Character.APACHEKID.equals(otherPlayer.getCharacter()) && this.getSuit() == Card.DIAMONDS) {
+        if (Character.APACHEKID.equals(otherPlayer.getCharacter()) && this.getSuit() == CardSuit.DIAMONDS) {
             userInterface.printInfo(otherPlayer.getName() + " is unaffected by diamond " + this.getName());
             return true;
         }

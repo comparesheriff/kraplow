@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Gun extends Card {
-    public Gun(String name, int suit, int value, int type) {
+    public Gun(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

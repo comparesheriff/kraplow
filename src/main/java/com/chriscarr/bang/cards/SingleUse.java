@@ -11,7 +11,7 @@ public class SingleUse extends Card implements Playable {
 
     protected boolean readyToPlay = false;
 
-    public SingleUse(String name, int suit, int value, int type) {
+    public SingleUse(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

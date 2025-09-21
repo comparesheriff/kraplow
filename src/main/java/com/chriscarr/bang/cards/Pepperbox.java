@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Pepperbox extends SingleUse implements Playable {
 
-    public Pepperbox(String name, int suit, int value, int type) {
+    public Pepperbox(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

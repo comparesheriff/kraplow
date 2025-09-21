@@ -7,7 +7,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class CatBalou extends Card implements Playable {
-    public CatBalou(String name, int suit, int value, int type) {
+    public CatBalou(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -32,7 +32,7 @@ public class CatBalou extends Card implements Playable {
     public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
         discard.add(this);
         Player other = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
-        if (Character.APACHEKID.equals(other.getCharacter()) && this.getSuit() == Card.DIAMONDS) {
+        if (Character.APACHEKID.equals(other.getCharacter()) && this.getSuit() == CardSuit.DIAMONDS) {
             userInterface.printInfo(other.getName() + " is unaffected by diamond Cat Balou");
             return true;
         }

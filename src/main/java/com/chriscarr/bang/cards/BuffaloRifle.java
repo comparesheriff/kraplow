@@ -10,7 +10,7 @@ import java.util.List;
 
 public class BuffaloRifle extends SingleUse implements Playable {
 
-    public BuffaloRifle(String name, int suit, int value, int type) {
+    public BuffaloRifle(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

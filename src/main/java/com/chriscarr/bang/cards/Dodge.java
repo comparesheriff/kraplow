@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Dodge extends Bang implements Playable {
 
-    public Dodge(String name, int suit, int value, int type) {
+    public Dodge(String name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
