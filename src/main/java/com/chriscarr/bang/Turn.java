@@ -126,7 +126,7 @@ public class Turn {
                         + " will choose the abilities of another player");
                 Player chosenPlayer = getValidChosenPlayer(currentPlayer,
                         otherPlayers, userInterface);
-                currentPlayer.setAbility(chosenPlayer.getName());
+                currentPlayer.setCharacter(chosenPlayer.getCharacter());
                 userInterface.printInfo(currentPlayer.getCharacter().getName()
                         + " chose the abilities of " + chosenPlayer.getName());
             }
