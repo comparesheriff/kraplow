@@ -1,14 +1,11 @@
 package com.chriscarr.bang.cards;
 
+import com.chriscarr.bang.*;
+import com.chriscarr.bang.Character;
+import com.chriscarr.bang.userinterface.UserInterface;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.chriscarr.bang.Deck;
-import com.chriscarr.bang.Discard;
-import com.chriscarr.bang.Player;
-import com.chriscarr.bang.Turn;
-import com.chriscarr.bang.userinterface.UserInterface;
-import com.chriscarr.bang.Character;
 
 public class Beer extends Card implements Playable {
 

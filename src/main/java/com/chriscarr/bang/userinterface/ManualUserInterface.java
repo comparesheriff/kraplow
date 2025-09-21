@@ -1,21 +1,18 @@
 package com.chriscarr.bang.userinterface;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.chriscarr.bang.*;
 import com.chriscarr.bang.Character;
-import com.chriscarr.bang.Hand;
-import com.chriscarr.bang.InPlay;
-import com.chriscarr.bang.Player;
-import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.gamestate.GameStateListener;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManualUserInterface implements UserInterface, GameStateListener {
 	

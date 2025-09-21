@@ -1,9 +1,9 @@
 package com.chriscarr.bang.cards;
 
-import java.util.List;
-
 import com.chriscarr.bang.Character;
 import com.chriscarr.bang.Player;
+
+import java.util.List;
 
 public class Missed extends Bang implements Playable{
 

@@ -1,7 +1,6 @@
 package com.chriscarr;
 
 import com.chriscarr.bang.cards.Card;
-
 import junit.framework.TestCase;
 
 public class CardTest extends TestCase {

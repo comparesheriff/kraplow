@@ -1,11 +1,10 @@
 package com.chriscarr;
 
-import java.util.List;
-
 import com.chriscarr.bang.*;
 import com.chriscarr.bang.cards.Card;
-
 import junit.framework.TestCase;
+
+import java.util.List;
 
 public class SetupTest extends TestCase {
 	public void testDeck(){

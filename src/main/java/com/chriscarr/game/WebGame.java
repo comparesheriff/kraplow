@@ -1,14 +1,14 @@
 package com.chriscarr.game;
 
+import com.chriscarr.bang.Character;
+import com.chriscarr.bang.Role;
+import com.chriscarr.bang.userinterface.WebGameUserInterface;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.chriscarr.bang.Character;
-import com.chriscarr.bang.Role;
-import com.chriscarr.bang.userinterface.WebGameUserInterface;
 
 public class WebGame {
 	private static int gameCounter = 0;

@@ -1,6 +1,6 @@
 package com.chriscarr;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
 public class WebGameuserInterfaceTest extends TestCase {
 	public void testAI(){

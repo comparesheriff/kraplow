@@ -1,11 +1,11 @@
 package com.chriscarr.bang;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.cards.Gun;
 import com.chriscarr.bang.gamestate.GameStateCard;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InPlay extends ArrayList<Card> {
 

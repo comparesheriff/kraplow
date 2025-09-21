@@ -1,7 +1,6 @@
 package com.chriscarr;
 
 import com.chriscarr.bang.AlivePlayers;
-
 import junit.framework.TestCase;
 
 public class DistanceTest extends TestCase {

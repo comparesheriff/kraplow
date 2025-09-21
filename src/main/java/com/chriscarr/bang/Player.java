@@ -1,10 +1,10 @@
 package com.chriscarr.bang;
 
-import java.util.List;
-
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.cards.Gun;
 import com.chriscarr.bang.gamestate.GameStateCard;
+
+import java.util.List;
 
 public class Player {
 	public static final int SHERIFF = 0;

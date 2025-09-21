@@ -1,11 +1,8 @@
 package com.chriscarr;
 
 import com.chriscarr.bang.Discard;
-
 import com.chriscarr.bang.cards.Card;
 import junit.framework.TestCase;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DiscardTest extends TestCase{
 	public void testDiscardCard(){

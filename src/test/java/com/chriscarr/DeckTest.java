@@ -2,7 +2,6 @@ package com.chriscarr;
 
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
-
 import com.chriscarr.bang.cards.Card;
 import junit.framework.TestCase;
 

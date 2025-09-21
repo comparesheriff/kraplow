@@ -1,13 +1,13 @@
 package com.chriscarr.bang.cards;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WellsFargo extends Card implements Playable {
 

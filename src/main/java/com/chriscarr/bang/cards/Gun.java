@@ -1,14 +1,11 @@
 package com.chriscarr.bang.cards;
 
-import java.util.List;
-import java.util.Objects;
-
-import com.chriscarr.bang.Deck;
-import com.chriscarr.bang.Discard;
-import com.chriscarr.bang.Player;
-import com.chriscarr.bang.Turn;
+import com.chriscarr.bang.*;
 import com.chriscarr.bang.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
+
+import java.util.List;
+import java.util.Objects;
 
 public class Gun extends Card {
 	public Gun(String name, int suit, int value, int type) {

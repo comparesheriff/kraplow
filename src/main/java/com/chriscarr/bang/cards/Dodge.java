@@ -1,8 +1,8 @@
 package com.chriscarr.bang.cards;
 
-import java.util.List;
-
 import com.chriscarr.bang.Player;
+
+import java.util.List;
 
 public class Dodge extends Bang implements Playable{
 

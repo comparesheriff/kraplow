@@ -1,9 +1,9 @@
 package com.chriscarr.bang.cards;
 
+import com.chriscarr.bang.Player;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.chriscarr.bang.Player;
 
 public class SingleUseMissed extends SingleUse implements Playable{
 

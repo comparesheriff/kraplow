@@ -1,10 +1,10 @@
 package com.chriscarr.bang.userinterface;
 
-import java.util.List;
-
 import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
+
+import java.util.List;
 
 public interface UserInterface {
 

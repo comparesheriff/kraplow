@@ -1,11 +1,11 @@
 package com.chriscarr;
 
-import java.util.List;
-
 import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.userinterface.UserInterface;
+
+import java.util.List;
 
 public class TestPlayOneUserInterface extends TestUserInterface implements UserInterface  {
 
