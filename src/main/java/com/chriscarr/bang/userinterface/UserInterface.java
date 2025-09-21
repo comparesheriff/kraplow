@@ -8,42 +8,42 @@ import java.util.List;
 
 public interface UserInterface {
 
-	int askBlueDiscard(Player player);
+    int askBlueDiscard(Player player);
 
-	int askDiscard(Player player);
+    int askDiscard(Player player);
 
-	int askPlay(Player player);
+    int askPlay(Player player);
 
-	int askPlayer(Player player, List<String> otherPlayers);
+    int askPlayer(Player player, List<String> otherPlayers);
 
-	int respondBang(Player player);
+    int respondBang(Player player);
 
-	int respondMiss(Player player, boolean canSingleUse);
-	
-	List<Card> respondTwoMiss(Player player);
+    int respondMiss(Player player, boolean canSingleUse);
 
-	int chooseGeneralStoreCard(Player player,
-			List<Card> cards);
+    List<Card> respondTwoMiss(Player player);
 
-	int askOthersCard(Player player, InPlay inPlay, boolean hasHand);
+    int chooseGeneralStoreCard(Player player,
+                               List<Card> cards);
 
-	int respondBeer(Player player);
+    int askOthersCard(Player player, InPlay inPlay, boolean hasHand);
 
-	boolean chooseDiscard(Player player, Card card);
-	
-	boolean chooseFromPlayer(Player player);	
+    int respondBeer(Player player);
 
-	List<Card> chooseTwoDiscardForLife(Player player);
+    boolean chooseDiscard(Player player, Card card);
 
-	List<Card> chooseTwoDiscardForShoot(Player player);
-	
-	void printInfo(String info);
+    boolean chooseFromPlayer(Player player);
 
-	int chooseDrawCard(Player player, List<Card> cards);
+    List<Card> chooseTwoDiscardForLife(Player player);
 
-	int chooseCardToPutBack(Player player, List<Card> cards);
-	
-	String getRoleForName(String name);
-	
-	String getTimeout();
+    List<Card> chooseTwoDiscardForShoot(Player player);
+
+    void printInfo(String info);
+
+    int chooseDrawCard(Player player, List<Card> cards);
+
+    int chooseCardToPutBack(Player player, List<Card> cards);
+
+    String getRoleForName(String name);
+
+    String getTimeout();
 }

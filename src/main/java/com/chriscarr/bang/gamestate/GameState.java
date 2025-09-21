@@ -4,16 +4,16 @@ import java.util.List;
 
 public interface GameState {
 
-	List<GameStatePlayer> getPlayers();
+    List<GameStatePlayer> getPlayers();
 
-	String getCurrentName();
+    String getCurrentName();
 
-	boolean isGameOver();
+    boolean isGameOver();
 
-	int getDeckSize();
+    int getDeckSize();
 
-	GameStateCard discardTopCard();
-	
-	String timeout();
+    GameStateCard discardTopCard();
+
+    String timeout();
 
 }

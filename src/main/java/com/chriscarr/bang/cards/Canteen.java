@@ -8,25 +8,25 @@ import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
 
-public class Canteen extends SingleUse implements Playable{
+public class Canteen extends SingleUse implements Playable {
 
-	public Canteen(String name, int suit, int value, int type) {
-		super(name, suit, value, type);
-	}
+    public Canteen(String name, int suit, int value, int type) {
+        super(name, suit, value, type);
+    }
 
-	public List<Player> targets(Player player, List<Player> players){
-		return Turn.othersWithCardsToTake(player, players);
-	}
+    public List<Player> targets(Player player, List<Player> players) {
+        return Turn.othersWithCardsToTake(player, players);
+    }
 
-	public boolean activate(Player currentPlayer, List<Player> players,
-		UserInterface userInterface, Deck deck, Discard discard, Turn turn){
+    public boolean activate(Player currentPlayer, List<Player> players,
+                            UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 
-		if(!Turn.isMaxHealth(currentPlayer)){
-			currentPlayer.addHealth(1);
-		}
-		removeFromInPlay(currentPlayer);
-		discard.add(this);
-		return true;
-	}
+        if (!Turn.isMaxHealth(currentPlayer)) {
+            currentPlayer.addHealth(1);
+        }
+        removeFromInPlay(currentPlayer);
+        discard.add(this);
+        return true;
+    }
 
 }

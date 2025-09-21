@@ -10,12 +10,12 @@ import java.util.List;
 
 public interface Playable {
 
-	boolean canPlay(Player player, List<Player> players,
+    boolean canPlay(Player player, List<Player> players,
                     int bangsPlayed);
 
-	List<Player> targets(Player player, List<Player> players);
+    List<Player> targets(Player player, List<Player> players);
 
-	boolean play(Player currentPlayer, List<Player> players,
+    boolean play(Player currentPlayer, List<Player> players,
                  UserInterface userInterface, Deck deck, Discard discard, Turn turn);
 
 }

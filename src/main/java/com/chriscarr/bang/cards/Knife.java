@@ -8,25 +8,25 @@ import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
 
-public class Knife extends SingleUse implements Playable{
+public class Knife extends SingleUse implements Playable {
 
-	public Knife(String name, int suit, int value, int type) {
-		super(name, suit, value, type);
-	}
+    public Knife(String name, int suit, int value, int type) {
+        super(name, suit, value, type);
+    }
 
-	public List<Player> targets(Player player, List<Player> players){
-		return Turn.getPlayersWithCards(Turn.getPlayersWithinRange(player, players, 1));
-	}
+    public List<Player> targets(Player player, List<Player> players) {
+        return Turn.getPlayersWithCards(Turn.getPlayersWithinRange(player, players, 1));
+    }
 
-	public boolean activate(Player currentPlayer, List<Player> players,
-		UserInterface userInterface, Deck deck, Discard discard, Turn turn){
+    public boolean activate(Player currentPlayer, List<Player> players,
+                            UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 
-		boolean result = this.shoot(currentPlayer, players, userInterface, deck, discard, turn, true);
-		if(result){
-			removeFromInPlay(currentPlayer);
-			discard.add(this);
-		}
-		return result;
-	}
+        boolean result = this.shoot(currentPlayer, players, userInterface, deck, discard, turn, true);
+        if (result) {
+            removeFromInPlay(currentPlayer);
+            discard.add(this);
+        }
+        return result;
+    }
 
 }

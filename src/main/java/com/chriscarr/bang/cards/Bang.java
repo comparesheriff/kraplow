@@ -7,35 +7,35 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class Bang extends Card implements Playable {
-	public Bang(String name, int suit, int value, int type) {
-		super(name, suit, value, type);
-	}
+    public Bang(String name, int suit, int value, int type) {
+        super(name, suit, value, type);
+    }
 
-	/* (non-Javadoc)
-	 * @see main.chriscarr.bang.Playable#canPlay(main.chriscarr.bang.Player, java.util.List, int)
-	 */
-	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){			
-		if(bangsPlayed > 0 && !(player.getInPlay().hasGun() && player.getInPlay().isGunVolcanic()) && !Character.WILLYTHEKID.equals(player.getCharacter())){
-			return false;
-		}
-		return targets(player, players).size() > 1;
-	}
-	
-	/* (non-Javadoc)
-	 * @see main.bang.Playable#targets(main.bang.Player, java.util.List)
-	 */
-	public List<Player> targets(Player player, List<Player> players){
-		return Turn.getPlayersWithinRange(player, players, player.getGunRange());
-	}
-	
-	/* (non-Javadoc)
-	 * @see main.chriscarr.bang.Playable#play(main.bang.Player, java.util.List, main.bang.UserInterface, main.bang.Deck, main.bang.Discard)
-	 */
-	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard){
-		return this.shoot(currentPlayer, players, userInterface, deck, discard, turn, skipDiscard);
-	}
+    /* (non-Javadoc)
+     * @see main.chriscarr.bang.Playable#canPlay(main.chriscarr.bang.Player, java.util.List, int)
+     */
+    public boolean canPlay(Player player, List<Player> players, int bangsPlayed) {
+        if (bangsPlayed > 0 && !(player.getInPlay().hasGun() && player.getInPlay().isGunVolcanic()) && !Character.WILLYTHEKID.equals(player.getCharacter())) {
+            return false;
+        }
+        return targets(player, players).size() > 1;
+    }
 
-	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
-		return this.play(currentPlayer, players, userInterface, deck, discard, turn, false);
-	}
+    /* (non-Javadoc)
+     * @see main.bang.Playable#targets(main.bang.Player, java.util.List)
+     */
+    public List<Player> targets(Player player, List<Player> players) {
+        return Turn.getPlayersWithinRange(player, players, player.getGunRange());
+    }
+
+    /* (non-Javadoc)
+     * @see main.chriscarr.bang.Playable#play(main.bang.Player, java.util.List, main.bang.UserInterface, main.bang.Deck, main.bang.Discard)
+     */
+    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard) {
+        return this.shoot(currentPlayer, players, userInterface, deck, discard, turn, skipDiscard);
+    }
+
+    public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
+        return this.play(currentPlayer, players, userInterface, deck, discard, turn, false);
+    }
 }

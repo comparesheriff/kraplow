@@ -8,25 +8,25 @@ import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
 
-public class BuffaloRifle extends SingleUse implements Playable{
+public class BuffaloRifle extends SingleUse implements Playable {
 
-	public BuffaloRifle(String name, int suit, int value, int type) {
-		super(name, suit, value, type);
-	}
+    public BuffaloRifle(String name, int suit, int value, int type) {
+        super(name, suit, value, type);
+    }
 
-	public List<Player> targets(Player player, List<Player> players){
-		return Turn.others(player, players);
-	}
+    public List<Player> targets(Player player, List<Player> players) {
+        return Turn.others(player, players);
+    }
 
-	public boolean activate(Player currentPlayer, List<Player> players,
-		UserInterface userInterface, Deck deck, Discard discard, Turn turn){
+    public boolean activate(Player currentPlayer, List<Player> players,
+                            UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 
-		boolean result = this.shoot(currentPlayer, players, userInterface, deck, discard, turn, true);
-		if(result){
-			removeFromInPlay(currentPlayer);
-			discard.add(this);
-		}
-		return result;
-	}
+        boolean result = this.shoot(currentPlayer, players, userInterface, deck, discard, turn, true);
+        if (result) {
+            removeFromInPlay(currentPlayer);
+            discard.add(this);
+        }
+        return result;
+    }
 
 }

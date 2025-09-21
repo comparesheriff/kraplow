@@ -8,25 +8,25 @@ import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
 
-public class Pepperbox extends SingleUse implements Playable{
+public class Pepperbox extends SingleUse implements Playable {
 
-	public Pepperbox(String name, int suit, int value, int type) {
-		super(name, suit, value, type);
-	}
+    public Pepperbox(String name, int suit, int value, int type) {
+        super(name, suit, value, type);
+    }
 
-	public List<Player> targets(Player player, List<Player> players){
-		return Turn.getPlayersWithCards(Turn.getPlayersWithinRange(player, players, player.getGunRange()));
-	}
+    public List<Player> targets(Player player, List<Player> players) {
+        return Turn.getPlayersWithCards(Turn.getPlayersWithinRange(player, players, player.getGunRange()));
+    }
 
-	public boolean activate(Player currentPlayer, List<Player> players,
-		UserInterface userInterface, Deck deck, Discard discard, Turn turn){
+    public boolean activate(Player currentPlayer, List<Player> players,
+                            UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
 
-		boolean result = this.shoot(currentPlayer, players, userInterface, deck, discard, turn, true);
-		if(result){
-			removeFromInPlay(currentPlayer);
-			discard.add(this);
-		}
-		return result;
-	}
+        boolean result = this.shoot(currentPlayer, players, userInterface, deck, discard, turn, true);
+        if (result) {
+            removeFromInPlay(currentPlayer);
+            discard.add(this);
+        }
+        return result;
+    }
 
 }
