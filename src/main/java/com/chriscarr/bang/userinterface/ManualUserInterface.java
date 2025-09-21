@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Character;
 import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
@@ -30,7 +30,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 	
 	@Override
-	public List<Object> chooseTwoDiscardForShoot(Player player) {
+	public List<Card> chooseTwoDiscardForShoot(Player player) {
 		// TODO Auto-generated method stub
 		return new ArrayList<>();
 	}
@@ -41,12 +41,12 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 	
 	public int askDiscard(Player player) {
-		System.out.println(player.getFigure().getName());
+		System.out.println(player.getCharacter().getName());
 		System.out.println("Discard");
 		Hand hand = player.getHand();
 		int handSize = hand.size();
 		for(int i = 0; i < handSize; i++){
-			System.out.println(i + ") " + ((Card)hand.get(i)).getName());
+			System.out.println(i + ") " + hand.get(i).getName());
 		}
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
@@ -65,7 +65,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 
 	@Override
 	public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
-		System.out.println(player.getFigure().getName());
+		System.out.println(player.getCharacter().getName());
 		System.out.println("Choose Other Players Card");
 		int handSize = inPlay.size();	
 		if(hasHand){
@@ -76,7 +76,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 			System.out.println("-2) Gun");
 		}
 		for(int i = 0; i < handSize; i++){
-			System.out.println(i + ") " + ((Card)inPlay.get(i)).getName());
+			System.out.println(i + ") " + inPlay.get(i).getName());
 		}
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
@@ -108,7 +108,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 		int handSize = hand.size();
 		System.out.println("-1) done playing");
 		for(int i = 0; i < handSize; i++){
-			Card card = ((Card)hand.get(i));
+			Card card = hand.get(i);
 			boolean canPlay = turn.canPlay(player, card);
 			System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
 			if(canPlay){
@@ -135,12 +135,12 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	private void printPrivateInfo(Player player) {
-		System.out.println(Player.roleToString(player.getRole()));
+		System.out.println(player.getRole().getRoleName());
 	}
 
 	@Override
 	public int askPlayer(Player player, List<String> otherPlayers) {
-		System.out.println(player.getFigure().getName());
+		System.out.println(player.getCharacter().getName());
 		System.out.println("Choose Player");
 		int handSize = otherPlayers.size();
 		for(int i = 0; i < handSize; i++){
@@ -162,10 +162,10 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public boolean chooseDiscard(Player player, Object card) {
-		System.out.println(player.getFigure().getName());
+	public boolean chooseDiscard(Player player, Card card) {
+		System.out.println(player.getCharacter().getName());
 		System.out.println("Draw Card From Discard");
-		System.out.println("0) From Discard " + ((Card)card).getName());
+		System.out.println("0) From Discard " + card.getName());
 		System.out.println("1) From Deck");
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
@@ -185,12 +185,12 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public int chooseGeneralStoreCard(Player player, List<Object> cards) {
-		System.out.println(player.getFigure().getName());
+	public int chooseGeneralStoreCard(Player player, List<Card> cards) {
+		System.out.println(player.getCharacter().getName());
 		System.out.println("Choose General Store Card");
 		int handSize = cards.size();
 		for(int i = 0; i < handSize; i++){
-			System.out.println(i + ") " + ((Card)cards.get(i)).getName());
+			System.out.println(i + ") " + cards.get(i).getName());
 		}
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
@@ -208,14 +208,14 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public List<Object> chooseTwoDiscardForLife(Player player) {
-		System.out.println(player.getFigure().getName());
+	public List<Card> chooseTwoDiscardForLife(Player player) {
+		System.out.println(player.getCharacter().getName());
 		System.out.println("Discard Two cards for 1 Life, 4 for 2, etc");
 		Hand hand = player.getHand();
 		int handSize = hand.size();
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
-		List<Object> chosenCards = new ArrayList<>();
+		List<Card> chosenCards = new ArrayList<>();
 		while (true){
 			System.out.println("-1) done choosing");
 			for(int i = 0; i < handSize; i++){
@@ -223,7 +223,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 				if(chosenCards.contains(hand.get(i))){
 					chosen = " chosen";
 				}
-				System.out.println(i + ") " + ((Card)hand.get(i)).getName() + chosen);
+				System.out.println(i + ") " + hand.get(i).getName() + chosen);
 			}
 			try {
 				String line = in.readLine();
@@ -232,7 +232,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 					if(cardNumber == -1){
 						return chosenCards;
 					} else {
-						Object card = hand.get(cardNumber);
+						Card card = hand.get(cardNumber);
 						if(chosenCards.contains(card)){
 							chosenCards.remove(card);
 						} else {
@@ -254,8 +254,8 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 		int handSize = hand.size();
 		System.out.println("-1) done playing");
 		for(int i = 0; i < handSize; i++){
-			Card card = ((Card)hand.get(i));
-			boolean canPlay = Card.CARDBANG.equals(card.getName()) || (Card.CARDMISSED.equals(card.getName()) && Figure.CALAMITYJANET.equals(player.getName()));
+			Card card = hand.get(i);
+			boolean canPlay = Card.CARDBANG.equals(card.getName()) || (Card.CARDMISSED.equals(card.getName()) && Character.CALAMITYJANET.equals(player.getCharacter()));
 			System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
 			if(canPlay){
 				System.out.print(" Targets: ");
@@ -288,7 +288,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 		int handSize = hand.size();
 		System.out.println("-1) done playing");
 		for(int i = 0; i < handSize; i++){
-			Card card = ((Card)hand.get(i));
+			Card card = hand.get(i);
 			boolean canPlay = Card.CARDBEER.equals(card.getName());
 			System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
 			if(canPlay){
@@ -322,8 +322,8 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 		int handSize = hand.size();
 		System.out.println("-1) done playing");
 		for(int i = 0; i < handSize; i++){
-			Card card = ((Card)hand.get(i));
-			boolean canPlay = Card.CARDMISSED.equals(card.getName()) || (Card.CARDBANG.equals(card.getName()) && Figure.CALAMITYJANET.equals(player.getName()));
+			Card card = hand.get(i);
+			boolean canPlay = Card.CARDMISSED.equals(card.getName()) || (Card.CARDBANG.equals(card.getName()) && Character.CALAMITYJANET.equals(player.getName()));
 			System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
 			if(canPlay){
 				System.out.print(" Targets: ");
@@ -350,7 +350,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 
 	@Override
 	public boolean chooseFromPlayer(Player player) {
-		System.out.println(player.getFigure().getName());
+		System.out.println(player.getCharacter().getName());
 		System.out.println("Draw Card From Player");
 		System.out.println("0) From Player");
 		System.out.println("1) From Deck");
@@ -372,12 +372,12 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public int chooseDrawCard(Player player, List<Object> cards) {
-		System.out.println(player.getFigure().getName());
+	public int chooseDrawCard(Player player, List<Card> cards) {
+		System.out.println(player.getCharacter().getName());
 		System.out.println("Choose Draw Card to keep");
 		int handSize = cards.size();
 		for(int i = 0; i < handSize; i++){
-			System.out.println(i + ") " + ((Card)cards.get(i)).getName());
+			System.out.println(i + ") " + cards.get(i).getName());
 		}
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
@@ -395,12 +395,12 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public int chooseCardToPutBack(Player player, List<Object> cards) {
-		System.out.println(player.getFigure().getName());
+	public int chooseCardToPutBack(Player player, List<Card> cards) {
+		System.out.println(player.getCharacter().getName());
 		System.out.println("Choose card put back");
 		int handSize = cards.size();
 		for(int i = 0; i < handSize; i++){
-			System.out.println(i + ") " + ((Card)cards.get(i)).getName());
+			System.out.println(i + ") " + cards.get(i).getName());
 		}
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
@@ -449,12 +449,12 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public List<Object> respondTwoMiss(Player player) {
+	public List<Card> respondTwoMiss(Player player) {
 		Hand hand = player.getHand();
 		int handSize = hand.size();
 		InputStreamReader converter = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(converter);
-		List<Object> chosenCards = new ArrayList<>();
+		List<Card> chosenCards = new ArrayList<>();
 		while (true){
 			try {
 				String line = in.readLine();
@@ -463,7 +463,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 					if(cardNumber == -1){
 						return chosenCards;
 					} else {
-						Object card = hand.get(cardNumber);
+						Card card = hand.get(cardNumber);
 						if(chosenCards.contains(card)){
 							chosenCards.remove(card);
 						} else {

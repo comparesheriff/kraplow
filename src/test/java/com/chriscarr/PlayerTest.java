@@ -1,30 +1,27 @@
 package com.chriscarr;
 
-import com.chriscarr.bang.Figure;
-import com.chriscarr.bang.Hand;
-import com.chriscarr.bang.InPlay;
-import com.chriscarr.bang.Player;
-
+import com.chriscarr.bang.*;
+import com.chriscarr.bang.Character;
 import junit.framework.TestCase;
 
 public class PlayerTest extends TestCase {
 	public void testPlayer() {
 		Player player = new Player();
-		Figure setFigure = new Figure();
-		player.setFigure(setFigure);
-		int setRole = Player.SHERIFF;
+		Character setCharacter = Character.RANDOM;
+		player.setCharacter(setCharacter);
+		Role setRole = Role.SHERIFF;
 		player.setRole(setRole);
 		Hand setHand = new Hand();
 		player.setHand(setHand);
 		InPlay setInPlay = new InPlay();
 		player.setInPlay(setInPlay);
-		
-		Figure gotFigure = player.getFigure();
-		int gotRole = player.getRole();
+
+		Character gotCharacter = player.getCharacter();
+		Role gotRole = player.getRole();
 		Hand gotHand = player.getHand();
 		InPlay gotInPlay = player.getInPlay();
-		
-		assertEquals(gotFigure, setFigure);
+
+		assertEquals(setCharacter, gotCharacter);
 		assertEquals(setRole, gotRole);
 		assertEquals(gotHand, setHand);
 		assertEquals(gotInPlay, setInPlay);

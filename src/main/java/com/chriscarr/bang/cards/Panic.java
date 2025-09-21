@@ -8,7 +8,7 @@ import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
-import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 public class Panic extends Card implements Playable {
@@ -36,7 +36,7 @@ public class Panic extends Card implements Playable {
 	 */
 	public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 		Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
-		if(Figure.APACHEKID.equals(otherPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS){
+		if(Character.APACHEKID.equals(otherPlayer.getCharacter()) && this.getSuit() == Card.DIAMONDS){
 			userInterface.printInfo(otherPlayer.getName() + " is unaffected by diamond Panic!");
 			return true;
 		}
@@ -51,13 +51,13 @@ public class Panic extends Card implements Playable {
 				hand.add(otherPlayer.getHand().removeRandom());
 				userInterface.printInfo(currentPlayer.getName() + " takes a card from " + otherPlayer.getName() + "'s hand with a Panic!");
 			} else if(chosenCard == -2){
-				Object card = otherPlayer.getInPlay().removeGun();
+				Card card = otherPlayer.getInPlay().removeGun();
 				hand.add(card);
-				userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card)card).getName() + " from " + otherPlayer.getName() + " with a Panic!");
+				userInterface.printInfo(currentPlayer.getName() + " takes a " + card.getName() + " from " + otherPlayer.getName() + " with a Panic!");
 			} else {
-				Object card = otherPlayer.getInPlay().remove(chosenCard);
+				Card card = otherPlayer.getInPlay().remove(chosenCard);
 				hand.add(card);
-				userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card)card).getName() + " from " + otherPlayer.getName() + " with a Panic!");
+				userInterface.printInfo(currentPlayer.getName() + " takes a " + card.getName() + " from " + otherPlayer.getName() + " with a Panic!");
 			}
 			return true;
 		} else {

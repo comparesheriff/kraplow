@@ -7,7 +7,7 @@ import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
-import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 public class Gun extends Card {
@@ -20,10 +20,10 @@ public class Gun extends Card {
 		if(currentPlayer.hasGun()){
 			discard.add(currentPlayer.removeGun());
 		}
-		if (Figure.JOHNNYKISCH.equals(currentPlayer.getAbility())) {
+		if (Character.JOHNNYKISCH.equals(currentPlayer.getCharacter())) {
 			for (Player player : players) {
 				if(Objects.equals(player.getInPlay().getGunName(), this.getName())){
-					Object gun = player.getInPlay().removeGun();
+					Gun gun = player.getInPlay().removeGun();
 					discard.add(gun);
 					userInterface.printInfo(currentPlayer.getName() + " plays a " + this.getName() + " and forces " + player.getName() + " to discard one from play.");
 				}

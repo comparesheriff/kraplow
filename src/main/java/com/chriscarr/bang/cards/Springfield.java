@@ -42,7 +42,7 @@ public class Springfield extends Card implements Playable {
 		if(result){
 			//discard the card
 			Hand currentHand = currentPlayer.getHand();
-			Object card = currentHand.remove(cardDiscard);
+			Card card = currentHand.remove(cardDiscard);
 			discard.add(card);
 		}
 		return result;

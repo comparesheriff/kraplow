@@ -1,6 +1,8 @@
 package com.chriscarr.game;
 
+import com.chriscarr.bang.Character;
 import com.chriscarr.bang.Hand;
+import com.chriscarr.bang.Role;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateCard;
@@ -9,9 +11,9 @@ import com.chriscarr.bang.userinterface.JSPUserInterface;
 import com.chriscarr.bang.userinterface.Message;
 import com.chriscarr.bang.userinterface.WebGameUserInterface;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,35 +83,13 @@ public class AjaxServlet extends HttpServlet {
                     String gameId = request.getParameter("gameId");
                     String handle = request.getParameter("handle");
                     String user = WebGame.join(Integer.parseInt(gameId), handle);
-                    if (user != null) {
-                        response.getWriter().write("<joininfo>");
-                        response.getWriter().write("<user>");
-                        response.getWriter().write(user);
-                        response.getWriter().write("</user>");
-                        response.getWriter().write("<gameid>");
-                        response.getWriter().write(gameId);
-                        response.getWriter().write("</gameid>");
-                        response.getWriter().write("</joininfo>");
-                    } else {
-                        response.getWriter().write("<fail/>");
-                    }
+                    printJoinInfoForUser(response, gameId, user);
                 }
                 case "JOINAI" -> {
                     String gameId = request.getParameter("gameId");
                     String handle = request.getParameter("handle");
                     String user = WebGame.joinAI(Integer.parseInt(gameId), handle);
-                    if (user != null) {
-                        response.getWriter().write("<joininfo>");
-                        response.getWriter().write("<user>");
-                        response.getWriter().write(user);
-                        response.getWriter().write("</user>");
-                        response.getWriter().write("<gameid>");
-                        response.getWriter().write(gameId);
-                        response.getWriter().write("</gameid>");
-                        response.getWriter().write("</joininfo>");
-                    } else {
-                        response.getWriter().write("<fail/>");
-                    }
+                    printJoinInfoForUser(response, gameId, user);
                 }
                 case "LEAVE" -> {
                     String user = request.getParameter("user");
@@ -230,8 +210,10 @@ public class AjaxServlet extends HttpServlet {
                     String gameId = request.getParameter("gameId");
                     String aiSleepMs = request.getParameter("aiSleepMs");
                     String pRole = request.getParameter("prole");
+                    Role role = Role.valueOf(pRole);
                     String pChar = request.getParameter("pchar");
-                    WebGame.start(Integer.parseInt(gameId), Integer.parseInt(aiSleepMs), pRole, pChar);
+                    Character character = Character.valueOf(pChar);
+                    WebGame.start(Integer.parseInt(gameId), Integer.parseInt(aiSleepMs), role, character);
                     response.getWriter().write("<ok/>");
                 }
                 case "CREATE" -> {
@@ -320,6 +302,21 @@ public class AjaxServlet extends HttpServlet {
                     }
                 }
             }
+        }
+    }
+
+    private void printJoinInfoForUser(HttpServletResponse response, String gameId, String user) throws IOException {
+        if (user != null) {
+            response.getWriter().write("<joininfo>");
+            response.getWriter().write("<user>");
+            response.getWriter().write(user);
+            response.getWriter().write("</user>");
+            response.getWriter().write("<gameid>");
+            response.getWriter().write(gameId);
+            response.getWriter().write("</gameid>");
+            response.getWriter().write("</joininfo>");
+        } else {
+            response.getWriter().write("<fail/>");
         }
     }
 

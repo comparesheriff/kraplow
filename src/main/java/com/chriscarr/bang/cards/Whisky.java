@@ -38,7 +38,7 @@ public class Whisky extends Card implements Playable {
 			return false;
 		}
 		Hand currentHand = currentPlayer.getHand();
-		Object card = currentHand.remove(cardDiscard);
+		Card card = currentHand.remove(cardDiscard);
 		discard.add(card);
 		discard.add(this);
 		if(!Turn.isMaxHealth(currentPlayer)){

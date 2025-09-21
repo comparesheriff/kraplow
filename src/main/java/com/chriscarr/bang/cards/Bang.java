@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
-import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Character;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
@@ -18,7 +18,7 @@ public class Bang extends Card implements Playable {
 	 * @see main.chriscarr.bang.Playable#canPlay(main.chriscarr.bang.Player, java.util.List, int)
 	 */
 	public boolean canPlay(Player player, List<Player> players, int bangsPlayed){			
-		if(bangsPlayed > 0 && !(player.getInPlay().hasGun() && player.getInPlay().isGunVolcanic()) && !Figure.WILLYTHEKID.equals(player.getAbility())){			
+		if(bangsPlayed > 0 && !(player.getInPlay().hasGun() && player.getInPlay().isGunVolcanic()) && !Character.WILLYTHEKID.equals(player.getCharacter())){
 			return false;
 		}
 		return targets(player, players).size() > 1;

@@ -5,7 +5,7 @@ import java.util.List;
 import com.chriscarr.bang.CancelPlayer;
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
-import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Character;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
@@ -24,7 +24,7 @@ public class CanCan extends SingleUse implements Playable{
 		UserInterface userInterface, Deck deck, Discard discard, Turn turn){
 
 		Player otherPlayer = Turn.getValidChosenPlayer(currentPlayer, targets(currentPlayer, players), userInterface);
-		if(Figure.APACHEKID.equals(otherPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS){
+		if(Character.APACHEKID.equals(otherPlayer.getCharacter()) && this.getSuit() == Card.DIAMONDS){
 			userInterface.printInfo(otherPlayer.getName() + " is unaffected by diamond "+this.getName());
 			return true;
 		}
@@ -34,17 +34,17 @@ public class CanCan extends SingleUse implements Playable{
 				chosenCard = userInterface.askOthersCard(currentPlayer, otherPlayer.getInPlay(), !otherPlayer.getHand().isEmpty());
 			}
 			if(chosenCard == -1){
-				Card discardedCard = (Card)otherPlayer.getHand().removeRandom();
+				Card discardedCard = otherPlayer.getHand().removeRandom();
 				discard.add(discardedCard);
 				userInterface.printInfo(currentPlayer.getName() + " discards a "+discardedCard.getName()+" from " + otherPlayer.getName() + "'s hand with a "+this.getName());
 			} else if(chosenCard == -2){
-				Object card = otherPlayer.getInPlay().removeGun();
+				Gun card = otherPlayer.getInPlay().removeGun();
 				discard.add(card);
-				userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card)card).getName() + " from " + otherPlayer.getName() + " with a "+this.getName());
+				userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + otherPlayer.getName() + " with a "+this.getName());
 			} else {
-				Object card = otherPlayer.getInPlay().remove(chosenCard);
+				Card card = otherPlayer.getInPlay().remove(chosenCard);
 				discard.add(card);
-				userInterface.printInfo(currentPlayer.getName() + " discards a " + ((Card)card).getName() + " from " + otherPlayer.getName() + " with a "+this.getName());
+				userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + otherPlayer.getName() + " with a "+this.getName());
 			}
 			removeFromInPlay(currentPlayer);
 			discard.add(this);

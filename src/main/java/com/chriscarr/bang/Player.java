@@ -3,19 +3,19 @@ package com.chriscarr.bang;
 import java.util.List;
 
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.Gun;
 import com.chriscarr.bang.gamestate.GameStateCard;
 
 public class Player {
-
 	public static final int SHERIFF = 0;
 	public static final int OUTLAW = 1;
 	public static final int DEPUTY = 2;
 	public static final int RENEGADE = 3;
 	
-	private Figure figure;
+	private Character character;
 	private Hand hand;
 	private InPlay inPlay;
-	private int role;
+	private Role role;
 	private int maxHealth;
 	private int health;	
 	private String ability;
@@ -28,20 +28,20 @@ public class Player {
 		this.hand = hand;
 	}
 
-	public void setRole(int role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 
-	public void setFigure(Figure figure) {
-		this.figure = figure;
-		this.setAbility(figure.getName());
+	public void setCharacter(Character character) {
+		this.character = character;
+		this.setAbility(character.getName());
 	}
 
-	public Figure getFigure() {
-		return figure;
+	public Character getCharacter() {
+		return character;
 	}
 
-	public int getRole() {
+	public Role getRole() {
 		return role;
 	}
 
@@ -70,44 +70,6 @@ public class Player {
 		return health;
 	}
 
-	public static String roleToString(int role) {
-		if(role == SHERIFF){
-			return "Sheriff";
-		} else if(role == OUTLAW){
-			return "Outlaw";
-		} else if(role == DEPUTY){
-			return "Deputy";
-		} else if(role == RENEGADE){
-			return "Renegade";
-		} else { 
-			throw new RuntimeException("Invalid Role");
-		}
-	}
-
-	public static Integer stringToRole(String roleName){
-        return switch (roleName) {
-            case "Sheriff" -> SHERIFF;
-            case "Outlaw" -> OUTLAW;
-            case "Deputy" -> DEPUTY;
-            case "Renegade" -> RENEGADE;
-            default -> throw new RuntimeException("Invalid Role");
-        };
-	}
-	
-	public static String roleToGoal(int role) {
-		if(role == SHERIFF){
-			return "Kill the outlaws and renegade";
-		} else if(role == OUTLAW){
-			return "Kill the sheriff";
-		} else if(role == DEPUTY){
-			return "Kill the outlaws and renegade";
-		} else if(role == RENEGADE){
-			return "Be the last one alive";
-		} else { 
-			throw new RuntimeException("Invalid Role");
-		}
-	}
-
 	public void addInPlay(Card card) {
 		inPlay.add(card);
 	}
@@ -117,7 +79,7 @@ public class Player {
 	}
 
 	public String getName() {
-		return figure.getName();
+		return character.getName();
 	}
 
 	public String getAbility() {
@@ -136,7 +98,7 @@ public class Player {
 		health = health + toAdd;
 	}
 
-	public Object removeRandom() {
+	public Card removeRandom() {
 		return hand.removeRandom();
 	}
 
@@ -152,11 +114,11 @@ public class Player {
 		return hand.countMisses();
 	}
 
-	public void setGun(Card card) {
+	public void setGun(Gun card) {
 		inPlay.setGun(card);
 	}
 
-	public Object getGunName() {
+	public String getGunName() {
 		return inPlay.getGunName();
 	}
 
@@ -164,7 +126,7 @@ public class Player {
 		return inPlay.hasGun();
 	}
 
-	public Object removeGun() {
+	public Gun removeGun() {
 		return inPlay.removeGun();
 	}
 
@@ -173,15 +135,15 @@ public class Player {
 	}
 
 	public boolean isSheriff() {
-		return role == SHERIFF;
+		return Role.SHERIFF.equals(role);
 	}
 
 	public GameStateCard getGameStateGun() {
-		return Turn.cardToGameStateCard((Card)inPlay.getGun());
+		return Turn.cardToGameStateCard(inPlay.getGun());
 	}
 
 	public String getSpecialAbility() {
-		return Figure.getSpecialAbilityText(getName());
+		return character.getSpecialAbilityText();
 	}
 
 	public List<GameStateCard> getGameStateInPlay() {

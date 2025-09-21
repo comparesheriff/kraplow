@@ -8,7 +8,7 @@ import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.Hand;
-import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 public class Duel extends Card implements Playable {
@@ -40,7 +40,7 @@ public class Duel extends Card implements Playable {
 		targets.addFirst(cancelPlayer);
 		Player other = Turn.getValidChosenPlayer(currentPlayer, targets, userInterface);
 		if(!(other instanceof CancelPlayer)){
-			if(Figure.APACHEKID.equals(other.getAbility()) && this.getSuit() == Card.DIAMONDS){
+			if(Character.APACHEKID.equals(other.getCharacter()) && this.getSuit() == Card.DIAMONDS){
 				userInterface.printInfo(other.getName() + " is unaffected by diamond Duel");
 				return true;
 			}
@@ -51,15 +51,15 @@ public class Duel extends Card implements Playable {
 				if(bangPlayed == -1){
 					turn.damagePlayer(other, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 					userInterface.printInfo(other.getName() + " loses a health");
-                                        if(Figure.MOLLYSTARK.equals(other.getAbility())){
+                                        if(Character.MOLLYSTARK.equals(other.getCharacter())){
                                             giveMollyStarkCards(other, deck, mollyStarkAmount, userInterface);
                                         }
 					return true;
 				} else {
-					Object card = other.getHand().remove(bangPlayed);
+					Card card = other.getHand().remove(bangPlayed);
 					discard.add(card);
-					userInterface.printInfo(other.getName() + " plays a " + ((Card)card).getName());
-					if(Figure.MOLLYSTARK.equals(other.getAbility())){
+					userInterface.printInfo(other.getName() + " plays a " + card.getName());
+					if(Character.MOLLYSTARK.equals(other.getCharacter())){
 						mollyStarkAmount += 1;
 					}
 				}		
@@ -67,14 +67,14 @@ public class Duel extends Card implements Playable {
 				if(currentBangPlayed == -1){
 					turn.damagePlayer(currentPlayer, players, currentPlayer, 1, null, deck, discard, userInterface);
 					userInterface.printInfo(currentPlayer.getName() + " loses a health");
-                                        if(Figure.MOLLYSTARK.equals(other.getAbility())){
+                                        if(Character.MOLLYSTARK.equals(other.getCharacter())){
                                             giveMollyStarkCards(other, deck, mollyStarkAmount, userInterface);
                                         }
 					return true;						
-				} else {		
-					Object card = currentPlayer.getHand().remove(currentBangPlayed);
+				} else {
+					Card card = currentPlayer.getHand().remove(currentBangPlayed);
 					discard.add(card);
-					userInterface.printInfo(currentPlayer.getName() + " plays a " + ((Card)card).getName());
+					userInterface.printInfo(currentPlayer.getName() + " plays a " + card.getName());
 				}
 			}
 		} else {

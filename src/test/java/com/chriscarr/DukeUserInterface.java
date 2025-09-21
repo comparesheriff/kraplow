@@ -3,11 +3,12 @@ package com.chriscarr;
 import java.util.List;
 
 import com.chriscarr.bang.Player;
+import com.chriscarr.bang.cards.Card;
 
 public class DukeUserInterface extends TestUserInterface {
 	boolean returnedInvalidLess = false;
 	boolean returnedInvalidGreat = false;
-	public int chooseDrawCard(Player player, List<Object> cards) {
+	public int chooseDrawCard(Player player, List<Card> cards) {
 		if(!returnedInvalidLess){
 			returnedInvalidLess = true;
 			return -1;	

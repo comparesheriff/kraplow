@@ -1,42 +1,31 @@
 package com.chriscarr.bang;
 
+import com.chriscarr.bang.cards.Card;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Deck {
-
-	private final List<Object> cards = new ArrayList<>();
+public class Deck extends ArrayList<Card> {
 	private Discard discard;
-	
-	public void add(Object card) {
-		cards.add(card);
-	}
 
-	public Object pull() {
-		if(cards.isEmpty()){
+	public Card pull() {
+		if(isEmpty()){
 			while(!discard.isEmpty()){
-				cards.add(discard.remove());
+				add(discard.removeLast());
 			}
 			shuffle();
 		}
-		return cards.removeLast();
-	}
-
-	public boolean isEmpty() {
-		return cards.isEmpty();
+		return removeLast();
 	}
 
 	public void shuffle() {
-		Collections.shuffle(cards);
+		Collections.shuffle(this);
 	}
 
 	public void setDiscard(Discard discard) {
 		this.discard = discard;
 	}
 
-	public int size() {
-		return cards.size();
-	}
 
 }

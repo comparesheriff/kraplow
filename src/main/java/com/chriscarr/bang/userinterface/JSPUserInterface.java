@@ -3,7 +3,7 @@ package com.chriscarr.bang.userinterface;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Character;
 import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
@@ -34,8 +34,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 		}
 	}
 
-	private List<Object> makeCardList(String remove, Player player) {
-		List<Object> cardsToDiscard = new ArrayList<>();
+	private List<Card> makeCardList(String remove, Player player) {
+		List<Card> cardsToDiscard = new ArrayList<>();
 		if(!"".equals(remove) && !"-1".equals(remove)){
 			String[] removed = remove.split(",");
 			Hand hand = player.getHand();
@@ -62,9 +62,9 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	public int askDiscard(Player player) {
 		Hand hand = player.getHand();
 		StringBuilder handCards = new StringBuilder();
-		for(int i = 0; i < hand.size(); i++){
-			handCards.append(((Card) hand.get(i)).getName()).append(", ");
-		}
+        for (Card card : hand) {
+            handCards.append(card.getName()).append(", ");
+        }
 		sendMessage(player.getName(), "askDiscard " + handCards);
 		waitForResponse(player.getName());
 		return Integer.parseInt(removeResponse(player.getName()));
@@ -73,9 +73,9 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	public int askBlueDiscard(Player player) {
 		Hand hand = player.getHand();
 		StringBuilder handCards = new StringBuilder();
-		for(int i = 0; i < hand.size(); i++){
-			handCards.append(((Card) hand.get(i)).getName()).append(", ");
-		}
+        for (Card card : hand) {
+            handCards.append(card.getName()).append(", ");
+        }
 		sendMessage(player.getName(), "askBlueDiscard " + handCards);
 		waitForResponse(player.getName());
 		return Integer.parseInt(removeResponse(player.getName()));
@@ -83,9 +83,9 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	@Override
 	public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
 		StringBuilder inPlayCards = new StringBuilder();
-		for(int i = 0; i < inPlay.count(); i++){
-			inPlayCards.append(((Card) inPlay.get(i)).getName()).append(", ");
-		}
+        for (Card card : inPlay) {
+            inPlayCards.append(card.getName()).append(", ");
+        }
 		boolean hasGun = inPlay.hasGun();
 		sendMessage(player.getName(), "askOthersCard " + hasHand + ", " + hasGun + inPlay.getGunName() + ", " + inPlayCards);
 		waitForResponse(player.getName());
@@ -96,44 +96,42 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	public int askPlay(Player player) {
 		Hand hand = player.getHand();
 		StringBuilder handCards = new StringBuilder();
-		for(int i = 0; i < hand.size(); i++){
-			Card card = (Card)hand.get(i);
-			String name = card.getName();
-			boolean canPlay = turn.canPlay(player, card);
-			List<String> targets = turn.targets(player, card);
-			StringBuilder targetString = new StringBuilder();
-			for(String otherName : targets){
-				targetString.append(otherName).append("$");
-			}
-			handCards.append(name).append("^").append(Card.suitToString(card.getSuit())).append("^").append(Card.valueToString(card.getValue())).append("@").append(canPlay).append("@").append(targetString).append(", ");
-		}
+        for (Card card : hand) {
+            String name = card.getName();
+            boolean canPlay = turn.canPlay(player, card);
+            List<String> targets = turn.targets(player, card);
+            StringBuilder targetString = new StringBuilder();
+            for (String otherName : targets) {
+                targetString.append(otherName).append("$");
+            }
+            handCards.append(name).append("^").append(Card.suitToString(card.getSuit())).append("^").append(Card.valueToString(card.getValue())).append("@").append(canPlay).append("@").append(targetString).append(", ");
+        }
 		InPlay inPlay = player.getInPlay();
-		for(int i = 0; i < inPlay.size(); i++){
-			Card card = (Card)inPlay.get(i);
-			if(card.getType() == Card.TYPESINGLEUSEITEM){
-				String name = card.getName();
-				boolean canPlay = turn.canPlay(player, card);
-				List<String> targets = turn.targets(player, card);
-				StringBuilder targetString = new StringBuilder();
-				for(String otherName : targets){
-					targetString.append(otherName).append("$");
-				}
-				handCards.append(name).append("^").append(Card.suitToString(card.getSuit())).append("^").append(Card.valueToString(card.getValue())).append("@").append(canPlay).append("@").append(targetString).append(", ");
-			}
-		}
-		if(Figure.CHUCKWENGAM.equals(player.getAbility())){
+        for (Card card : inPlay) {
+            if (card.getType() == Card.TYPESINGLEUSEITEM) {
+                String name = card.getName();
+                boolean canPlay = turn.canPlay(player, card);
+                List<String> targets = turn.targets(player, card);
+                StringBuilder targetString = new StringBuilder();
+                for (String otherName : targets) {
+                    targetString.append(otherName).append("$");
+                }
+                handCards.append(name).append("^").append(Card.suitToString(card.getSuit())).append("^").append(Card.valueToString(card.getValue())).append("@").append(canPlay).append("@").append(targetString).append(", ");
+            }
+        }
+		if(Character.CHUCKWENGAM.equals(player.getCharacter())){
 			handCards.append("loselifefor2cards" + "@true@").append(player.getName()).append("$").append(", ");
 		}
-		if(Figure.JOSEDELGADO.equals(player.getAbility())){
+		if(Character.JOSEDELGADO.equals(player.getCharacter())){
 			handCards.append("discardbluetodraw2" + "@true@").append(player.getName()).append("$").append(", ");
 		}
-		if(Figure.DOCHOLYDAY.equals(player.getAbility())){
+		if(Character.DOCHOLYDAY.equals(player.getCharacter())){
 			handCards.append("discardtwotoshoot" + "@true@").append(player.getName()).append("$").append(", ");
 		}
-		if(Figure.SIDKETCHUM.equals(player.getAbility())){
+		if(Character.SIDKETCHUM.equals(player.getCharacter())){
 			handCards.append("discardtwoforlife" + "@true@").append(player.getName()).append("$").append(", ");
 		}
-		if(Figure.UNCLEWILL.equals(player.getAbility())){
+		if(Character.UNCLEWILL.equals(player.getCharacter())){
 					handCards.append("discardforgeneralstore" + "@true@").append(player.getName()).append("$").append(", ");
 		}
 		sendMessage(player.getName(), "askPlay " + handCards);
@@ -153,10 +151,10 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public int chooseCardToPutBack(Player player, List<Object> cards) {
+	public int chooseCardToPutBack(Player player, List<Card> cards) {
 		StringBuilder cardString = new StringBuilder();
-        for (Object card : cards) {
-            cardString.append(((Card) card).getName()).append("^").append(Card.suitToString(((Card) card).getSuit())).append("^").append(Card.valueToString(((Card) card).getValue())).append(", ");
+        for (Card card : cards) {
+            cardString.append(card.getName()).append("^").append(Card.suitToString(card.getSuit())).append("^").append(Card.valueToString(card.getValue())).append(", ");
         }
 		sendMessage(player.getName(), "chooseCardToPutBack " + cardString);
 		waitForResponse(player.getName());
@@ -164,18 +162,18 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public boolean chooseDiscard(Player player, Object card) {
-		sendMessage(player.getName(), "chooseDiscard " + ((Card)card).getName());
+	public boolean chooseDiscard(Player player, Card card) {
+		sendMessage(player.getName(), "chooseDiscard " + card.getName());
 		waitForResponse(player.getName());
 		String response = removeResponse(player.getName());
         return !response.equals("-1");
 	}
 
 	@Override
-	public int chooseDrawCard(Player player, List<Object> cards) {
+	public int chooseDrawCard(Player player, List<Card> cards) {
 		StringBuilder cardString = new StringBuilder();
-        for (Object card : cards) {
-            cardString.append(((Card) card).getName()).append("^").append(Card.suitToString(((Card) card).getSuit())).append("^").append(Card.valueToString(((Card) card).getValue())).append(", ");
+        for (Card card : cards) {
+            cardString.append(card.getName()).append("^").append(Card.suitToString(card.getSuit())).append("^").append(Card.valueToString(card.getValue())).append(", ");
         }
 		sendMessage(player.getName(), "chooseDrawCard " + cardString);
 		waitForResponse(player.getName());
@@ -190,10 +188,10 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public int chooseGeneralStoreCard(Player player, List<Object> cards) {
+	public int chooseGeneralStoreCard(Player player, List<Card> cards) {
 		StringBuilder cardString = new StringBuilder();
-        for (Object card : cards) {
-            cardString.append(((Card) card).getName()).append(", ");
+        for (Card card : cards) {
+            cardString.append(card.getName()).append(", ");
         }
 		sendMessage(player.getName(), "chooseGeneralStoreCard " + cardString);
 		waitForResponse(player.getName());
@@ -201,24 +199,24 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public List<Object> chooseTwoDiscardForLife(Player player) {
+	public List<Card> chooseTwoDiscardForLife(Player player) {
 		Hand hand = player.getHand();
 		StringBuilder handCards = new StringBuilder();
-		for(int i = 0; i < hand.size(); i++){
-			handCards.append(((Card) hand.get(i)).getName()).append(", ");
-		}
+        for (Card card : hand) {
+            handCards.append(card.getName()).append(", ");
+        }
 		sendMessage(player.getName(), "chooseTwoDiscardForLife " + handCards);
 		waitForResponse(player.getName());
 		return makeCardList(removeResponse(player.getName()), player);
 	}
 
 	@Override
-	public List<Object> chooseTwoDiscardForShoot(Player player) {
+	public List<Card> chooseTwoDiscardForShoot(Player player) {
 		Hand hand = player.getHand();
 		StringBuilder handCards = new StringBuilder();
-		for(int i = 0; i < hand.size(); i++){
-			handCards.append(((Card) hand.get(i)).getName()).append(", ");
-		}
+        for (Card card : hand) {
+            handCards.append(card.getName()).append(", ");
+        }
 		sendMessage(player.getName(), "chooseTwoDiscardForShoot " + handCards);
 		waitForResponse(player.getName());
 		return makeCardList(removeResponse(player.getName()), player);
@@ -233,12 +231,11 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	public int respondBang(Player player) {
 		Hand hand = player.getHand();
 		StringBuilder handCards = new StringBuilder();
-		for(int i = 0; i < hand.size(); i++){
-			Card card = (Card)hand.get(i);
-			String name = card.getName();
-			boolean canPlay = Card.CARDBANG.equals(name) || (Card.CARDMISSED.equals(name) && Figure.CALAMITYJANET.equals(player.getAbility()));
-			handCards.append(name).append("@").append(canPlay).append(", ");
-		}
+        for (Card value : hand) {
+            String name = value.getName();
+            boolean canPlay = Card.CARDBANG.equals(name) || (Card.CARDMISSED.equals(name) && Character.CALAMITYJANET.equals(player.getCharacter()));
+            handCards.append(name).append("@").append(canPlay).append(", ");
+        }
 		sendMessage(player.getName(), "respondBang " + handCards);
 		waitForResponse(player.getName());
 		return Integer.parseInt(removeResponse(player.getName()));
@@ -248,12 +245,11 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	public int respondBeer(Player player) {
 		Hand hand = player.getHand();
 		StringBuilder handCards = new StringBuilder();
-		for(int i = 0; i < hand.size(); i++){
-			Card card = (Card)hand.get(i);
-			String name = card.getName();
-			boolean canPlay = Card.CARDBEER.equals(name);
-			handCards.append(name).append("@").append(canPlay).append(", ");
-		}
+        for (Card value : hand) {
+            String name = value.getName();
+            boolean canPlay = Card.CARDBEER.equals(name);
+            handCards.append(name).append("@").append(canPlay).append(", ");
+        }
 		sendMessage(player.getName(), "respondBeer " + handCards);
 		waitForResponse(player.getName());
 		return Integer.parseInt(removeResponse(player.getName()));
@@ -263,23 +259,21 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	public int respondMiss(Player player, boolean canSingleUse) {
 		Hand hand = player.getHand();
 		StringBuilder handCards = new StringBuilder();
-		for(int i = 0; i < hand.size(); i++){
-			Card card = (Card)hand.get(i);
-			String name = card.getName();
-			boolean canPlay = Card.CARDMISSED.equals(name) || Card.CARDDODGE.equals(name) || Figure.ELENAFUENTE.equals(player.getAbility()) || (Card.CARDBANG.equals(name) && Figure.CALAMITYJANET.equals(player.getAbility()));
-			handCards.append(name).append("@").append(canPlay).append(", ");
-		}
+        for (Card card : hand) {
+            String name = card.getName();
+            boolean canPlay = Card.CARDMISSED.equals(name) || Card.CARDDODGE.equals(name) || Character.ELENAFUENTE.equals(player.getCharacter()) || (Card.CARDBANG.equals(name) && Character.CALAMITYJANET.equals(player.getCharacter()));
+            handCards.append(name).append("@").append(canPlay).append(", ");
+        }
 		InPlay inPlay = player.getInPlay();
-		for(int i = 0; i < inPlay.size(); i++){
-			Card card = (Card)inPlay.get(i);
-			String name = card.getName();
-			//BELLESTAR
-			boolean canPlay = false;
-			if(canSingleUse){
-				canPlay = card instanceof SingleUseMissed;
-			}
-			handCards.append(name).append("@").append(canPlay).append(", ");
-		}
+        for (Card card : inPlay) {
+            String name = card.getName();
+            //BELLESTAR
+            boolean canPlay = false;
+            if (canSingleUse) {
+                canPlay = card instanceof SingleUseMissed;
+            }
+            handCards.append(name).append("@").append(canPlay).append(", ");
+        }
 		sendMessage(player.getName(), "respondMiss " + handCards);
 		waitForResponse(player.getName());
 		return Integer.parseInt(removeResponse(player.getName()));
@@ -299,25 +293,24 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
 	}
 
 	@Override
-	public List<Object> respondTwoMiss(Player player) {
+	public List<Card> respondTwoMiss(Player player) {
 		Hand hand = player.getHand();
 		StringBuilder handCards = new StringBuilder();
-		for(int i = 0; i < hand.size(); i++){
-			boolean canPlay = false;
-			String cardName = ((Card)hand.get(i)).getName();
-			if(Card.CARDMISSED.equals(cardName) || Card.CARDDODGE.equals(cardName) || Figure.ELENAFUENTE.equals(player.getAbility()) || (Card.CARDBANG.equals(cardName) && Figure.CALAMITYJANET.equals(player.getAbility()))){
-				canPlay = true;
-			}
-			handCards.append(cardName).append("@").append(canPlay).append(", ");
-		}
+        for (Card value : hand) {
+            boolean canPlay = false;
+            String cardName = value.getName();
+            if (Card.CARDMISSED.equals(cardName) || Card.CARDDODGE.equals(cardName) || Character.ELENAFUENTE.equals(player.getCharacter()) || (Card.CARDBANG.equals(cardName) && Character.CALAMITYJANET.equals(player.getCharacter()))) {
+                canPlay = true;
+            }
+            handCards.append(cardName).append("@").append(canPlay).append(", ");
+        }
 		InPlay inPlay = player.getInPlay();
-		for(int i = 0; i < inPlay.size(); i++){
-			Card card = (Card)inPlay.get(i);
-			String name = card.getName();
-			boolean canPlay = card instanceof SingleUseMissed;
+        for (Card card : inPlay) {
+            String name = card.getName();
+            boolean canPlay = card instanceof SingleUseMissed;
 
-			handCards.append(name).append("@").append(canPlay).append(", ");
-		}
+            handCards.append(name).append("@").append(canPlay).append(", ");
+        }
 		//TODO add InHand Green Cards and BELLESTAR's ability
 		sendMessage(player.getName(), "respondTwoMiss " + handCards);
 		waitForResponse(player.getName());

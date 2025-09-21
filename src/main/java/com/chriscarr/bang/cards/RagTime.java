@@ -51,17 +51,17 @@ public class RagTime extends Card implements Playable {
 				hand.add(otherPlayer.getHand().removeRandom());
 				userInterface.printInfo(currentPlayer.getName() + " takes a card from " + otherPlayer.getName() + "'s hand with a "+this.getName());
 			} else if(chosenCard == -2){
-				Object card = otherPlayer.getInPlay().removeGun();
+				Card card = otherPlayer.getInPlay().removeGun();
 				hand.add(card);
-				userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card)card).getName() + " from " + otherPlayer.getName() + " with a "+this.getName());
+				userInterface.printInfo(currentPlayer.getName() + " takes a " + card.getName() + " from " + otherPlayer.getName() + " with a "+this.getName());
 			} else {
-				Object card = otherPlayer.getInPlay().remove(chosenCard);
+				Card card = otherPlayer.getInPlay().remove(chosenCard);
 				hand.add(card);
-				userInterface.printInfo(currentPlayer.getName() + " takes a " + ((Card)card).getName() + " from " + otherPlayer.getName() + " with a "+this.getName());
+				userInterface.printInfo(currentPlayer.getName() + " takes a " + card.getName() + " from " + otherPlayer.getName() + " with a "+this.getName());
 			}
 			//discard the card
 			Hand currentHand = currentPlayer.getHand();
-			Object card = currentHand.remove(cardDiscard);
+			Card card = currentHand.remove(cardDiscard);
 			discard.add(card);
 			discard.add(this);
 			return true;

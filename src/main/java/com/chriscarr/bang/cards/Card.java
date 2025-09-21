@@ -7,7 +7,7 @@ import java.util.Objects;
 import com.chriscarr.bang.CancelPlayer;
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
-import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Character;
 import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.Player;
@@ -206,11 +206,11 @@ public class Card implements Playable{
 	@Override
 	public boolean play(Player currentPlayer, List<Player> players,
 		UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
-		if (Figure.JOHNNYKISCH.equals(currentPlayer.getAbility())) {
+		if (Character.JOHNNYKISCH.equals(currentPlayer.getCharacter())) {
 			for (Player player : players) {
-				int inPlayCount = player.getInPlay().count();
+				int inPlayCount = player.getInPlay().size();
 				for(int inPlayIndex = 0; inPlayIndex < inPlayCount; inPlayIndex++){
-					Card peeked = (Card)player.getInPlay().peek(inPlayIndex);
+					Card peeked = (Card)player.getInPlay().get(inPlayIndex);
 					if(Objects.equals(peeked.getName(), this.getName())){
 						Card removed = (Card)player.getInPlay().remove(inPlayIndex);
 						discard.add(removed);
@@ -251,7 +251,7 @@ public class Card implements Playable{
 		}
 		if(!(otherPlayer instanceof CancelPlayer)){
 			userInterface.printInfo(currentPlayer.getName() + " Shoots " + otherPlayer.getName());
-			if(Figure.APACHEKID.equals(otherPlayer.getAbility()) && this.getSuit() == Card.DIAMONDS){
+			if(Character.APACHEKID.equals(otherPlayer.getCharacter()) && this.getSuit() == Card.DIAMONDS){
 				userInterface.printInfo(otherPlayer.getName() + " is unaffected by diamond "+this.getName());
 				if(!skipDiscard){
 					discard.add(this);
@@ -259,12 +259,12 @@ public class Card implements Playable{
 				return true;
 			}
 			int missesRequired = 1;
-			if(Objects.equals(this.getName(), Card.CARDBANG) && Figure.SLABTHEKILLER.equals(currentPlayer.getAbility())){
+			if(Objects.equals(this.getName(), Card.CARDBANG) && Character.SLABTHEKILLER.equals(currentPlayer.getCharacter())){
 				missesRequired = 2;
 			}
 			int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discard, userInterface, missesRequired, currentPlayer);
 			missesRequired = missesRequired - barrelMisses;
-			boolean canPlaySingleUse = !Figure.BELLESTAR.equals(currentPlayer.getAbility());
+			boolean canPlaySingleUse = !Character.BELLESTAR.equals(currentPlayer.getCharacter());
             if(missesRequired <= 0){
 				if(!skipDiscard){
 					discard.add(this);
@@ -291,7 +291,7 @@ public class Card implements Playable{
 									userInterface.printInfo(otherPlayer.getName() + " plays a "+missCard.getName() + " as a Missed!");
 								}
 							}
-							if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
+							if(Character.MOLLYSTARK.equals(otherPlayer.getCharacter())){
 								Hand otherHand = otherPlayer.getHand();
 								otherHand.add(deck.pull());
 								userInterface.printInfo(otherPlayer.getName() + " draws a card");
@@ -311,14 +311,14 @@ public class Card implements Playable{
 			} else if(missesRequired == 2){
 				Hand hand = otherPlayer.getHand();
 				InPlay inPlay = otherPlayer.getInPlay();
-				List<Object> cardsToDiscard;
+				List<Card> cardsToDiscard;
 				cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);
 				if(cardsToDiscard.isEmpty()){
 					turn.damagePlayer(otherPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
 					userInterface.printInfo(otherPlayer.getName() + " loses a health.");
 				} else {
                                     //TODO issue here, can select more than 2 cards. Green card and missed locks up game.
-					for(Object card : cardsToDiscard){
+					for(Card card : cardsToDiscard){
 						if(inPlay.hasItem(((Card)card).getName())){
 							for(int i = 0; i < inPlay.size(); i++){
                                                             Card gotCard = (Card)inPlay.get(i);
@@ -331,7 +331,7 @@ public class Card implements Playable{
 							hand.remove(card);
 							discard.add(card);
 							userInterface.printInfo(otherPlayer.getName() + " plays a "+((Card)card).getName());
-							if(Figure.MOLLYSTARK.equals(otherPlayer.getAbility())){
+							if(Character.MOLLYSTARK.equals(otherPlayer.getCharacter())){
 								Hand otherHand = otherPlayer.getHand();
 								otherHand.add(deck.pull());
 								userInterface.printInfo(otherPlayer.getName() + " draws a card");

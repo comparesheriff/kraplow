@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.chriscarr.bang.Character;
+import com.chriscarr.bang.Role;
 import com.chriscarr.bang.userinterface.WebGameUserInterface;
 
 public class WebGame {
@@ -90,7 +92,7 @@ public class WebGame {
 		return false;
 	}
 	
-	public static void start(int gameId, int aiSleepMs, String pRole, String pChar){
+	public static void start(int gameId, int aiSleepMs, Role pRole, Character pChar){
 		while(getJoinedPlayers(gameId).size() < 4){
 			joinAI(gameId, "ROBOT");
 		}

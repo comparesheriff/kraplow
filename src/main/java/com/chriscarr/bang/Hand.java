@@ -1,38 +1,27 @@
 package com.chriscarr.bang;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.cards.SingleUse;
 
-public class Hand {
+import java.util.ArrayList;
+import java.util.List;
 
-	List<Object> cards = new ArrayList<>();
-	
-	public void add(Object object) {
-		if(object instanceof SingleUse card){
-            card.setReadyToPlay(false);
+public class Hand extends ArrayList<Card> {
+
+	List<Card> cards = new ArrayList<>();
+
+	@Override
+	public boolean add(Card card) {
+		if(card instanceof SingleUse singleUseCard){
+            singleUseCard.setReadyToPlay(false);
 		}
-		cards.add(object);
-	}
-
-	public Object get(int i) {		
-		return cards.get(i);
-	}
-
-	public int size() {
-		return cards.size();
-	}
-
-	public Object remove(int card) {
-        return cards.remove(card);
+		return super.add(card);
 	}
 
 	public int countBangs() {
 		int bangs = 0;
-		for(Object card : cards){
-			if(((Card)card).getName().equals(Card.CARDBANG)){
+		for(Card card : cards){
+			if(card.getName().equals(Card.CARDBANG)){
 				bangs = bangs + 1;
 			}
 		}
@@ -41,17 +30,17 @@ public class Hand {
 
 	public int countMisses() {
 		int bangs = 0;
-		for(Object card : cards){
-			if(((Card)card).getName().equals(Card.CARDMISSED)){
+		for(Card card : cards){
+			if(card.getName().equals(Card.CARDMISSED)){
 				bangs = bangs + 1;
 			}
 		}
 		return bangs;
 	}
 
-	public Object removeMiss() {
-		for(Object card : cards){
-			if(((Card)card).getName().equals(Card.CARDMISSED)){
+	public Card removeMiss() {
+		for(Card card : cards){
+			if(card.getName().equals(Card.CARDMISSED)){
 				cards.remove(card); 
 				return card;
 			}
@@ -59,36 +48,27 @@ public class Hand {
 		return null;
 	}
 
-	public Object removeRandom() {
+	public Card removeRandom() {
         return cards.remove((int)(Math.random() * cards.size()));
 	}
 
 	public int countBeers() {
 		int beers = 0;
-		for(Object card : cards){
-			if(((Card)card).getName().equals(Card.CARDBEER)){
+		for(Card card : cards){
+			if(card.getName().equals(Card.CARDBEER)){
 				beers = beers + 1;
 			}
 		}
 		return beers;
 	}
 
-	public Object removeBeer() {
-		for(Object card : cards){
-			if(((Card)card).getName().equals(Card.CARDBEER)){
+	public Card removeBeer() {
+		for(Card card : cards){
+			if(card.getName().equals(Card.CARDBEER)){
 				cards.remove(card); 
 				return card;
 			}
 		}
 		return null;
 	}
-
-	public void remove(Object card) {
-		cards.remove(card);
-	}
-
-	public boolean isEmpty() {
-		return cards.isEmpty();
-	}
-
 }

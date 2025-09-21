@@ -3,42 +3,42 @@ package com.chriscarr;
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
 
+import com.chriscarr.bang.cards.Card;
 import junit.framework.TestCase;
 
 public class DeckTest extends TestCase {
 	public void testDeckAdd(){
 		Deck deck = new Deck();
-		Object card = new Object();
+		Card card = new Card();
 		deck.add(card);
-		Object outCard = deck.pull();
+		Card outCard = deck.pull();
 		assertEquals(card, outCard);
 	}
 	
 	public void testDeckRunOut(){
-		Deck deck = new Deck();
-		assertTrue(deck.isEmpty());
+		assertTrue(new Deck().isEmpty());
 	}
 	
 	public void testDeckAddRunOut(){
 		Deck deck = new Deck();
-		deck.add(new Object());
+		deck.add(new Card());
 		assertFalse(deck.isEmpty());
 	}
 	
 	public void testDeckAddPullRunOut(){
 		Deck deck = new Deck();
-		deck.add(new Object());
+		deck.add(new Card());
 		deck.pull();
 		assertTrue(deck.isEmpty());
 	}
 	
 	public void testDeckPullOrder(){
 		Deck deck = new Deck();
-		Object card1 = new Object();
-		Object card2 = new Object();
+		Card card1 = new Card();
+		Card card2 = new Card();
 		deck.add(card1);
 		deck.add(card2);
-		Object pulled = deck.pull();
+		Card pulled = deck.pull();
 		assertEquals(pulled, card2);
 	}
 	
@@ -47,13 +47,13 @@ public class DeckTest extends TestCase {
 		boolean reverseOrder = false;
 		for(int i = 0; i < 100 && (!sameOrder || !reverseOrder); i ++){
 			Deck deck = new Deck();
-			Object card1 = new Object();
-			Object card2 = new Object();
+			Card card1 = new Card();
+			Card card2 = new Card();
 			deck.add(card1);
 			deck.add(card2);		
 			deck.shuffle();
-			Object pulled1 = deck.pull();
-			Object pulled2 = deck.pull();
+			Card pulled1 = deck.pull();
+			Card pulled2 = deck.pull();
 			if(pulled1.equals(card1) && pulled2.equals(card2)){
 				sameOrder = true;
 			} else {
@@ -66,10 +66,10 @@ public class DeckTest extends TestCase {
 	public void testEmptyDeckDiscardShuffle(){
 		Deck deck = new Deck();
 		Discard discard = new Discard();
-		Object discarded = new Object();
+		Card discarded = new Card();
 		discard.add(discarded);
 		deck.setDiscard(discard);
-		Object pulled = deck.pull();
+		Card pulled = deck.pull();
 		assertEquals(pulled, discarded);
 	}
 }

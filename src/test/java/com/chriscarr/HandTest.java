@@ -2,25 +2,25 @@ package com.chriscarr;
 
 import com.chriscarr.bang.Hand;
 
+import com.chriscarr.bang.cards.Card;
 import junit.framework.TestCase;
 
 public class HandTest extends TestCase{
 	public void testHandAddCard(){
 		Hand hand = new Hand();
-		Object card = new Object();
+		Card card = new Card();
 		hand.add(card);
-		Object gotCard = hand.get(0);
+		Card gotCard = hand.getFirst();
 		assertEquals(card, gotCard);
 	}
 	
 	public void testHandSize(){
-		Hand hand = new Hand();
-		assertEquals(0, hand.size());
+		assertEquals(0, new Hand().size());
 	}
 	
 	public void testHandSizeOne(){
 		Hand hand = new Hand();
-		hand.add(new Object());
+		hand.add(new Card());
 		assertEquals(1, hand.size());
 	}
 }

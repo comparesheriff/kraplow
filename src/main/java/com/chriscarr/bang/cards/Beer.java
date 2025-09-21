@@ -8,7 +8,7 @@ import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
-import com.chriscarr.bang.Figure;
+import com.chriscarr.bang.Character;
 
 public class Beer extends Card implements Playable {
 
@@ -29,7 +29,7 @@ public class Beer extends Card implements Playable {
 			if(!Turn.isMaxHealth(currentPlayer)){
 				currentPlayer.addHealth(1);
 			}
-			if(Figure.TEQUILAJOE.equals(currentPlayer.getAbility())){
+			if(Character.TEQUILAJOE.equals(currentPlayer.getCharacter())){
 				if(!Turn.isMaxHealth(currentPlayer)){
 					currentPlayer.addHealth(1);
 				}	

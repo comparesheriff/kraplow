@@ -3,6 +3,7 @@ package com.chriscarr;
 import com.chriscarr.bang.InPlay;
 import com.chriscarr.bang.cards.Card;
 
+import com.chriscarr.bang.cards.Gun;
 import junit.framework.TestCase;
 
 public class InPlayTest extends TestCase {
@@ -13,13 +14,13 @@ public class InPlayTest extends TestCase {
 	
 	public void testDoesHaveGun(){
 		InPlay inPlay = new InPlay();
-		inPlay.setGun(new Object());
+		inPlay.setGun(new Gun("",0,0,0));
 		assertTrue(inPlay.hasGun());
 	}
 	
 	public void testRemoveGun(){
 		InPlay inPlay = new InPlay();
-		Object gun = new Card();
+		Gun gun = new Gun("",0,0,0);
 		inPlay.setGun(gun);
 		Object removedGun = inPlay.removeGun();
 		assertEquals(removedGun, gun);
@@ -27,7 +28,7 @@ public class InPlayTest extends TestCase {
 	
 	public void testRemovedGun(){
 		InPlay inPlay = new InPlay();
-		Object gun = new Card();
+		Gun gun = new Gun("",0,0,0);
 		inPlay.setGun(gun);
 		inPlay.removeGun();
 		assertFalse(inPlay.hasGun());
@@ -35,29 +36,28 @@ public class InPlayTest extends TestCase {
 	
 	public void testAddCard(){
 		InPlay inPlay = new InPlay();
-		Object toAdd = new Object();
+		Card toAdd = new Card();
 		inPlay.add(toAdd);
-		Object peeked = inPlay.peek(0);
+		Object peeked = inPlay.getFirst();
 		assertEquals(toAdd, peeked);
 	}
 	
 	public void testRemoveCard(){
 		InPlay inPlay = new InPlay();
-		Object toAdd = new Object();
+		Card toAdd = new Card();
 		inPlay.add(toAdd);
 		Object removed = inPlay.remove(0);
 		assertEquals(toAdd, removed);
 	}
 	
 	public void testCountInPlay(){
-		InPlay inPlay = new InPlay();
-        assertEquals(0, inPlay.count());
+        assertEquals(0, new InPlay().size());
 	}
 	
 	public void testCountInPlayAdd(){
 		InPlay inPlay = new InPlay();
-		inPlay.add(new Object());
-        assertEquals(1, inPlay.count());
+		inPlay.add(new Card());
+        assertEquals(1, inPlay.size());
 	}
 	
 	public void testSameNameReject(){
