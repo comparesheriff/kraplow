@@ -48,6 +48,7 @@ public class SingleUse extends Card implements Playable{
 		InPlay currentInPlay = currentPlayer.getInPlay();
 		for(int i = 0; i < currentInPlay.size(); i++){
 			if(currentInPlay.get(i) == this){
+				//REFACTORING clean this up
 				currentInPlay.remove(i);
 			}
 		}

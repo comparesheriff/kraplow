@@ -204,9 +204,9 @@ public class Card implements Playable{
 			for (Player player : players) {
 				int inPlayCount = player.getInPlay().size();
 				for(int inPlayIndex = 0; inPlayIndex < inPlayCount; inPlayIndex++){
-					Card peeked = (Card)player.getInPlay().get(inPlayIndex);
+					Card peeked = player.getInPlay().get(inPlayIndex);
 					if(Objects.equals(peeked.getName(), this.getName())){
-						Card removed = (Card)player.getInPlay().remove(inPlayIndex);
+						Card removed = player.getInPlay().remove(inPlayIndex);
 						discard.add(removed);
 						userInterface.printInfo(currentPlayer.getName() + " plays a " + this.getName() + " and forces " + player.getName() + " to discard one from play.");
 					}
@@ -272,7 +272,7 @@ public class Card implements Playable{
 				} else {
 					for(int i = 0; i < missesRequired; i++){
 						if(missPlayed < otherPlayer.getHand().size()){
-							Card missCard = (Card)otherPlayer.getHand().remove(missPlayed);
+							Card missCard = otherPlayer.getHand().remove(missPlayed);
 							discard.add(missCard);
 							if(missCard.getName().equals(CARDDODGE)){
 								Hand otherHand = otherPlayer.getHand();
@@ -313,18 +313,18 @@ public class Card implements Playable{
 				} else {
                                     //TODO issue here, can select more than 2 cards. Green card and missed locks up game.
 					for(Card card : cardsToDiscard){
-						if(inPlay.hasItem(((Card)card).getName())){
+						if(inPlay.hasItem(card.getName())){
 							for(int i = 0; i < inPlay.size(); i++){
-                                                            Card gotCard = (Card)inPlay.get(i);
-                                                            if(gotCard.getName().equals(((Card)card).getName())){
+                                                            Card gotCard = inPlay.get(i);
+                                                            if(gotCard.getName().equals(card.getName())){
                                                                 discard.add(inPlay.remove(i));
                                                             }
 							}
-							userInterface.printInfo(otherPlayer.getName() + " plays a "+((Card)card).getName());
+							userInterface.printInfo(otherPlayer.getName() + " plays a "+ card.getName());
 						} else {
 							hand.remove(card);
 							discard.add(card);
-							userInterface.printInfo(otherPlayer.getName() + " plays a "+((Card)card).getName());
+							userInterface.printInfo(otherPlayer.getName() + " plays a "+ card.getName());
 							if(Character.MOLLYSTARK.equals(otherPlayer.getCharacter())){
 								Hand otherHand = otherPlayer.getHand();
 								otherHand.add(deck.pull());

@@ -21,7 +21,7 @@ public class InPlayTest extends TestCase {
 		InPlay inPlay = new InPlay();
 		Gun gun = new Gun("",0,0,0);
 		inPlay.setGun(gun);
-		Object removedGun = inPlay.removeGun();
+		Gun removedGun = inPlay.removeGun();
 		assertEquals(removedGun, gun);
 	}
 	
@@ -37,7 +37,7 @@ public class InPlayTest extends TestCase {
 		InPlay inPlay = new InPlay();
 		Card toAdd = new Card();
 		inPlay.add(toAdd);
-		Object peeked = inPlay.getFirst();
+		Card peeked = inPlay.getFirst();
 		assertEquals(toAdd, peeked);
 	}
 	
@@ -45,7 +45,7 @@ public class InPlayTest extends TestCase {
 		InPlay inPlay = new InPlay();
 		Card toAdd = new Card();
 		inPlay.add(toAdd);
-		Object removed = inPlay.remove(0);
+		Card removed = inPlay.removeFirst();
 		assertEquals(toAdd, removed);
 	}
 	

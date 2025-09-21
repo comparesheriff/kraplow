@@ -399,7 +399,7 @@ public class WebGameUserInterface extends JSPUserInterface {
 		playerMessages.add(new MessageImpl(player + "-" + message));
 		if (userFigureNames.get(player).contains("AI") || timedOutPlayers.contains(userFigureNames.get(player))) {
 			while (messages.isEmpty()) {
-				//should something be happening here?
+				//REFACTORING - should something be happening here?
 			}
 			addResponse(userFigureNames.get(player), somethingAI(player,
 					message));

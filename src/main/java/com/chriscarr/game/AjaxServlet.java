@@ -242,10 +242,9 @@ public class AjaxServlet extends HttpServlet {
                             response.getWriter().write("<hand>");
                             if (userInterface.isPlayerAlive(((WebGameUserInterface) userInterface).getPlayerForUser(user))) {
                                 Hand hand = userInterface.getHandForUser(((WebGameUserInterface) userInterface).getPlayerForUser(user));
-                                for (int i = 0; i < hand.size(); i++) {
-                                    Card card = (Card) hand.get(i);
+                                for (Card value : hand) {
                                     response.getWriter().write("<card>");
-                                    response.getWriter().write(card.getName());
+                                    response.getWriter().write(value.getName());
                                     response.getWriter().write("</card>");
                                 }
                             }

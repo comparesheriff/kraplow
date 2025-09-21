@@ -44,6 +44,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
                         }
                     } else {
                         //In Play Cards
+						//REFACTORING - What is happening here
                         InPlay inPlay = player.getInPlay();
                         inPlay.get(Integer.parseInt(s) - hand.size());
                         cardsToDiscard.add(inPlay.get(Integer.parseInt(s) - hand.size()));

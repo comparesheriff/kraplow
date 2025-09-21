@@ -320,7 +320,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 		System.out.println("-1) done playing");
 		for(int i = 0; i < handSize; i++){
 			Card card = hand.get(i);
-			boolean canPlay = Card.CARDMISSED.equals(card.getName()) || (Card.CARDBANG.equals(card.getName()) && Character.CALAMITYJANET.equals(player.getName()));
+			boolean canPlay = Card.CARDMISSED.equals(card.getName()) || (Card.CARDBANG.equals(card.getName()) && Character.CALAMITYJANET.equals(player.getCharacter()));
 			System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
 			if(canPlay){
 				System.out.print(" Targets: ");

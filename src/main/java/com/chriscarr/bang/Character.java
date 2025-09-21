@@ -52,11 +52,6 @@ public enum Character {
 			BELLESTAR, JOSEDELGADO, GREGDIGGER, DOCHOLYDAY, PIXIEPETE, MOLLYSTARK, APACHEKID,
 			HERBHUNTER, BILLNOFACE, PATBRENNAN, TEQUILAJOE, VERACUSTER, SEANMALLORY);
 
-	public static final int PLAYBANG = 0;
-	public static final int PLAYMISSED = 1;
-	public static final int GETSHOT = 2;
-	public static final int PLAYONEEACH = 3;
-
 	Character(String name, String specialAbility, int startingHealth) {
 		this.name = name;
 		this.specialAbility = specialAbility;

@@ -11,7 +11,7 @@ public class SetupTest extends TestCase {
 		Deck deck = Setup.setupDeck(false);
 		Card pulled = null;
 		for(int i = 0; i < 80; i++){
-			pulled = (Card) deck.pull();
+			pulled = deck.pull();
 		}
 		assertEquals(Card.CARDBARREL, pulled.getName());
 		assertEquals(Card.SPADES, pulled.getSuit());

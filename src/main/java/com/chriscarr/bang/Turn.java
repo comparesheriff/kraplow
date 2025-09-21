@@ -115,7 +115,7 @@ public class Turn {
         boolean inJail;
         try {
             userInterface.printInfo(currentPlayer.getName() + "'s turn.");
-            if (Character.VERACUSTER.equals(currentPlayer.getName())) {
+            if (Character.VERACUSTER.equals(currentPlayer.getCharacter())) {
                 List<Player> otherPlayers = new ArrayList<>();
                 for (Player other : players) {
                     if (!other.equals(currentPlayer)) {
@@ -365,10 +365,9 @@ public class Turn {
         int card = -2;
         InPlay allInPlay = currentPlayer.getInPlay();
         ArrayList<SingleUse> singleUseInPlay = new ArrayList<>();
-        for (int i = 0; i < allInPlay.size(); i++) {
-            Card inPlayCard = allInPlay.get(i);
-            if (inPlayCard instanceof SingleUse) {
-                singleUseInPlay.add((SingleUse) inPlayCard);
+        for (Card inPlayCard : allInPlay) {
+            if (inPlayCard instanceof SingleUse singleUseInplayCard) {
+                singleUseInPlay.add(singleUseInplayCard);
             }
         }
         while (card < -1 || card > hand.size() + singleUseInPlay.size() - 1) {
@@ -1202,8 +1201,8 @@ public class Turn {
                 validCards = true;
             } else if (cards.size() == 2) {
                 validCards = true;
-                for (Object card : cards) {
-                    boolean invalidCard = isInvalidCard(player, (Card) card);
+                for (Card card : cards) {
+                    boolean invalidCard = isInvalidCard(player, card);
                     if (invalidCard) {
                         validCards = false;
                         break;

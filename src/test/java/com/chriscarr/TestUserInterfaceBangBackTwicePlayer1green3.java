@@ -99,7 +99,7 @@ public class TestUserInterfaceBangBackTwicePlayer1green3 extends TestUserInterfa
 		List<Card> result = new ArrayList<>();
 		Hand hand = player.getHand();
                 InPlay inPlay = player.getInPlay();
-		result.add(inPlay.get(0));
+		result.add(inPlay.getFirst());
                 result.add(hand.get(1));
 		return result;
 	}

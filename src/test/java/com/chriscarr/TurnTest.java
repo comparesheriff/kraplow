@@ -2072,8 +2072,8 @@ public class TurnTest extends TestCase {
         otherHand.add(new Bang(Card.CARDBANG, Card.CLUBS, Card.VALUEQ, Card.TYPEPLAY));
         other.setHand(otherHand);
         Turn turn = new Turn();
-        turn.setPlayers(new ArrayList<Player>());
-        turn.damagePlayer(elGringo, new ArrayList<Player>(), other, 1, other, null, null, new TestUserInterface());
+        turn.setPlayers(new ArrayList<>());
+        turn.damagePlayer(elGringo, new ArrayList<>(), other, 1, other, null, null, new TestUserInterface());
         assertEquals(0, otherHand.size());
         assertEquals(1, gringoHand.size());
     }
@@ -2089,8 +2089,8 @@ public class TurnTest extends TestCase {
         Hand otherHand = new Hand();
         other.setHand(otherHand);
         Turn turn = new Turn();
-        turn.setPlayers(new ArrayList<Player>());
-        turn.damagePlayer(elGringo, new ArrayList<Player>(), other, 1, other, null, null, null);
+        turn.setPlayers(new ArrayList<>());
+        turn.damagePlayer(elGringo, new ArrayList<>(), other, 1, other, null, null, null);
         assertEquals(0, otherHand.size());
         assertEquals(0, gringoHand.size());
     }
