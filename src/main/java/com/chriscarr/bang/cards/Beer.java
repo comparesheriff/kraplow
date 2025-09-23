@@ -4,7 +4,6 @@ import com.chriscarr.bang.*;
 import com.chriscarr.bang.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Beer extends Card implements Playable {
