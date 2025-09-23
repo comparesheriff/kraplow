@@ -29,4 +29,14 @@ public class Gun extends Card {
         currentPlayer.setGun(this);
         return true;
     }
+
+    public int getRange() {
+        return switch (getName()) {
+            case REV_CARBINE -> 5;
+            case WINCHESTER -> 4;
+            case REMINGTON -> 3;
+            case SCHOFIELD -> 2;
+            default -> 1;
+        };
+    }
 }

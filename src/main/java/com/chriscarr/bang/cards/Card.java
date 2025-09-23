@@ -57,16 +57,6 @@ public class Card implements Playable {
         return type;
     }
 
-    public static int getRange(CardName gunName) {
-        return switch (gunName) {
-            case REV_CARBINE -> 5;
-            case WINCHESTER -> 4;
-            case REMINGTON -> 3;
-            case SCHOFIELD -> 2;
-            default -> 1;
-        };
-    }
-
     public static boolean multiBang(CardName gunName) {
         return gunName.equals(CardName.VOLCANIC);
     }

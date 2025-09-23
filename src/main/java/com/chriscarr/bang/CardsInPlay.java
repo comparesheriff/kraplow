@@ -37,7 +37,7 @@ public class CardsInPlay extends ArrayList<Card> {
 
     public int getGunRange() {
         if (hasGun()) {
-            return Card.getRange(gun.getName());
+            return gun.getRange();
         } else {
             return 1;
         }
