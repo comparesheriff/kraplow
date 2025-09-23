@@ -7,7 +7,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class Duel extends Card implements Playable {
-    public Duel(String name, CardSuit suit, CardValue value, CardType type) {
+    public Duel(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

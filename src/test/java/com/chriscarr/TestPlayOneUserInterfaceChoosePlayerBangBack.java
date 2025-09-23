@@ -1,6 +1,6 @@
 package com.chriscarr;
 
-import com.chriscarr.bang.InPlay;
+import com.chriscarr.bang.CardsInPlay;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.userinterface.UserInterface;
@@ -36,7 +36,7 @@ public class TestPlayOneUserInterfaceChoosePlayerBangBack extends TestUserInterf
     }
 
     @Override
-    public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
+    public int askOthersCard(Player player, CardsInPlay cardsInPlay, boolean hasHand) {
         // TODO Auto-generated method stub
         return 0;
     }

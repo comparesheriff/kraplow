@@ -7,7 +7,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class Indians extends Card implements Playable {
-    public Indians(String name, CardSuit suit, CardValue value, CardType type) {
+    public Indians(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -41,10 +41,10 @@ public class Indians extends Card implements Playable {
             int bangPlayed = Turn.validPlayBang(indianPlayer, userInterface);
             if (bangPlayed == -1) {
                 turn.damagePlayer(indianPlayer, players, currentPlayer, 1, currentPlayer, deck, discard, userInterface);
-                userInterface.printInfo(indianPlayer.getName() + " loses a health from " + currentPlayer.getName() + "'s " + Card.CARDINDIANS);
+                userInterface.printInfo(indianPlayer.getName() + " loses a health from " + currentPlayer.getName() + "'s " + CardName.INDIANS);
             } else {
                 discard.add(indianPlayer.getHand().remove(bangPlayed));
-                userInterface.printInfo(indianPlayer.getName() + " repels the attack from " + currentPlayer.getName() + "'s " + Card.CARDINDIANS);
+                userInterface.printInfo(indianPlayer.getName() + " repels the attack from " + currentPlayer.getName() + "'s " + CardName.INDIANS);
                 if (Character.MOLLYSTARK.equals(indianPlayer.getCharacter())) {
                     Hand otherHand = indianPlayer.getHand();
                     otherHand.add(deck.pull());

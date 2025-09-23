@@ -7,12 +7,12 @@ import java.util.List;
 
 public class Derringer extends SingleUse implements Playable {
 
-    public Derringer(String name, CardSuit suit, CardValue value, CardType type) {
+    public Derringer(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
     public List<Player> targets(Player player, List<Player> players) {
-        return Turn.getPlayersWithCards(Turn.getPlayersWithinRange(player, players, 1));
+        return Turn.getPlayersWithCards(Turn.getPlayersWithinRange(player, players));
     }
 
     public boolean activate(Player currentPlayer, List<Player> players,

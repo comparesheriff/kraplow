@@ -1,7 +1,7 @@
 package com.chriscarr;
 
 import com.chriscarr.bang.Hand;
-import com.chriscarr.bang.InPlay;
+import com.chriscarr.bang.CardsInPlay;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.userinterface.UserInterface;
@@ -50,10 +50,10 @@ public class TestUserInterface implements UserInterface {
     }
 
     @Override
-    public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
-        if (!inPlay.isEmpty()) {
+    public int askOthersCard(Player player, CardsInPlay cardsInPlay, boolean hasHand) {
+        if (!cardsInPlay.isEmpty()) {
             return 0;
-        } else if (inPlay.hasGun()) {
+        } else if (cardsInPlay.hasGun()) {
             return -2;
         } else {
             return -1;

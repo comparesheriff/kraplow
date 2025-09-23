@@ -7,7 +7,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class CatBalou extends Card implements Playable {
-    public CatBalou(String name, CardSuit suit, CardValue value, CardType type) {
+    public CatBalou(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -37,19 +37,19 @@ public class CatBalou extends Card implements Playable {
             return true;
         }
         int chosenCard = -3;
-        while (chosenCard < -2 || chosenCard > other.getInPlay().size() - 1) {
-            chosenCard = userInterface.askOthersCard(currentPlayer, other.getInPlay(), !other.getHand().isEmpty());
+        while (chosenCard < -2 || chosenCard > other.getCardsInPlay().size() - 1) {
+            chosenCard = userInterface.askOthersCard(currentPlayer, other.getCardsInPlay(), !other.getHand().isEmpty());
         }
         if (chosenCard == -1) {
             Card card = other.getHand().removeRandom();
             discard.add(card);
             userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + other.getName() + "'s hand with a Cat Balou");
         } else if (chosenCard == -2) {
-            Card card = other.getInPlay().removeGun();
+            Card card = other.getCardsInPlay().removeGun();
             discard.add(card);
             userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + other.getName() + " with a Cat Balou");
         } else {
-            Card card = other.getInPlay().remove(chosenCard);
+            Card card = other.getCardsInPlay().remove(chosenCard);
             discard.add(card);
             userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + other.getName() + " with a Cat Balou");
         }

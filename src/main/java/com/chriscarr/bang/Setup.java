@@ -97,7 +97,7 @@ public class Setup {
 
             player.setHand(hand);
 
-            player.setInPlay(new InPlay());
+            player.setInPlay(new CardsInPlay());
 
             players.add(player);
         }
@@ -160,7 +160,7 @@ public class Setup {
 
             player.setHand(new Hand());
 
-            player.setInPlay(new InPlay());
+            player.setInPlay(new CardsInPlay());
 
             players.add(player);
         }

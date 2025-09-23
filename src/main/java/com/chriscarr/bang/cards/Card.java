@@ -9,54 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Card implements Playable {
-
-    public static final String CARDBARREL = "Barrel";
-    public static final String CARDSCOPE = "Scope";
-    public static final String CARDMUSTANG = "Mustang";
-    public static final String CARDJAIL = "Jail";
-    public static final String CARDDYNAMITE = "Dynamite";
-    public static final String CARDSCHOFIELD = "Schofield";
-    public static final String CARDVOLCANIC = "Volcanic";
-    public static final String CARDREMINGTON = "Remington";
-    public static final String CARDWINCHESTER = "Winchester";
-    public static final String CARDREVCARBINE = "Rev. Carbine";
-    public static final String CARDBANG = "Shoot";
-    public static final String CARDMISSED = "Missed!";
-    public static final String CARDBEER = "Beer";
-    public static final String CARDPANIC = "Panic!";
-    public static final String CARDCATBALOU = "Cat Balou";
-    public static final String CARDDUEL = "Duel";
-    public static final String CARDSTAGECOACH = "Stagecoach";
-    public static final String CARDINDIANS = "Indians!";
-    public static final String CARDGENERALSTORE = "General Store";
-    public static final String CARDGATLING = "Gatling";
-    public static final String CARDSALOON = "Saloon";
-    public static final String CARDWELLSFARGO = "Wells Fargo";
-    public static final String CARDRAGTIME = "Rag Time";
-    public static final String CARDDODGE = "Dodge";
-    public static final String CARDWHISKY = "Whisky";
-    public static final String CARDHIDEOUT = "Hideout";
-    public static final String CARDSILVER = "Silver";
-    public static final String CARDPUNCH = "Punch";
-    public static final String CARDBRAWL = "Brawl";
-    public static final String CARDTEQUILA = "Tequila";
-    public static final String CARDSPRINGFIELD = "Springfield";
-    public static final String CARDCONESTOGA = "Conestoga";
-    public static final String CARDBUFFALORIFLE = "Buffalo Rifle";
-    public static final String CARDCANCAN = "Can Can";
-    public static final String CARDHOWITZER = "Howitzer";
-    public static final String CARDSOMBRERO = "Sombrero";
-    public static final String CARDBIBLE = "Bible";
-    public static final String CARDCANTEEN = "Canteen";
-    public static final String CARDIRONPLATE = "Iron Plate";
-    public static final String CARDKNIFE = "Knife";
-    public static final String CARDPEPPERBOX = "Pepperbox";
-    public static final String CARDDERRINGER = "Derringer";
-    public static final String CARDTENGALLONHAT = "Ten Gallon Hat";
-    public static final String CARDPONYEXPRESS = "Pony Express";
-
-
-    private String name;
+    private CardName name;
     private CardSuit suit;
     private CardValue value;
     private CardType type;
@@ -65,18 +18,18 @@ public class Card implements Playable {
 
     }
 
-    public Card(String name, CardSuit suit, CardValue value, CardType type) {
+    public Card(CardName name, CardSuit suit, CardValue value, CardType type) {
         this.name = name;
         this.suit = suit;
         this.value = value;
         this.type = type;
     }
 
-    public void setName(String name) {
+    public void setName(CardName name) {
         this.name = name;
     }
 
-    public String getName() {
+    public CardName getName() {
         return name;
     }
 
@@ -104,18 +57,18 @@ public class Card implements Playable {
         return type;
     }
 
-    public static int getRange(String gunName) {
+    public static int getRange(CardName gunName) {
         return switch (gunName) {
-            case CARDREVCARBINE -> 5;
-            case CARDWINCHESTER -> 4;
-            case CARDREMINGTON -> 3;
-            case CARDSCHOFIELD -> 2;
+            case REV_CARBINE -> 5;
+            case WINCHESTER -> 4;
+            case REMINGTON -> 3;
+            case SCHOFIELD -> 2;
             default -> 1;
         };
     }
 
-    public static boolean multiBang(String gunName) {
-        return gunName.equals(CARDVOLCANIC);
+    public static boolean multiBang(CardName gunName) {
+        return gunName.equals(CardName.VOLCANIC);
     }
 
     public static boolean isExplode(Card drawnCard) {
@@ -135,11 +88,11 @@ public class Card implements Playable {
                         UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
         if (Character.JOHNNYKISCH.equals(currentPlayer.getCharacter())) {
             for (Player player : players) {
-                int inPlayCount = player.getInPlay().size();
+                int inPlayCount = player.getCardsInPlay().size();
                 for (int inPlayIndex = 0; inPlayIndex < inPlayCount; inPlayIndex++) {
-                    Card peeked = player.getInPlay().get(inPlayIndex);
+                    Card peeked = player.getCardsInPlay().get(inPlayIndex);
                     if (Objects.equals(peeked.getName(), this.getName())) {
-                        Card removed = player.getInPlay().remove(inPlayIndex);
+                        Card removed = player.getCardsInPlay().remove(inPlayIndex);
                         discard.add(removed);
                         userInterface.printInfo(currentPlayer.getName() + " plays a " + this.getName() + " and forces " + player.getName() + " to discard one from play.");
                     }
@@ -178,7 +131,7 @@ public class Card implements Playable {
                 return true;
             }
             int missesRequired = 1;
-            if (Objects.equals(this.getName(), Card.CARDBANG) && Character.SLABTHEKILLER.equals(currentPlayer.getCharacter())) {
+            if (Objects.equals(this.getName(), CardName.BANG) && Character.SLABTHEKILLER.equals(currentPlayer.getCharacter())) {
                 missesRequired = 2;
             }
             int barrelMisses = Turn.isBarrelSave(otherPlayer, deck, discard, userInterface, missesRequired, currentPlayer);
@@ -199,12 +152,12 @@ public class Card implements Playable {
                         if (missPlayed < otherPlayer.getHand().size()) {
                             Card missCard = otherPlayer.getHand().remove(missPlayed);
                             discard.add(missCard);
-                            if (missCard.getName().equals(CARDDODGE)) {
+                            if (missCard.getName().equals(CardName.DODGE)) {
                                 Hand otherHand = otherPlayer.getHand();
                                 otherHand.add(deck.pull());
-                                userInterface.printInfo(otherPlayer.getName() + " plays a " + missCard.getName() + " countering " + currentPlayer.getName() + "'s " + Card.CARDBANG + " and draws a card");
+                                userInterface.printInfo(otherPlayer.getName() + " plays a " + missCard.getName() + " countering " + currentPlayer.getName() + "'s " + CardName.BANG + " and draws a card");
                             } else {
-                                if (missCard.getName().equals(Card.CARDMISSED)) {
+                                if (missCard.getName().equals(CardName.MISSED)) {
                                     userInterface.printInfo(otherPlayer.getName() + " plays a " + missCard.getName());
                                 } else {
                                     userInterface.printInfo(otherPlayer.getName() + " plays a " + missCard.getName() + " as a Missed!");
@@ -217,9 +170,9 @@ public class Card implements Playable {
                             }
                         } else {
                             missPlayed -= otherPlayer.getHand().size();
-                            InPlay inPlay = otherPlayer.getInPlay();
-                            SingleUseMissed sum = (SingleUseMissed) inPlay.remove(missPlayed);
-                            if (sum.getName().equals(Card.CARDBIBLE)) {
+                            CardsInPlay cardsInPlay = otherPlayer.getCardsInPlay();
+                            SingleUseMissed sum = (SingleUseMissed) cardsInPlay.remove(missPlayed);
+                            if (sum.getName().equals(CardName.BIBLE)) {
                                 otherPlayer.getHand().add(deck.pull());
                             }
                             userInterface.printInfo(otherPlayer.getName() + " plays a " + sum.getName());
@@ -229,7 +182,7 @@ public class Card implements Playable {
                 }
             } else if (missesRequired == 2) {
                 Hand hand = otherPlayer.getHand();
-                InPlay inPlay = otherPlayer.getInPlay();
+                CardsInPlay cardsInPlay = otherPlayer.getCardsInPlay();
                 List<Card> cardsToDiscard;
                 cardsToDiscard = Turn.validRespondTwoMiss(otherPlayer, userInterface);
                 if (cardsToDiscard.isEmpty()) {
@@ -238,11 +191,11 @@ public class Card implements Playable {
                 } else {
                     //TODO issue here, can select more than 2 cards. Green card and missed locks up game.
                     for (Card card : cardsToDiscard) {
-                        if (inPlay.hasItem(card.getName())) {
-                            for (int i = 0; i < inPlay.size(); i++) {
-                                Card gotCard = inPlay.get(i);
+                        if (cardsInPlay.hasItem(card.getName())) {
+                            for (int i = 0; i < cardsInPlay.size(); i++) {
+                                Card gotCard = cardsInPlay.get(i);
                                 if (gotCard.getName().equals(card.getName())) {
-                                    discard.add(inPlay.remove(i));
+                                    discard.add(cardsInPlay.remove(i));
                                 }
                             }
                             userInterface.printInfo(otherPlayer.getName() + " plays a " + card.getName());

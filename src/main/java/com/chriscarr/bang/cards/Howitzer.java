@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Howitzer extends SingleUse implements Playable {
 
-    public Howitzer(String name, CardSuit suit, CardValue value, CardType type) {
+    public Howitzer(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

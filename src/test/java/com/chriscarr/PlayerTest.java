@@ -13,17 +13,17 @@ public class PlayerTest extends TestCase {
         player.setRole(setRole);
         Hand setHand = new Hand();
         player.setHand(setHand);
-        InPlay setInPlay = new InPlay();
-        player.setInPlay(setInPlay);
+        CardsInPlay setCardsInPlay = new CardsInPlay();
+        player.setInPlay(setCardsInPlay);
 
         Character gotCharacter = player.getCharacter();
         Role gotRole = player.getRole();
         Hand gotHand = player.getHand();
-        InPlay gotInPlay = player.getInPlay();
+        CardsInPlay gotCardsInPlay = player.getCardsInPlay();
 
         assertEquals(setCharacter, gotCharacter);
         assertEquals(setRole, gotRole);
         assertEquals(gotHand, setHand);
-        assertEquals(gotInPlay, setInPlay);
+        assertEquals(gotCardsInPlay, setCardsInPlay);
     }
 }

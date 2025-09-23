@@ -6,7 +6,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class RagTime extends Card implements Playable {
-    public RagTime(String name, CardSuit suit, CardValue value, CardType type) {
+    public RagTime(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -38,19 +38,19 @@ public class RagTime extends Card implements Playable {
         //Steal from player
         if (!(otherPlayer instanceof CancelPlayer)) {
             int chosenCard = -3;
-            while (chosenCard < -2 || chosenCard > otherPlayer.getInPlay().size() - 1) {
-                chosenCard = userInterface.askOthersCard(currentPlayer, otherPlayer.getInPlay(), !otherPlayer.getHand().isEmpty());
+            while (chosenCard < -2 || chosenCard > otherPlayer.getCardsInPlay().size() - 1) {
+                chosenCard = userInterface.askOthersCard(currentPlayer, otherPlayer.getCardsInPlay(), !otherPlayer.getHand().isEmpty());
             }
             Hand hand = currentPlayer.getHand();
             if (chosenCard == -1) {
                 hand.add(otherPlayer.getHand().removeRandom());
                 userInterface.printInfo(currentPlayer.getName() + " takes a card from " + otherPlayer.getName() + "'s hand with a " + this.getName());
             } else if (chosenCard == -2) {
-                Card card = otherPlayer.getInPlay().removeGun();
+                Card card = otherPlayer.getCardsInPlay().removeGun();
                 hand.add(card);
                 userInterface.printInfo(currentPlayer.getName() + " takes a " + card.getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
             } else {
-                Card card = otherPlayer.getInPlay().remove(chosenCard);
+                Card card = otherPlayer.getCardsInPlay().remove(chosenCard);
                 hand.add(card);
                 userInterface.printInfo(currentPlayer.getName() + " takes a " + card.getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
             }

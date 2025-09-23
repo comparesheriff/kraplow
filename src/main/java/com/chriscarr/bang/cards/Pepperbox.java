@@ -10,12 +10,12 @@ import java.util.List;
 
 public class Pepperbox extends SingleUse implements Playable {
 
-    public Pepperbox(String name, CardSuit suit, CardValue value, CardType type) {
+    public Pepperbox(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
     public List<Player> targets(Player player, List<Player> players) {
-        return Turn.getPlayersWithCards(Turn.getPlayersWithinRange(player, players, player.getGunRange()));
+        return Turn.getPlayersWithCards(Turn.getPlayersWithinRange(player, players));
     }
 
     public boolean activate(Player currentPlayer, List<Player> players,

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Beer extends Card implements Playable {
 
-    public Beer(String name, CardSuit suit, CardValue value, CardType type) {
+    public Beer(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -37,9 +37,7 @@ public class Beer extends Card implements Playable {
 
     @Override
     public List<Player> targets(Player player, List<Player> players) {
-        List<Player> targets = new ArrayList<>();
-        targets.add(player);
-        return targets;
+        return List.of(player);
     }
 
 }

@@ -1,44 +1,94 @@
-![alt tag](https://raw.github.com/ccarrster/kraplow/master/westerncardgame/logo2.png)
-```
-# kraplow
-A web Western Card Game you can play online - Implements the same rules as a western card game!
-Multiplayer, Single Player or a mix of AI and Humans.
-Features Chat, Game Log, Ajax Polling
+![Kraplow logo](https://raw.github.com/ccarrster/kraplow/master/westerncardgame/logo2.png)
 
-Setup and deployment
-You will need ant, so download it, add the ANT_HOME c:\ant to environment variables and add c:\ant\bin to your PATH
-You will need JUnit, so download it, add JUNIT_HOME to environment variables and set it to the folder where you put the JUnit `.jar` file.
-Also create a JUNIT_VERSION environment variable and set it to the version number of the jar file (e.g. '4.12' for junit-4.12.jar)
+# Kraplow
+A web Western card game you can play online — implements the same rules as a popular western card game. Play multiplayer, solo, or mix AI and humans. Features chat, a game log, and Ajax polling.
 
-Fire up a new console window
-To build a new westerncardgame.war
-ant clean
-ant
-Then put the westerncardgame.war from the dist folder into your apache tomcat webapps folder
-restart tomcat
-go to url http://localhost:8080/westerncardgame
-Port may be different depending on your tomcat setup (80?)
+Note: No database is used; game state is stored in server session memory.
 
-Most of the UI is in index.html and is driven from the API.
-The index.html file has a getServletUrl function. If you name your project something other than "westerncardgame" in the build.xml/war file you will need to change that function.
+## Tech stack
+- Language: Java
+- Build/tooling: Maven (packaging: WAR)
+- Web: Jakarta Servlet API 6 (Servlet containers like Tomcat 10.1+ or Jetty 12)
+- UI: Static HTML/JS (see WebContent/index.html)
+- Tests: JUnit (JUnit 5 on the classpath with JUnit 3/4 style tests) and Mockito (test scope)
 
-When deploying I change the owner group to tomcat:tomcat with sudo chown -R tomcat:tomcat kraplow
+## Requirements
+- JDK 25 or newer (enforced by Maven Enforcer Plugin)
+- Maven 3.9+
+- A Servlet 6–compatible container (e.g., Apache Tomcat 10.1+ or Jetty 12) to deploy the WAR
 
-The code uses an API.
-I called mine /chat - you can edit this in web.xml
-All of the code depends on /chat being there.
-You will need to change this in the getServletUrl function.
-Messages are sent as XML or strings.
+## Getting started
+1. Clone the repository
+   - git clone https://github.com/ccarrster/kraplow.git
+   - cd kraplow
+2. Build
+   - mvn clean package
+   - The WAR will be at target/westerncardgame-1.0.0-SNAPSHOT.war
+3. Deploy
+   - Copy the WAR to your servlet container’s deployment directory (e.g., TOMCAT_HOME/webapps)
+   - Start or restart the server
 
-The main code for the AI is a function named somethingAI()
-From there the AI choose how to respond to actions.
+## Run and access
+- Default context path (from artifactId): /westerncardgame
+- Frontend: http://localhost:8080/westerncardgame/index.html
+- Backend servlet endpoint: /westerncardgame/chat
+  - This is handled by the servlet com.chriscarr.game.AjaxServlet (see WebContent/WEB-INF/web.xml and src/main/java/com/chriscarr/game/AjaxServlet.java)
+- The client uses a getServletUrl() function in WebContent/index.html which currently returns "/westerncardgame/chat". If you deploy under a different context path, update this function accordingly.
 
-The main frontend loops poll on what action to do next and chat.
+## Scripts and commands
+Primary (Maven):
+- Build: mvn clean package
+- Tests only: mvn test
+- Clean: mvn clean
 
-There is no database, everything is stored in session memmory.
+Legacy Ant build:
+- Ant has been disabled in this repo (see build.xml). Use Maven instead.
 
-Working on Sidestep Township expansion.
-Need to add images for new blue, brown, green cards.
-Need to show card suits for Apache Kid.
-Need to fix bugs I created.
-```
+## Environment variables
+- None required for local development by default.
+- TODO: Document any optional environment configuration if/when introduced (ports, context path overrides, etc.).
+
+## Tests
+- Test framework: JUnit (mix of classic TestCase-based tests and newer JUnit 5 engine on the classpath)
+- Run all tests: mvn test
+- Test sources: src/test/java
+
+Some representative tests:
+- com.chriscarr.SetupTest — validates deck setup and role distribution
+- com.chriscarr.CardsInPlayTest — validates items in play logic
+- com.chriscarr.TurnTest — extensive turn flow and card interactions
+
+## Entry points
+- Server: com.chriscarr.game.AjaxServlet mapped to /chat (see WebContent/WEB-INF/web.xml)
+- Client: WebContent/index.html (drives the UI and calls the servlet API)
+
+## Project structure
+- WebContent/
+  - index.html and assets (client UI)
+  - WEB-INF/web.xml (servlet mappings; maps /chat to AjaxServlet)
+- src/main/java/
+  - com/chriscarr/bang/... (core game logic, cards, turns, UI abstractions)
+  - com/chriscarr/game/AjaxServlet.java (HTTP API)
+- src/test/java/
+  - com/chriscarr/... (unit tests)
+- pom.xml (Maven build; packaging: war)
+- build.xml (Ant stub; disabled — points to Maven)
+- target/ (build outputs)
+
+Note: Web resources currently live under WebContent/. For Maven standard layout, these typically live under src/main/webapp. If you plan to rely solely on Maven to assemble the WAR, consider moving WebContent/ to src/main/webapp or configuring the maven-war-plugin to include WebContent. TODO: Align web resource location with Maven.
+
+## Deployment notes
+- Tomcat: Drop the WAR into webapps and access http://localhost:8080/westerncardgame/
+- Jetty: Deploy the WAR via your Jetty configuration
+- If you see 404s for /chat, verify that web.xml maps /chat and that the servlet class is com.chriscarr.game.AjaxServlet
+
+## Roadmap / TODOs
+- Sidestep Township expansion: UI toggle exists (beta). TODO: finalize wording and add images for new blue/brown/green cards.
+- TODO: Show card suits for Apache Kid in UI.
+- TODO: Fix known/reported bugs (see issue tracker).
+
+## License
+- TODO: Add a LICENSE file and state the project’s license. The top-level repository currently lacks a LICENSE.
+
+## Acknowledgements
+- The UI credits in index.html thank artists for artwork contributions.

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Missed extends Bang implements Playable {
 
-    public Missed(String name, CardSuit suit, CardValue value, CardType type) {
+    public Missed(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

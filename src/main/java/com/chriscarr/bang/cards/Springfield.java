@@ -6,7 +6,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class Springfield extends Card implements Playable {
-    public Springfield(String name, CardSuit suit, CardValue value, CardType type) {
+    public Springfield(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

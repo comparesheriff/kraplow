@@ -6,7 +6,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class Brawl extends Card implements Playable {
-    public Brawl(String name, CardSuit suit, CardValue value, CardType type) {
+    public Brawl(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -44,26 +44,26 @@ public class Brawl extends Card implements Playable {
         while (brawlPlayer != currentPlayer) {
             Player nextPlayer = Turn.getNextPlayer(brawlPlayer, players);
 
-            if (brawlPlayer.getInPlay().isEmpty() && !brawlPlayer.getInPlay().hasGun() && brawlPlayer.getHand().isEmpty()) {
+            if (brawlPlayer.getCardsInPlay().isEmpty() && !brawlPlayer.getCardsInPlay().hasGun() && brawlPlayer.getHand().isEmpty()) {
                 userInterface.printInfo(brawlPlayer.getName() + " has nothing to discard");
                 brawlPlayer = nextPlayer;
                 continue;
             }
 
             int chosenCard = -3;
-            while (chosenCard < -2 || chosenCard > brawlPlayer.getInPlay().size() - 1) {
-                chosenCard = userInterface.askOthersCard(currentPlayer, brawlPlayer.getInPlay(), !brawlPlayer.getHand().isEmpty());
+            while (chosenCard < -2 || chosenCard > brawlPlayer.getCardsInPlay().size() - 1) {
+                chosenCard = userInterface.askOthersCard(currentPlayer, brawlPlayer.getCardsInPlay(), !brawlPlayer.getHand().isEmpty());
             }
             if (chosenCard == -1) {
                 Card card = brawlPlayer.getHand().removeRandom();
                 discard.add(card);
                 userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + brawlPlayer.getName() + "'s hand with a Brawl");
             } else if (chosenCard == -2) {
-                Card card = brawlPlayer.getInPlay().removeGun();
+                Card card = brawlPlayer.getCardsInPlay().removeGun();
                 discard.add(card);
                 userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + brawlPlayer.getName() + " with a Brawl");
             } else {
-                Card card = brawlPlayer.getInPlay().remove(chosenCard);
+                Card card = brawlPlayer.getCardsInPlay().remove(chosenCard);
                 discard.add(card);
                 userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + brawlPlayer.getName() + " with a Brawl");
             }

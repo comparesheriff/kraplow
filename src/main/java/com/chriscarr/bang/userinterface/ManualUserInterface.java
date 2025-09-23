@@ -3,6 +3,7 @@ package com.chriscarr.bang.userinterface;
 import com.chriscarr.bang.*;
 import com.chriscarr.bang.Character;
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.gamestate.GameStateListener;
@@ -61,19 +62,19 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
     }
 
     @Override
-    public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
+    public int askOthersCard(Player player, CardsInPlay cardsInPlay, boolean hasHand) {
         System.out.println(player.getCharacter().getName());
         System.out.println("Choose Other Players Card");
-        int handSize = inPlay.size();
+        int handSize = cardsInPlay.size();
         if (hasHand) {
             System.out.println("-1) Hand");
         }
-        boolean hasGun = inPlay.hasGun();
+        boolean hasGun = cardsInPlay.hasGun();
         if (hasGun) {
             System.out.println("-2) Gun");
         }
         for (int i = 0; i < handSize; i++) {
-            System.out.println(i + ") " + inPlay.get(i).getName());
+            System.out.println(i + ") " + cardsInPlay.get(i).getName());
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -252,7 +253,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
         System.out.println("-1) done playing");
         for (int i = 0; i < handSize; i++) {
             Card card = hand.get(i);
-            boolean canPlay = Card.CARDBANG.equals(card.getName()) || (Card.CARDMISSED.equals(card.getName()) && Character.CALAMITYJANET.equals(player.getCharacter()));
+            boolean canPlay = CardName.BANG.equals(card.getName()) || (CardName.MISSED.equals(card.getName()) && Character.CALAMITYJANET.equals(player.getCharacter()));
             System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
             if (canPlay) {
                 System.out.print(" Targets: ");
@@ -286,7 +287,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
         System.out.println("-1) done playing");
         for (int i = 0; i < handSize; i++) {
             Card card = hand.get(i);
-            boolean canPlay = Card.CARDBEER.equals(card.getName());
+            boolean canPlay = CardName.BEER.equals(card.getName());
             System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
             if (canPlay) {
                 System.out.print(" Targets: ");
@@ -320,7 +321,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
         System.out.println("-1) done playing");
         for (int i = 0; i < handSize; i++) {
             Card card = hand.get(i);
-            boolean canPlay = Card.CARDMISSED.equals(card.getName()) || (Card.CARDBANG.equals(card.getName()) && Character.CALAMITYJANET.equals(player.getCharacter()));
+            boolean canPlay = CardName.MISSED.equals(card.getName()) || (CardName.BANG.equals(card.getName()) && Character.CALAMITYJANET.equals(player.getCharacter()));
             System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
             if (canPlay) {
                 System.out.print(" Targets: ");

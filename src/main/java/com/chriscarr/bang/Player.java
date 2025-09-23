@@ -1,6 +1,7 @@
 package com.chriscarr.bang;
 
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.cards.Gun;
 import com.chriscarr.bang.gamestate.GameStateCard;
 
@@ -9,13 +10,13 @@ import java.util.List;
 public class Player {
     private Character character;
     private Hand hand;
-    private InPlay inPlay;
+    private CardsInPlay cardsInPlay;
     private Role role;
     private int maxHealth;
     private int health;
 
-    public void setInPlay(InPlay inPlay) {
-        this.inPlay = inPlay;
+    public void setInPlay(CardsInPlay cardsInPlay) {
+        this.cardsInPlay = cardsInPlay;
     }
 
     public void setHand(Hand hand) {
@@ -42,8 +43,8 @@ public class Player {
         return hand;
     }
 
-    public InPlay getInPlay() {
-        return inPlay;
+    public CardsInPlay getCardsInPlay() {
+        return cardsInPlay;
     }
 
     public void setMaxHealth(int maxHealth) {
@@ -64,11 +65,11 @@ public class Player {
     }
 
     public void addInPlay(Card card) {
-        inPlay.add(card);
+        cardsInPlay.add(card);
     }
 
-    public boolean isInPlay(String name) {
-        return inPlay.hasItem(name) || inPlay.getGunName().equals(name);
+    public boolean isInPlay(CardName name) {
+        return cardsInPlay.hasItem(name) || cardsInPlay.getGunName().equals(name);
     }
 
     public String getName() {
@@ -76,7 +77,7 @@ public class Player {
     }
 
     public int getGunRange() {
-        return inPlay.getGunRange();
+        return cardsInPlay.getGunRange();
     }
 
     public void addHealth(int toAdd) {
@@ -100,19 +101,19 @@ public class Player {
     }
 
     public void setGun(Gun card) {
-        inPlay.setGun(card);
+        cardsInPlay.setGun(card);
     }
 
-    public String getGunName() {
-        return inPlay.getGunName();
+    public CardName getGunName() {
+        return cardsInPlay.getGunName();
     }
 
     public boolean hasGun() {
-        return inPlay.hasGun();
+        return cardsInPlay.hasGun();
     }
 
     public Gun removeGun() {
-        return inPlay.removeGun();
+        return cardsInPlay.removeGun();
     }
 
     public int getHandSize() {
@@ -124,7 +125,7 @@ public class Player {
     }
 
     public GameStateCard getGameStateGun() {
-        return Turn.cardToGameStateCard(inPlay.getGun());
+        return Turn.cardToGameStateCard(cardsInPlay.getGun());
     }
 
     public String getSpecialAbility() {
@@ -132,7 +133,7 @@ public class Player {
     }
 
     public List<GameStateCard> getGameStateInPlay() {
-        return inPlay.getGameStateInPlay();
+        return cardsInPlay.getGameStateInPlay();
     }
 
 }

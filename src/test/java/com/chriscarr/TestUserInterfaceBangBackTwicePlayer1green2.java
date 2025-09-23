@@ -1,7 +1,7 @@
 package com.chriscarr;
 
 import com.chriscarr.bang.Hand;
-import com.chriscarr.bang.InPlay;
+import com.chriscarr.bang.CardsInPlay;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.userinterface.UserInterface;
@@ -44,7 +44,7 @@ public class TestUserInterfaceBangBackTwicePlayer1green2 extends TestUserInterfa
     }
 
     @Override
-    public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
+    public int askOthersCard(Player player, CardsInPlay cardsInPlay, boolean hasHand) {
         // TODO Auto-generated method stub
         return -1;
     }
@@ -100,8 +100,8 @@ public class TestUserInterfaceBangBackTwicePlayer1green2 extends TestUserInterfa
     public List<Card> respondTwoMiss(Player player) {
         List<Card> result = new ArrayList<>();
         Hand hand = player.getHand();
-        InPlay inPlay = player.getInPlay();
-        result.add(inPlay.getFirst());
+        CardsInPlay cardsInPlay = player.getCardsInPlay();
+        result.add(cardsInPlay.getFirst());
         result.add(hand.getFirst());
         return result;
     }

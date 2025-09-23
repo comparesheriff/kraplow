@@ -1,167 +1,186 @@
 package com.chriscarr.bang.cards;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 
 public class BangDeck {
+
+    //<editor-fold> BASE DECK INITIALIZATION
+    private static final Row[] BASE_ROWS = new Row[]{
+            // blue
+            new Row(CardName.BARREL, CardSuit.SPADES, CardValue.QUEEN),
+            new Row(CardName.SCOPE, CardSuit.SPADES, CardValue.ACE),
+            new Row(CardName.MUSTANG, CardSuit.HEARTS, CardValue.EIGHT),
+            new Row(CardName.MUSTANG, CardSuit.HEARTS, CardValue.NINE),
+            new Row(CardName.JAIL, CardSuit.SPADES, CardValue.JACK),
+            new Row(CardName.JAIL, CardSuit.SPADES, CardValue.TEN),
+            new Row(CardName.JAIL, CardSuit.HEARTS, CardValue.FOUR),
+            new Row(CardName.DYNAMITE, CardSuit.HEARTS, CardValue.TWO),
+            new Row(CardName.SCHOFIELD, CardSuit.SPADES, CardValue.KING),
+            new Row(CardName.SCHOFIELD, CardSuit.CLUBS, CardValue.JACK),
+            new Row(CardName.SCHOFIELD, CardSuit.CLUBS, CardValue.QUEEN),
+            new Row(CardName.VOLCANIC, CardSuit.SPADES, CardValue.TEN),
+            new Row(CardName.VOLCANIC, CardSuit.CLUBS, CardValue.TEN),
+            new Row(CardName.REMINGTON, CardSuit.CLUBS, CardValue.KING),
+            new Row(CardName.WINCHESTER, CardSuit.SPADES, CardValue.EIGHT),
+            new Row(CardName.BARREL, CardSuit.SPADES, CardValue.KING),
+            new Row(CardName.REV_CARBINE, CardSuit.CLUBS, CardValue.ACE),
+
+            // brown
+            new Row(CardName.BANG, CardSuit.CLUBS, CardValue.SEVEN),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.EIGHT),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.NINE),
+            new Row(CardName.BANG, CardSuit.CLUBS, CardValue.THREE),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.KING),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.SIX),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.TEN),
+            new Row(CardName.BANG, CardSuit.CLUBS, CardValue.FOUR),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.ACE),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.QUEEN),
+            new Row(CardName.BANG, CardSuit.CLUBS, CardValue.FIVE),
+            new Row(CardName.BANG, CardSuit.HEARTS, CardValue.ACE),
+            new Row(CardName.BANG, CardSuit.CLUBS, CardValue.NINE),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.FIVE),
+            new Row(CardName.BANG, CardSuit.CLUBS, CardValue.SIX),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.TWO),
+            new Row(CardName.BANG, CardSuit.HEARTS, CardValue.QUEEN),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.JACK),
+            new Row(CardName.BANG, CardSuit.HEARTS, CardValue.KING),
+            new Row(CardName.BANG, CardSuit.CLUBS, CardValue.EIGHT),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.FOUR),
+            new Row(CardName.BANG, CardSuit.CLUBS, CardValue.TWO),
+            new Row(CardName.BANG, CardSuit.SPADES, CardValue.ACE),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.THREE),
+            new Row(CardName.BANG, CardSuit.DIAMONDS, CardValue.SEVEN),
+
+            // brown continued
+            new Row(CardName.MISSED, CardSuit.SPADES, CardValue.SEVEN),
+            new Row(CardName.MISSED, CardSuit.SPADES, CardValue.THREE),
+            new Row(CardName.MISSED, CardSuit.SPADES, CardValue.FIVE),
+            new Row(CardName.MISSED, CardSuit.CLUBS, CardValue.KING),
+            new Row(CardName.MISSED, CardSuit.CLUBS, CardValue.ACE),
+            new Row(CardName.MISSED, CardSuit.SPADES, CardValue.EIGHT),
+            new Row(CardName.MISSED, CardSuit.CLUBS, CardValue.JACK),
+            new Row(CardName.MISSED, CardSuit.CLUBS, CardValue.QUEEN),
+            new Row(CardName.MISSED, CardSuit.SPADES, CardValue.SIX),
+            new Row(CardName.MISSED, CardSuit.CLUBS, CardValue.TEN),
+            new Row(CardName.MISSED, CardSuit.SPADES, CardValue.TWO),
+            new Row(CardName.MISSED, CardSuit.SPADES, CardValue.FOUR),
+
+            new Row(CardName.BEER, CardSuit.HEARTS, CardValue.SIX),
+            new Row(CardName.BEER, CardSuit.HEARTS, CardValue.SEVEN),
+            new Row(CardName.BEER, CardSuit.HEARTS, CardValue.EIGHT),
+            new Row(CardName.BEER, CardSuit.HEARTS, CardValue.NINE),
+            new Row(CardName.BEER, CardSuit.HEARTS, CardValue.TEN),
+            new Row(CardName.BEER, CardSuit.HEARTS, CardValue.JACK),
+
+            new Row(CardName.PANIC, CardSuit.DIAMONDS, CardValue.EIGHT),
+            new Row(CardName.PANIC, CardSuit.HEARTS, CardValue.JACK),
+            new Row(CardName.PANIC, CardSuit.HEARTS, CardValue.QUEEN),
+            new Row(CardName.PANIC, CardSuit.HEARTS, CardValue.ACE),
+
+            new Row(CardName.CAT_BALOU, CardSuit.DIAMONDS, CardValue.TEN),
+            new Row(CardName.CAT_BALOU, CardSuit.DIAMONDS, CardValue.NINE),
+            new Row(CardName.CAT_BALOU, CardSuit.DIAMONDS, CardValue.JACK),
+            new Row(CardName.CAT_BALOU, CardSuit.HEARTS, CardValue.KING),
+
+            new Row(CardName.DUEL, CardSuit.CLUBS, CardValue.EIGHT),
+            new Row(CardName.DUEL, CardSuit.DIAMONDS, CardValue.QUEEN),
+            new Row(CardName.DUEL, CardSuit.SPADES, CardValue.JACK),
+
+            new Row(CardName.STAGECOACH, CardSuit.SPADES, CardValue.NINE),
+            new Row(CardName.STAGECOACH, CardSuit.SPADES, CardValue.NINE),
+
+            new Row(CardName.INDIANS, CardSuit.DIAMONDS, CardValue.KING),
+            new Row(CardName.INDIANS, CardSuit.DIAMONDS, CardValue.ACE),
+
+            new Row(CardName.GENERAL_STORE, CardSuit.SPADES, CardValue.QUEEN),
+            new Row(CardName.GENERAL_STORE, CardSuit.SPADES, CardValue.QUEEN),
+
+            new Row(CardName.GATLING, CardSuit.HEARTS, CardValue.TEN),
+            new Row(CardName.SALOON, CardSuit.HEARTS, CardValue.FIVE),
+            new Row(CardName.WELLS_FARGO, CardSuit.HEARTS, CardValue.THREE)
+    };
+    //</editor-fold>
+
+    //<editor-fold> SIDESTEP DECK INITIALIZATION
+    private static final Row[] SIDESTEP_ROWS = new Row[]{
+            // Blue
+            new Row(CardName.REMINGTON, CardSuit.DIAMONDS, CardValue.SIX),
+            new Row(CardName.REV_CARBINE, CardSuit.SPADES, CardValue.FIVE),
+            new Row(CardName.BARREL, CardSuit.CLUBS, CardValue.ACE),
+            new Row(CardName.DYNAMITE, CardSuit.CLUBS, CardValue.TEN),
+            new Row(CardName.MUSTANG, CardSuit.HEARTS, CardValue.FIVE),
+            new Row(CardName.SILVER, CardSuit.DIAMONDS, CardValue.TEN),
+            new Row(CardName.HIDEOUT, CardSuit.DIAMONDS, CardValue.KING),
+            new Row(CardName.HIDEOUT, CardSuit.DIAMONDS, CardValue.KING),
+
+            // Green
+            new Row(CardName.CONESTOGA, CardSuit.DIAMONDS, CardValue.NINE),
+            new Row(CardName.BUFFALO_RIFLE, CardSuit.CLUBS, CardValue.QUEEN),
+            new Row(CardName.CAN_CAN, CardSuit.CLUBS, CardValue.JACK),
+            new Row(CardName.HOWITZER, CardSuit.SPADES, CardValue.NINE),
+            new Row(CardName.CANTEEN, CardSuit.HEARTS, CardValue.SEVEN),
+            new Row(CardName.KNIFE, CardSuit.HEARTS, CardValue.EIGHT),
+            new Row(CardName.PEPPERBOX, CardSuit.CLUBS, CardValue.TEN),
+            new Row(CardName.DERRINGER, CardSuit.SPADES, CardValue.SEVEN),
+            new Row(CardName.PONY_EXPRESS, CardSuit.DIAMONDS, CardValue.QUEEN),
+            new Row(CardName.SOMBRERO, CardSuit.CLUBS, CardValue.SEVEN),
+            new Row(CardName.BIBLE, CardSuit.HEARTS, CardValue.TEN),
+            new Row(CardName.IRON_PLATE, CardSuit.DIAMONDS, CardValue.ACE),
+            new Row(CardName.IRON_PLATE, CardSuit.SPADES, CardValue.QUEEN),
+            new Row(CardName.TEN_GALLON_HAT, CardSuit.DIAMONDS, CardValue.JACK),
+
+            // Brown
+            new Row(CardName.BANG, CardSuit.CLUBS, CardValue.FIVE),
+            new Row(CardName.BANG, CardSuit.CLUBS, CardValue.KING),
+            new Row(CardName.BANG, CardSuit.CLUBS, CardValue.SIX),
+            new Row(CardName.BANG, CardSuit.SPADES, CardValue.EIGHT),
+
+            new Row(CardName.MISSED, CardSuit.DIAMONDS, CardValue.EIGHT),
+
+            new Row(CardName.BEER, CardSuit.HEARTS, CardValue.SIX),
+            new Row(CardName.BEER, CardSuit.SPADES, CardValue.SIX),
+
+            new Row(CardName.PANIC, CardSuit.HEARTS, CardValue.JACK),
+
+            new Row(CardName.CAT_BALOU, CardSuit.CLUBS, CardValue.EIGHT),
+
+            new Row(CardName.INDIANS, CardSuit.DIAMONDS, CardValue.FIVE),
+
+            new Row(CardName.RAG_TIME, CardSuit.HEARTS, CardValue.NINE),
+
+            new Row(CardName.DODGE, CardSuit.DIAMONDS, CardValue.SEVEN),
+            new Row(CardName.DODGE, CardSuit.HEARTS, CardValue.KING),
+
+            new Row(CardName.WHISKY, CardSuit.HEARTS, CardValue.QUEEN),
+
+            new Row(CardName.PUNCH, CardSuit.SPADES, CardValue.TEN),
+
+            new Row(CardName.TEQUILA, CardSuit.CLUBS, CardValue.NINE),
+
+            new Row(CardName.BRAWL, CardSuit.SPADES, CardValue.JACK),
+
+            new Row(CardName.SPRINGFIELD, CardSuit.SPADES, CardValue.JACK),
+    };
+    //</editor-fold>
+
+    private record Row(CardName name, CardSuit suit, CardValue value) {
+    }
+
     public static ArrayList<Card> makeDeck() {
-        ArrayList<Card> cards = new ArrayList<>();
-        //Blue cards
-        cards.add(new Card(Card.CARDBARREL, CardSuit.SPADES, CardValue.QUEEN, CardType.ITEM));
-        cards.add(new Card(Card.CARDSCOPE, CardSuit.SPADES, CardValue.ACE, CardType.ITEM));
-        cards.add(new Card(Card.CARDMUSTANG, CardSuit.HEARTS, CardValue.EIGHT, CardType.ITEM));
-        cards.add(new Card(Card.CARDMUSTANG, CardSuit.HEARTS, CardValue.NINE, CardType.ITEM));
-        cards.add(new Jail(Card.CARDJAIL, CardSuit.SPADES, CardValue.JACK, CardType.ITEM));
-        cards.add(new Jail(Card.CARDJAIL, CardSuit.SPADES, CardValue.TEN, CardType.ITEM));
-        cards.add(new Jail(Card.CARDJAIL, CardSuit.HEARTS, CardValue.FOUR, CardType.ITEM));
-        cards.add(new Card(Card.CARDDYNAMITE, CardSuit.HEARTS, CardValue.TWO, CardType.ITEM));
-        cards.add(new Gun(Card.CARDSCHOFIELD, CardSuit.SPADES, CardValue.KING, CardType.GUN));
-        cards.add(new Gun(Card.CARDSCHOFIELD, CardSuit.CLUBS, CardValue.JACK, CardType.GUN));
-        cards.add(new Gun(Card.CARDSCHOFIELD, CardSuit.CLUBS, CardValue.QUEEN, CardType.GUN));
-        cards.add(new Gun(Card.CARDVOLCANIC, CardSuit.SPADES, CardValue.TEN, CardType.GUN));
-        cards.add(new Gun(Card.CARDVOLCANIC, CardSuit.CLUBS, CardValue.TEN, CardType.GUN));
-        cards.add(new Gun(Card.CARDREMINGTON, CardSuit.CLUBS, CardValue.KING, CardType.GUN));
-        cards.add(new Gun(Card.CARDWINCHESTER, CardSuit.SPADES, CardValue.EIGHT, CardType.GUN));
-        cards.add(new Card(Card.CARDBARREL, CardSuit.SPADES, CardValue.KING, CardType.ITEM));
-        cards.add(new Gun(Card.CARDREVCARBINE, CardSuit.CLUBS, CardValue.ACE, CardType.GUN));
-        //Brown cards
-        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.SEVEN, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.EIGHT, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.NINE, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.THREE, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.KING, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.SIX, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.TEN, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.FOUR, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.ACE, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.QUEEN, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.FIVE, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.HEARTS, CardValue.ACE, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.NINE, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.FIVE, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.SIX, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.TWO, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.HEARTS, CardValue.QUEEN, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.JACK, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.HEARTS, CardValue.KING, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.EIGHT, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.FOUR, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.TWO, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.SPADES, CardValue.ACE, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.THREE, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.DIAMONDS, CardValue.SEVEN, CardType.PLAY));
-
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.SEVEN, CardType.PLAY));
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.THREE, CardType.PLAY));
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.FIVE, CardType.PLAY));
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.CLUBS, CardValue.KING, CardType.PLAY));
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.CLUBS, CardValue.ACE, CardType.PLAY));
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.EIGHT, CardType.PLAY));
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.CLUBS, CardValue.JACK, CardType.PLAY));
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.CLUBS, CardValue.QUEEN, CardType.PLAY));
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.SIX, CardType.PLAY));
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.CLUBS, CardValue.TEN, CardType.PLAY));
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.TWO, CardType.PLAY));
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.SPADES, CardValue.FOUR, CardType.PLAY));
-
-        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.SIX, CardType.PLAY));
-        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.SEVEN, CardType.PLAY));
-        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.EIGHT, CardType.PLAY));
-        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.NINE, CardType.PLAY));
-        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.TEN, CardType.PLAY));
-        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.JACK, CardType.PLAY));
-
-        cards.add(new Panic(Card.CARDPANIC, CardSuit.DIAMONDS, CardValue.EIGHT, CardType.PLAY));
-        cards.add(new Panic(Card.CARDPANIC, CardSuit.HEARTS, CardValue.JACK, CardType.PLAY));
-        cards.add(new Panic(Card.CARDPANIC, CardSuit.HEARTS, CardValue.QUEEN, CardType.PLAY));
-        cards.add(new Panic(Card.CARDPANIC, CardSuit.HEARTS, CardValue.ACE, CardType.PLAY));
-
-        cards.add(new CatBalou(Card.CARDCATBALOU, CardSuit.DIAMONDS, CardValue.TEN, CardType.PLAY));
-        cards.add(new CatBalou(Card.CARDCATBALOU, CardSuit.DIAMONDS, CardValue.NINE, CardType.PLAY));
-        cards.add(new CatBalou(Card.CARDCATBALOU, CardSuit.DIAMONDS, CardValue.JACK, CardType.PLAY));
-        cards.add(new CatBalou(Card.CARDCATBALOU, CardSuit.HEARTS, CardValue.KING, CardType.PLAY));
-
-        cards.add(new Duel(Card.CARDDUEL, CardSuit.CLUBS, CardValue.EIGHT, CardType.PLAY));
-        cards.add(new Duel(Card.CARDDUEL, CardSuit.DIAMONDS, CardValue.QUEEN, CardType.PLAY));
-        cards.add(new Duel(Card.CARDDUEL, CardSuit.SPADES, CardValue.JACK, CardType.PLAY));
-
-        cards.add(new Stagecoach(Card.CARDSTAGECOACH, CardSuit.SPADES, CardValue.NINE, CardType.PLAY));
-        cards.add(new Stagecoach(Card.CARDSTAGECOACH, CardSuit.SPADES, CardValue.NINE, CardType.PLAY));
-
-        cards.add(new Indians(Card.CARDINDIANS, CardSuit.DIAMONDS, CardValue.KING, CardType.PLAY));
-        cards.add(new Indians(Card.CARDINDIANS, CardSuit.DIAMONDS, CardValue.ACE, CardType.PLAY));
-
-        cards.add(new GeneralStore(Card.CARDGENERALSTORE, CardSuit.SPADES, CardValue.QUEEN, CardType.PLAY));
-        cards.add(new GeneralStore(Card.CARDGENERALSTORE, CardSuit.SPADES, CardValue.QUEEN, CardType.PLAY));
-
-        cards.add(new Gatling(Card.CARDGATLING, CardSuit.HEARTS, CardValue.TEN, CardType.PLAY));
-
-        cards.add(new Saloon(Card.CARDSALOON, CardSuit.HEARTS, CardValue.FIVE, CardType.PLAY));
-
-        cards.add(new WellsFargo(Card.CARDWELLSFARGO, CardSuit.HEARTS, CardValue.THREE, CardType.PLAY));
-        return cards;
+        return build(BASE_ROWS);
     }
 
     public static ArrayList<Card> makeSidestepDeck() {
-        ArrayList<Card> cards = new ArrayList<>();
-        //Blue cards
-        cards.add(new Gun(Card.CARDREMINGTON, CardSuit.DIAMONDS, CardValue.SIX, CardType.GUN));
-        cards.add(new Gun(Card.CARDREVCARBINE, CardSuit.SPADES, CardValue.FIVE, CardType.GUN));
-        cards.add(new Card(Card.CARDBARREL, CardSuit.CLUBS, CardValue.ACE, CardType.ITEM));
-        cards.add(new Card(Card.CARDDYNAMITE, CardSuit.CLUBS, CardValue.TEN, CardType.ITEM));
-        cards.add(new Card(Card.CARDMUSTANG, CardSuit.HEARTS, CardValue.FIVE, CardType.ITEM));
-        cards.add(new Card(Card.CARDSILVER, CardSuit.DIAMONDS, CardValue.TEN, CardType.ITEM));
-        cards.add(new Card(Card.CARDHIDEOUT, CardSuit.DIAMONDS, CardValue.KING, CardType.ITEM));
-        cards.add(new Card(Card.CARDHIDEOUT, CardSuit.DIAMONDS, CardValue.KING, CardType.ITEM));
+        return build(SIDESTEP_ROWS);
+    }
 
-        //Green cards
-        cards.add(new Conestoga(Card.CARDCONESTOGA, CardSuit.DIAMONDS, CardValue.NINE, CardType.SINGLE_USE_ITEM));
-        cards.add(new BuffaloRifle(Card.CARDBUFFALORIFLE, CardSuit.CLUBS, CardValue.QUEEN, CardType.SINGLE_USE_ITEM));
-        cards.add(new CanCan(Card.CARDCANCAN, CardSuit.CLUBS, CardValue.JACK, CardType.SINGLE_USE_ITEM));
-        cards.add(new Howitzer(Card.CARDHOWITZER, CardSuit.SPADES, CardValue.NINE, CardType.SINGLE_USE_ITEM));
-        cards.add(new Canteen(Card.CARDCANTEEN, CardSuit.HEARTS, CardValue.SEVEN, CardType.SINGLE_USE_ITEM));
-        cards.add(new Knife(Card.CARDKNIFE, CardSuit.HEARTS, CardValue.EIGHT, CardType.SINGLE_USE_ITEM));
-        cards.add(new Pepperbox(Card.CARDPEPPERBOX, CardSuit.CLUBS, CardValue.TEN, CardType.SINGLE_USE_ITEM));
-        cards.add(new Derringer(Card.CARDDERRINGER, CardSuit.SPADES, CardValue.SEVEN, CardType.SINGLE_USE_ITEM));
-        cards.add(new PonyExpress(Card.CARDPONYEXPRESS, CardSuit.DIAMONDS, CardValue.QUEEN, CardType.SINGLE_USE_ITEM));
-        cards.add(new SingleUseMissed(Card.CARDSOMBRERO, CardSuit.CLUBS, CardValue.SEVEN, CardType.SINGLE_USE_ITEM));
-        cards.add(new SingleUseMissed(Card.CARDBIBLE, CardSuit.HEARTS, CardValue.TEN, CardType.SINGLE_USE_ITEM));
-        cards.add(new SingleUseMissed(Card.CARDIRONPLATE, CardSuit.DIAMONDS, CardValue.ACE, CardType.SINGLE_USE_ITEM));
-        cards.add(new SingleUseMissed(Card.CARDIRONPLATE, CardSuit.SPADES, CardValue.QUEEN, CardType.SINGLE_USE_ITEM));
-        cards.add(new SingleUseMissed(Card.CARDTENGALLONHAT, CardSuit.DIAMONDS, CardValue.JACK, CardType.SINGLE_USE_ITEM));
-
-        //Brown cards
-        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.FIVE, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.KING, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.CLUBS, CardValue.SIX, CardType.PLAY));
-        cards.add(new Bang(Card.CARDBANG, CardSuit.SPADES, CardValue.EIGHT, CardType.PLAY));
-
-        cards.add(new Missed(Card.CARDMISSED, CardSuit.DIAMONDS, CardValue.EIGHT, CardType.PLAY));
-
-        cards.add(new Beer(Card.CARDBEER, CardSuit.HEARTS, CardValue.SIX, CardType.PLAY));
-        cards.add(new Beer(Card.CARDBEER, CardSuit.SPADES, CardValue.SIX, CardType.PLAY));
-
-        cards.add(new Panic(Card.CARDPANIC, CardSuit.HEARTS, CardValue.JACK, CardType.PLAY));
-
-        cards.add(new CatBalou(Card.CARDCATBALOU, CardSuit.CLUBS, CardValue.EIGHT, CardType.PLAY));
-
-        cards.add(new Indians(Card.CARDINDIANS, CardSuit.DIAMONDS, CardValue.FIVE, CardType.PLAY));
-
-        cards.add(new RagTime(Card.CARDRAGTIME, CardSuit.HEARTS, CardValue.NINE, CardType.PLAY));
-
-        cards.add(new Dodge(Card.CARDDODGE, CardSuit.DIAMONDS, CardValue.SEVEN, CardType.PLAY));
-        cards.add(new Dodge(Card.CARDDODGE, CardSuit.HEARTS, CardValue.KING, CardType.PLAY));
-
-        cards.add(new Whisky(Card.CARDWHISKY, CardSuit.HEARTS, CardValue.QUEEN, CardType.PLAY));
-
-        cards.add(new Punch(Card.CARDPUNCH, CardSuit.SPADES, CardValue.TEN, CardType.PLAY));
-
-        cards.add(new Tequila(Card.CARDTEQUILA, CardSuit.CLUBS, CardValue.NINE, CardType.PLAY));
-
-        cards.add(new Brawl(Card.CARDBRAWL, CardSuit.SPADES, CardValue.JACK, CardType.PLAY));
-
-        cards.add(new Springfield(Card.CARDSPRINGFIELD, CardSuit.SPADES, CardValue.JACK, CardType.PLAY));
-
-        return cards;
+    private static ArrayList<Card> build(Row[] rows) {
+        return Arrays.stream(rows)
+                .map(row -> row.name.newCard(row.suit, row.value))
+                .collect(Collectors.toCollection(() -> new ArrayList<>(rows.length)));
     }
 }

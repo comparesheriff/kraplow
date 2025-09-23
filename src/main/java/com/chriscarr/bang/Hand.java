@@ -1,6 +1,7 @@
 package com.chriscarr.bang;
 
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.cards.SingleUse;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class Hand extends ArrayList<Card> {
     public int countBangs() {
         int bangs = 0;
         for (Card card : cards) {
-            if (card.getName().equals(Card.CARDBANG)) {
+            if (card.getName().equals(CardName.BANG)) {
                 bangs = bangs + 1;
             }
         }
@@ -31,7 +32,7 @@ public class Hand extends ArrayList<Card> {
     public int countMisses() {
         int bangs = 0;
         for (Card card : cards) {
-            if (card.getName().equals(Card.CARDMISSED)) {
+            if (card.getName().equals(CardName.MISSED)) {
                 bangs = bangs + 1;
             }
         }
@@ -40,7 +41,7 @@ public class Hand extends ArrayList<Card> {
 
     public Card removeMiss() {
         for (Card card : cards) {
-            if (card.getName().equals(Card.CARDMISSED)) {
+            if (card.getName().equals(CardName.MISSED)) {
                 cards.remove(card);
                 return card;
             }
@@ -55,7 +56,7 @@ public class Hand extends ArrayList<Card> {
     public int countBeers() {
         int beers = 0;
         for (Card card : cards) {
-            if (card.getName().equals(Card.CARDBEER)) {
+            if (card.getName().equals(CardName.BEER)) {
                 beers = beers + 1;
             }
         }
@@ -64,7 +65,7 @@ public class Hand extends ArrayList<Card> {
 
     public Card removeBeer() {
         for (Card card : cards) {
-            if (card.getName().equals(Card.CARDBEER)) {
+            if (card.getName().equals(CardName.BEER)) {
                 cards.remove(card);
                 return card;
             }

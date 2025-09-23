@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Saloon extends Card implements Playable {
 
-    public Saloon(String name, CardSuit suit, CardValue value, CardType type) {
+    public Saloon(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 

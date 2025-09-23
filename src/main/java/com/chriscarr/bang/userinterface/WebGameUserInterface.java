@@ -1,9 +1,10 @@
 package com.chriscarr.bang.userinterface;
 
-import com.chriscarr.bang.InPlay;
+import com.chriscarr.bang.CardsInPlay;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Role;
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
 
@@ -68,32 +69,32 @@ public class WebGameUserInterface extends JSPUserInterface {
             return "false";
         } else if (message.indexOf("askDiscard") == 0) {
             String commandStripped = message.replace("askDiscard ", "");
-            String[] cards = commandStripped.split(", ");
+            CardName[] cards = Arrays.stream(commandStripped.split(", ")).map(CardName::valueOf).toArray(CardName[]::new);
             if (turn.countPlayers() == 2) {
                 for (int i = 0; i < cards.length - 1; i++) {
-                    if (cards[i].equals("Beer")) {
+                    if (cards[i].equals(CardName.BEER)) {
                         return Integer.toString(i);
                     }
                 }
                 for (int i = 0; i < cards.length - 1; i++) {
-                    if (!aiPlayer.isSheriff() && cards[i].equals("Jail")) {
+                    if (!aiPlayer.isSheriff() && cards[i].equals(CardName.JAIL)) {
                         return Integer.toString(i);
                     }
                 }
             }
             for (int i = 0; i < cards.length - 1; i++) {
-                InPlay inPlay = aiPlayer.getInPlay();
-                if (inPlay.hasItem(cards[i]) || inPlay.getGunName().equals(cards[i])) {
+                CardsInPlay cardsInPlay = aiPlayer.getCardsInPlay();
+                if (cardsInPlay.hasItem(cards[i]) || cardsInPlay.getGunName().equals(cards[i])) {
                     return Integer.toString(i);
                 }
             }
             for (int i = 0; i < cards.length - 1; i++) {
-                if (isGun(cards[i]) && isThisGunBetter(cards[i], aiPlayer.getInPlay().getGunName())) {
+                if (isGun(cards[i]) && isThisGunBetter(cards[i], aiPlayer.getCardsInPlay().getGunName())) {
                     return Integer.toString(i);
                 }
             }
             for (int i = 0; i < cards.length - 1; i++) {
-                if (!(cards[i].equals("Beer") || cards[i].equals("Missed!") || cards[i].equals("Shoot"))) {
+                if (!(cards[i].equals(CardName.BEER) || cards[i].equals(CardName.MISSED) || cards[i].equals(CardName.BANG))) {
                     return Integer.toString(i);
                 }
             }
@@ -161,24 +162,24 @@ public class WebGameUserInterface extends JSPUserInterface {
                     return Integer.toString(i);
                 }
                 if (card.indexOf("Remington") == 0) {
-                    if (!aiPlayer.hasGun() || aiPlayer.isInPlay("Volcanic") || aiPlayer.isInPlay("Schofield")) {
-                        if (!aiPlayer.isInPlay("Remington")) {
+                    if (!aiPlayer.hasGun() || aiPlayer.isInPlay(CardName.VOLCANIC) || aiPlayer.isInPlay(CardName.SCHOFIELD)) {
+                        if (!aiPlayer.isInPlay(CardName.REMINGTON)) {
                             return Integer.toString(i);
                         }
                     }
                 }
                 if (card.indexOf("Scope") == 0) {
-                    if (!aiPlayer.isInPlay("Scope")) {
+                    if (!aiPlayer.isInPlay(CardName.SCOPE)) {
                         return Integer.toString(i);
                     }
                 }
                 if (card.indexOf("Mustang") == 0) {
-                    if (!aiPlayer.isInPlay("Mustang")) {
+                    if (!aiPlayer.isInPlay(CardName.MUSTANG)) {
                         return Integer.toString(i);
                     }
                 }
                 if (card.indexOf("Barrel") == 0) {
-                    if (!aiPlayer.isInPlay("Barrel")) {
+                    if (!aiPlayer.isInPlay(CardName.BARREL)) {
                         return Integer.toString(i);
                     }
                 }
@@ -188,30 +189,30 @@ public class WebGameUserInterface extends JSPUserInterface {
                     }
                 }
                 if (card.indexOf("Dynamite") == 0) {
-                    if (!aiPlayer.isInPlay("Dynamite")) {
+                    if (!aiPlayer.isInPlay(CardName.DYNAMITE)) {
                         return Integer.toString(i);
                     }
                 }
                 if (card.indexOf("Schofield") == 0) {
-                    if (!aiPlayer.hasGun() || aiPlayer.isInPlay("Volcanic")) {
-                        if (!aiPlayer.isInPlay("Schofield")) {
+                    if (!aiPlayer.hasGun() || aiPlayer.isInPlay(CardName.VOLCANIC)) {
+                        if (!aiPlayer.isInPlay(CardName.SCHOFIELD)) {
                             return Integer.toString(i);
                         }
                     }
                 }
                 if (card.indexOf("Volcanic") == 0) {
-                    if (!aiPlayer.hasGun() && !aiPlayer.isInPlay("Volcanic")) {
+                    if (!aiPlayer.hasGun() && !aiPlayer.isInPlay(CardName.VOLCANIC)) {
                         return Integer.toString(i);
                     }
                 }
                 if (card.indexOf("Winchester") == 0) {
-                    if (!aiPlayer.isInPlay("Winchester")) {
+                    if (!aiPlayer.isInPlay(CardName.WINCHESTER)) {
                         return Integer.toString(i);
                     }
                 }
                 if (card.indexOf("Rev. Carbine") == 0) {
-                    if (!aiPlayer.hasGun() || aiPlayer.isInPlay("Volcanic") || aiPlayer.isInPlay("Schofield") || aiPlayer.isInPlay("Remington")) {
-                        if (!aiPlayer.isInPlay("Rev. Carbine")) {
+                    if (!aiPlayer.hasGun() || aiPlayer.isInPlay(CardName.VOLCANIC) || aiPlayer.isInPlay(CardName.SCHOFIELD) || aiPlayer.isInPlay(CardName.REMINGTON)) {
+                        if (!aiPlayer.isInPlay(CardName.REV_CARBINE)) {
                             return Integer.toString(i);
                         }
                     }
@@ -285,18 +286,18 @@ public class WebGameUserInterface extends JSPUserInterface {
         return null;
     }
 
-    private boolean isGun(String cardName) {
-        return cardName.equals(Card.CARDVOLCANIC) || cardName.equals(Card.CARDSCHOFIELD) || cardName.equals(Card.CARDREMINGTON) || cardName.equals(Card.CARDREVCARBINE) || cardName.equals(Card.CARDWINCHESTER);
+    private boolean isGun(CardName cardName) {
+        return cardName.equals(CardName.VOLCANIC) || cardName.equals(CardName.SCHOFIELD) || cardName.equals(CardName.REMINGTON) || cardName.equals(CardName.REV_CARBINE) || cardName.equals(CardName.WINCHESTER);
     }
 
-    private boolean isThisGunBetter(String thisGun, String thatGun) {
-        Map<String, Integer> gunRank = new HashMap<>();
-        gunRank.put("Colt .45", 0);
-        gunRank.put(Card.CARDVOLCANIC, 1);
-        gunRank.put(Card.CARDSCHOFIELD, 2);
-        gunRank.put(Card.CARDREMINGTON, 3);
-        gunRank.put(Card.CARDREVCARBINE, 4);
-        gunRank.put(Card.CARDWINCHESTER, 5);
+    private boolean isThisGunBetter(CardName thisGun, CardName thatGun) {
+        Map<CardName, Integer> gunRank = new HashMap<>();
+        gunRank.put(CardName.COLT, 0);
+        gunRank.put(CardName.VOLCANIC, 1);
+        gunRank.put(CardName.SCHOFIELD, 2);
+        gunRank.put(CardName.REMINGTON, 3);
+        gunRank.put(CardName.REV_CARBINE, 4);
+        gunRank.put(CardName.WINCHESTER, 5);
         return gunRank.get(thisGun) - gunRank.get(thatGun) > 0;
     }
 
@@ -325,12 +326,12 @@ public class WebGameUserInterface extends JSPUserInterface {
         } else if (them.hasGun()) {
             return true;
         }
-        InPlay inPlay = them.getInPlay();
+        CardsInPlay inPlay = them.getCardsInPlay();
         int cardsInPlay = inPlay.size();
-        if (inPlay.hasItem(Card.CARDJAIL)) {
+        if (inPlay.hasItem(CardName.JAIL)) {
             cardsInPlay--;
         }
-        if (inPlay.hasItem(Card.CARDDYNAMITE)) {
+        if (inPlay.hasItem(CardName.DYNAMITE)) {
             cardsInPlay--;
         }
         return cardsInPlay > 0;

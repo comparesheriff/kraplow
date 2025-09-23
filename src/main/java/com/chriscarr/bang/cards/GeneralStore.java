@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GeneralStore extends Card implements Playable {
-    public GeneralStore(String name, CardSuit suit, CardValue value, CardType type) {
+    public GeneralStore(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -47,7 +47,7 @@ public class GeneralStore extends Card implements Playable {
                 chosenCard = userInterface.chooseGeneralStoreCard(generalPlayer, generalStoreCards);
             }
             Card card = generalStoreCards.remove(chosenCard);
-            userInterface.printInfo(generalPlayer.getName() + " chooses " + card.getName() + " from " + Card.CARDGENERALSTORE);
+            userInterface.printInfo(generalPlayer.getName() + " chooses " + card.getName() + " from " + CardName.GENERAL_STORE);
             generalPlayer.getHand().add(card);
             generalPlayer = Turn.getNextPlayer(generalPlayer, players);
         }

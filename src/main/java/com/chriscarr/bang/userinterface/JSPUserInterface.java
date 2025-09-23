@@ -3,6 +3,7 @@ package com.chriscarr.bang.userinterface;
 import com.chriscarr.bang.*;
 import com.chriscarr.bang.Character;
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.cards.CardType;
 import com.chriscarr.bang.cards.SingleUseMissed;
 import com.chriscarr.bang.gamestate.GameState;
@@ -46,9 +47,9 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
                     } else {
                         //In Play Cards
                         //REFACTORING - What is happening here
-                        InPlay inPlay = player.getInPlay();
-                        inPlay.get(Integer.parseInt(s) - hand.size());
-                        cardsToDiscard.add(inPlay.get(Integer.parseInt(s) - hand.size()));
+                        CardsInPlay cardsInPlay = player.getCardsInPlay();
+                        cardsInPlay.get(Integer.parseInt(s) - hand.size());
+                        cardsToDiscard.add(cardsInPlay.get(Integer.parseInt(s) - hand.size()));
                     }
                 }
             }
@@ -82,13 +83,13 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
     }
 
     @Override
-    public int askOthersCard(Player player, InPlay inPlay, boolean hasHand) {
+    public int askOthersCard(Player player, CardsInPlay cardsInPlay, boolean hasHand) {
         StringBuilder inPlayCards = new StringBuilder();
-        for (Card card : inPlay) {
+        for (Card card : cardsInPlay) {
             inPlayCards.append(card.getName()).append(", ");
         }
-        boolean hasGun = inPlay.hasGun();
-        sendMessage(player.getName(), "askOthersCard " + hasHand + ", " + hasGun + inPlay.getGunName() + ", " + inPlayCards);
+        boolean hasGun = cardsInPlay.hasGun();
+        sendMessage(player.getName(), "askOthersCard " + hasHand + ", " + hasGun + cardsInPlay.getGunName() + ", " + inPlayCards);
         waitForResponse(player.getName());
         return Integer.parseInt(removeResponse(player.getName()));
     }
@@ -98,7 +99,7 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
         Hand hand = player.getHand();
         StringBuilder handCards = new StringBuilder();
         for (Card card : hand) {
-            String name = card.getName();
+            CardName name = card.getName();
             boolean canPlay = turn.canPlay(player, card);
             List<String> targets = turn.targets(player, card);
             StringBuilder targetString = new StringBuilder();
@@ -107,10 +108,10 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
             }
             handCards.append(name).append("^").append(card.getSuit().getLabel()).append("^").append(card.getValue().getLabel()).append("@").append(canPlay).append("@").append(targetString).append(", ");
         }
-        InPlay inPlay = player.getInPlay();
-        for (Card card : inPlay) {
+        CardsInPlay cardsInPlay = player.getCardsInPlay();
+        for (Card card : cardsInPlay) {
             if (card.getType() == CardType.SINGLE_USE_ITEM) {
-                String name = card.getName();
+                CardName name = card.getName();
                 boolean canPlay = turn.canPlay(player, card);
                 List<String> targets = turn.targets(player, card);
                 StringBuilder targetString = new StringBuilder();
@@ -233,8 +234,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
         Hand hand = player.getHand();
         StringBuilder handCards = new StringBuilder();
         for (Card value : hand) {
-            String name = value.getName();
-            boolean canPlay = Card.CARDBANG.equals(name) || (Card.CARDMISSED.equals(name) && Character.CALAMITYJANET.equals(player.getCharacter()));
+            CardName name = value.getName();
+            boolean canPlay = CardName.BANG.equals(name) || (CardName.MISSED.equals(name) && Character.CALAMITYJANET.equals(player.getCharacter()));
             handCards.append(name).append("@").append(canPlay).append(", ");
         }
         sendMessage(player.getName(), "respondBang " + handCards);
@@ -247,8 +248,8 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
         Hand hand = player.getHand();
         StringBuilder handCards = new StringBuilder();
         for (Card value : hand) {
-            String name = value.getName();
-            boolean canPlay = Card.CARDBEER.equals(name);
+            CardName name = value.getName();
+            boolean canPlay = CardName.BEER.equals(name);
             handCards.append(name).append("@").append(canPlay).append(", ");
         }
         sendMessage(player.getName(), "respondBeer " + handCards);
@@ -261,13 +262,13 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
         Hand hand = player.getHand();
         StringBuilder handCards = new StringBuilder();
         for (Card card : hand) {
-            String name = card.getName();
-            boolean canPlay = Card.CARDMISSED.equals(name) || Card.CARDDODGE.equals(name) || Character.ELENAFUENTE.equals(player.getCharacter()) || (Card.CARDBANG.equals(name) && Character.CALAMITYJANET.equals(player.getCharacter()));
+            CardName name = card.getName();
+            boolean canPlay = CardName.MISSED.equals(name) || CardName.DODGE.equals(name) || Character.ELENAFUENTE.equals(player.getCharacter()) || (CardName.BANG.equals(name) && Character.CALAMITYJANET.equals(player.getCharacter()));
             handCards.append(name).append("@").append(canPlay).append(", ");
         }
-        InPlay inPlay = player.getInPlay();
-        for (Card card : inPlay) {
-            String name = card.getName();
+        CardsInPlay cardsInPlay = player.getCardsInPlay();
+        for (Card card : cardsInPlay) {
+            CardName name = card.getName();
             //BELLESTAR
             boolean canPlay = false;
             if (canSingleUse) {
@@ -299,15 +300,15 @@ public class JSPUserInterface implements UserInterface, GameStateListener {
         StringBuilder handCards = new StringBuilder();
         for (Card value : hand) {
             boolean canPlay = false;
-            String cardName = value.getName();
-            if (Card.CARDMISSED.equals(cardName) || Card.CARDDODGE.equals(cardName) || Character.ELENAFUENTE.equals(player.getCharacter()) || (Card.CARDBANG.equals(cardName) && Character.CALAMITYJANET.equals(player.getCharacter()))) {
+            CardName cardName = value.getName();
+            if (CardName.MISSED.equals(cardName) || CardName.DODGE.equals(cardName) || Character.ELENAFUENTE.equals(player.getCharacter()) || (CardName.BANG.equals(cardName) && Character.CALAMITYJANET.equals(player.getCharacter()))) {
                 canPlay = true;
             }
             handCards.append(cardName).append("@").append(canPlay).append(", ");
         }
-        InPlay inPlay = player.getInPlay();
-        for (Card card : inPlay) {
-            String name = card.getName();
+        CardsInPlay cardsInPlay = player.getCardsInPlay();
+        for (Card card : cardsInPlay) {
+            CardName name = card.getName();
             boolean canPlay = card instanceof SingleUseMissed;
 
             handCards.append(name).append("@").append(canPlay).append(", ");

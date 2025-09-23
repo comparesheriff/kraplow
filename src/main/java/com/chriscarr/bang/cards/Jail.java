@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class Jail extends Card implements Playable {
 
-    public Jail(String name, CardSuit suit, CardValue value, CardType type) {
+    public Jail(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -25,11 +25,11 @@ public class Jail extends Card implements Playable {
         if (!(target instanceof CancelPlayer)) {
             if (Character.JOHNNYKISCH.equals(currentPlayer.getCharacter())) {
                 for (Player player : players) {
-                    int inPlayCount = player.getInPlay().size();
+                    int inPlayCount = player.getCardsInPlay().size();
                     for (int inPlayIndex = 0; inPlayIndex < inPlayCount; inPlayIndex++) {
-                        Card peeked = player.getInPlay().get(inPlayIndex);
+                        Card peeked = player.getCardsInPlay().get(inPlayIndex);
                         if (Objects.equals(peeked.getName(), this.getName())) {
-                            Card removed = player.getInPlay().remove(inPlayIndex);
+                            Card removed = player.getCardsInPlay().remove(inPlayIndex);
                             discard.add(removed);
                             userInterface.printInfo(currentPlayer.getName() + " plays a " + this.getName() + " and forces " + player.getName() + " to discard one from play.");
                         }

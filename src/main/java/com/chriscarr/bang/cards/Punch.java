@@ -9,7 +9,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import java.util.List;
 
 public class Punch extends Card implements Playable {
-    public Punch(String name, CardSuit suit, CardValue value, CardType type) {
+    public Punch(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -24,7 +24,7 @@ public class Punch extends Card implements Playable {
      * @see main.bang.Playable#targets(main.chriscarr.bang.Player, java.util.List)
      */
     public List<Player> targets(Player player, List<Player> players) {
-        return Turn.getPlayersWithCards(Turn.getPlayersWithinRange(player, players, 1));
+        return Turn.getPlayersWithCards(Turn.getPlayersWithinRange(player, players));
     }
 
     /* (non-Javadoc)

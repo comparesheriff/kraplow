@@ -1,6 +1,6 @@
 package com.chriscarr.bang.userinterface;
 
-import com.chriscarr.bang.InPlay;
+import com.chriscarr.bang.CardsInPlay;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
 
@@ -25,7 +25,7 @@ public interface UserInterface {
     int chooseGeneralStoreCard(Player player,
                                List<Card> cards);
 
-    int askOthersCard(Player player, InPlay inPlay, boolean hasHand);
+    int askOthersCard(Player player, CardsInPlay cardsInPlay, boolean hasHand);
 
     int respondBeer(Player player);
 

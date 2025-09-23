@@ -244,7 +244,7 @@ public class AjaxServlet extends HttpServlet {
                                 Hand hand = userInterface.getHandForUser(((WebGameUserInterface) userInterface).getPlayerForUser(user));
                                 for (Card value : hand) {
                                     response.getWriter().write("<card>");
-                                    response.getWriter().write(value.getName());
+                                    response.getWriter().write(value.getName().getDisplayName());
                                     response.getWriter().write("</card>");
                                 }
                             }
@@ -362,7 +362,7 @@ public class AjaxServlet extends HttpServlet {
 
     private void writeCard(GameStateCard card, HttpServletResponse response) throws IOException {
         response.getWriter().write("<name>");
-        response.getWriter().write(card.name);
+        response.getWriter().write(card.name.getDisplayName());
         response.getWriter().write("</name>");
         response.getWriter().write("<suit>");
         response.getWriter().write(card.suit);

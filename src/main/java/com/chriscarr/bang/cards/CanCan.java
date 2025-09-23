@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CanCan extends SingleUse implements Playable {
 
-    public CanCan(String name, CardSuit suit, CardValue value, CardType type) {
+    public CanCan(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -26,19 +26,19 @@ public class CanCan extends SingleUse implements Playable {
         }
         if (!(otherPlayer instanceof CancelPlayer)) {
             int chosenCard = -3;
-            while (chosenCard < -2 || chosenCard > otherPlayer.getInPlay().size() - 1) {
-                chosenCard = userInterface.askOthersCard(currentPlayer, otherPlayer.getInPlay(), !otherPlayer.getHand().isEmpty());
+            while (chosenCard < -2 || chosenCard > otherPlayer.getCardsInPlay().size() - 1) {
+                chosenCard = userInterface.askOthersCard(currentPlayer, otherPlayer.getCardsInPlay(), !otherPlayer.getHand().isEmpty());
             }
             if (chosenCard == -1) {
                 Card discardedCard = otherPlayer.getHand().removeRandom();
                 discard.add(discardedCard);
                 userInterface.printInfo(currentPlayer.getName() + " discards a " + discardedCard.getName() + " from " + otherPlayer.getName() + "'s hand with a " + this.getName());
             } else if (chosenCard == -2) {
-                Gun card = otherPlayer.getInPlay().removeGun();
+                Gun card = otherPlayer.getCardsInPlay().removeGun();
                 discard.add(card);
                 userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
             } else {
-                Card card = otherPlayer.getInPlay().remove(chosenCard);
+                Card card = otherPlayer.getCardsInPlay().remove(chosenCard);
                 discard.add(card);
                 userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + otherPlayer.getName() + " with a " + this.getName());
             }

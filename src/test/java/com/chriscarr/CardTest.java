@@ -1,25 +1,22 @@
 package com.chriscarr;
 
-import com.chriscarr.bang.cards.Card;
-import com.chriscarr.bang.cards.CardSuit;
-import com.chriscarr.bang.cards.CardType;
-import com.chriscarr.bang.cards.CardValue;
+import com.chriscarr.bang.cards.*;
 import junit.framework.TestCase;
 
 public class CardTest extends TestCase {
     public void testSetName() {
         Card card = new Card();
-        String setName = "Banana";
+        CardName setName = CardName.JAIL;
         card.setName(setName);
-        String gotName = card.getName();
+        CardName gotName = card.getName();
         assertEquals(setName, gotName);
     }
 
     public void testSetOtherName() {
         Card card = new Card();
-        String setName = "Goat";
+        CardName setName = CardName.VOLCANIC;
         card.setName(setName);
-        String gotName = card.getName();
+        CardName gotName = card.getName();
         assertEquals(setName, gotName);
     }
 
@@ -84,15 +81,15 @@ public class CardTest extends TestCase {
     }
 
     public void testGunRange() {
-        assertEquals(1, Card.getRange(Card.CARDVOLCANIC));
-        assertEquals(2, Card.getRange(Card.CARDSCHOFIELD));
-        assertEquals(3, Card.getRange(Card.CARDREMINGTON));
-        assertEquals(4, Card.getRange(Card.CARDWINCHESTER));
-        assertEquals(5, Card.getRange(Card.CARDREVCARBINE));
+        assertEquals(1, Card.getRange(CardName.VOLCANIC));
+        assertEquals(2, Card.getRange(CardName.SCHOFIELD));
+        assertEquals(3, Card.getRange(CardName.REMINGTON));
+        assertEquals(4, Card.getRange(CardName.WINCHESTER));
+        assertEquals(5, Card.getRange(CardName.REV_CARBINE));
     }
 
     public void testGunMultiBang() {
-        assertTrue(Card.multiBang(Card.CARDVOLCANIC));
-        assertFalse(Card.multiBang(Card.CARDSCHOFIELD));
+        assertTrue(Card.multiBang(CardName.VOLCANIC));
+        assertFalse(Card.multiBang(CardName.SCHOFIELD));
     }
 }

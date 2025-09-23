@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Gun extends Card {
-    public Gun(String name, CardSuit suit, CardValue value, CardType type) {
+    public Gun(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -19,8 +19,8 @@ public class Gun extends Card {
         }
         if (Character.JOHNNYKISCH.equals(currentPlayer.getCharacter())) {
             for (Player player : players) {
-                if (Objects.equals(player.getInPlay().getGunName(), this.getName())) {
-                    Gun gun = player.getInPlay().removeGun();
+                if (Objects.equals(player.getCardsInPlay().getGunName(), this.getName())) {
+                    Gun gun = player.getCardsInPlay().removeGun();
                     discard.add(gun);
                     userInterface.printInfo(currentPlayer.getName() + " plays a " + this.getName() + " and forces " + player.getName() + " to discard one from play.");
                 }

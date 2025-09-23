@@ -1,10 +1,7 @@
 package com.chriscarr;
 
 import com.chriscarr.bang.*;
-import com.chriscarr.bang.cards.Card;
-import com.chriscarr.bang.cards.CardSuit;
-import com.chriscarr.bang.cards.CardType;
-import com.chriscarr.bang.cards.CardValue;
+import com.chriscarr.bang.cards.*;
 import junit.framework.TestCase;
 
 import java.util.List;
@@ -16,7 +13,7 @@ public class SetupTest extends TestCase {
         for (int i = 0; i < 80; i++) {
             pulled = deck.pull();
         }
-        assertEquals(Card.CARDBARREL, pulled.getName());
+        assertEquals(CardName.BARREL, pulled.getName());
         assertEquals(CardSuit.SPADES, pulled.getSuit());
         assertEquals(CardValue.QUEEN, pulled.getValue());
         assertEquals(CardType.ITEM, pulled.getType());

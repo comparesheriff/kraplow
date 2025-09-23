@@ -11,7 +11,7 @@ public class SingleUse extends Card implements Playable {
 
     protected boolean readyToPlay = false;
 
-    public SingleUse(String name, CardSuit suit, CardValue value, CardType type) {
+    public SingleUse(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
@@ -45,11 +45,11 @@ public class SingleUse extends Card implements Playable {
     }
 
     public void removeFromInPlay(Player currentPlayer) {
-        InPlay currentInPlay = currentPlayer.getInPlay();
-        for (int i = 0; i < currentInPlay.size(); i++) {
-            if (currentInPlay.get(i) == this) {
+        CardsInPlay currentCardsInPlay = currentPlayer.getCardsInPlay();
+        for (int i = 0; i < currentCardsInPlay.size(); i++) {
+            if (currentCardsInPlay.get(i) == this) {
                 //REFACTORING clean this up
-                currentInPlay.remove(i);
+                currentCardsInPlay.remove(i);
             }
         }
     }

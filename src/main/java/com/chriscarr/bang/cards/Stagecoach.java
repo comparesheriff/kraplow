@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Stagecoach extends Card implements Playable {
 
-    public Stagecoach(String name, CardSuit suit, CardValue value, CardType type) {
+    public Stagecoach(CardName name, CardSuit suit, CardValue value, CardType type) {
         super(name, suit, value, type);
     }
 
