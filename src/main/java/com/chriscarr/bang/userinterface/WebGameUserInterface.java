@@ -6,11 +6,14 @@ import com.chriscarr.bang.Role;
 import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WebGameUserInterface extends JSPUserInterface {
+    private static final Logger LOG = LoggerFactory.getLogger(WebGameUserInterface.class);
 
     Map<String, List<Message>> messages;
     Map<String, List<Message>> responses;
@@ -426,9 +429,9 @@ public class WebGameUserInterface extends JSPUserInterface {
     }
 
     public void addResponse(String user, String message) {
-        System.out.println("Response " + user + " " + message);
+        LOG.info("Response " + user + " " + message);
         if (!getMessages(user).isEmpty()) {
-            System.out.println("Response " + getMessages(user).getFirst());
+            LOG.info("Response " + getMessages(user).getFirst());
         }
         List<Message> playerResponses = responses.get(user);
         playerResponses.add(new MessageImpl(message));

@@ -13,6 +13,8 @@ import com.chriscarr.bang.userinterface.WebGameUserInterface;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -23,6 +25,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class AjaxServlet extends HttpServlet {
+    private static final Logger LOG = LoggerFactory.getLogger(AjaxServlet.class);
 
     private static final ScheduledExecutorService CLEANUP = Executors.newSingleThreadScheduledExecutor(
             r -> {
@@ -176,7 +179,7 @@ public class AjaxServlet extends HttpServlet {
                     String chat = request.getParameter("chat");
                     chat = chat.replace(">", "");
                     chat = chat.replace("<", "");
-                    System.out.println("chat:" + chat);
+                    LOG.info("chat:" + chat);
                     String gameId = request.getParameter("gameid");
                     if (gameId == null) {
                         gameId = "lobby";
@@ -242,7 +245,7 @@ public class AjaxServlet extends HttpServlet {
                     if (userInterface != null) {
                         List<Message> messages = ((WebGameUserInterface) userInterface).getMessages(user);
                         if (!messages.isEmpty()) {
-                            System.out.println("Got message " + messages.getFirst());
+                            LOG.info("Got message " + messages.getFirst());
                             response.getWriter().write("<message>");
                             response.getWriter().write("<id>");
                             response.getWriter().write(Integer.toString(messages.getFirst().getId()));
@@ -269,18 +272,18 @@ public class AjaxServlet extends HttpServlet {
                     }
                 }
                 case "SENDRESPONSE" -> {
-                    System.out.println("Sent Response");
+                    LOG.info("Sent Response");
                     String user = request.getParameter("user");
                     String responseMessage = request.getParameter("response");
                     String gameId = request.getParameter("gameId");
                     String messageId = request.getParameter("messageId");
-                    System.out.println("Response " + messageId);
+                    LOG.info("Response " + messageId);
                     JSPUserInterface userInterface = (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
                     if (userInterface != null) {
                         List<Message> messages = ((WebGameUserInterface) userInterface).getMessages(user);
                         if (!messages.isEmpty()) {
                             Object removed = messages.removeFirst();
-                            System.out.println("Removed " + removed);
+                            LOG.info("Removed " + removed);
                             if (!"".equals(responseMessage)) {
                                 ((WebGameUserInterface) userInterface).addResponse(user, responseMessage);
                             }

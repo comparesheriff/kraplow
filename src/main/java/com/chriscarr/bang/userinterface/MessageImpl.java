@@ -25,4 +25,8 @@ public class MessageImpl implements Message {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "Message with id '" + id + "': '" + message + "'";
+    }
 }

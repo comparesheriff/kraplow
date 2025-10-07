@@ -125,7 +125,7 @@
     
     <servlet>
         <servlet-name>Grapes</servlet-name>
-        <servlet-class>java.com.chriscarr.game.AjaxServlet</servlet-class>
+        <servlet-class>com.chriscarr.game.AjaxServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -143,6 +143,8 @@
     <session-config>
       <session-timeout>30</session-timeout>    <!-- 30 minutes -->
     </session-config>
-
+    <listener>
+        <listener-class>com.chriscarr.infra.LoggingBootstrap</listener-class>
+    </listener>
 
 </web-app>

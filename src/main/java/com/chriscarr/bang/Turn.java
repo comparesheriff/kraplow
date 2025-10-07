@@ -6,6 +6,8 @@ import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.gamestate.GameStateImpl;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
 import com.chriscarr.bang.userinterface.UserInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 
 public class Turn {
+    private static final Logger LOG = LoggerFactory.getLogger(Turn.class);
 
     private List<Player> players;
     private Player currentPlayer;
@@ -1079,7 +1082,7 @@ public class Turn {
         boolean validCards = false;
         while (!validCards) {
             cards = userInterface.respondTwoMiss(player);
-            System.out.println(cards.size());
+            LOG.info(String.valueOf(cards.size()));
             if (cards.isEmpty()) {
                 validCards = true;
             } else if (cards.size() == 2) {

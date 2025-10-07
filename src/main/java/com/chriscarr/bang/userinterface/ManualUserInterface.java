@@ -8,6 +8,8 @@ import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.gamestate.GameStateListener;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManualUserInterface implements UserInterface, GameStateListener {
+    private static final Logger LOG = LoggerFactory.getLogger(ManualUserInterface.class);
 
     Turn turn;
 
@@ -24,7 +27,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
     }
 
     public void printInfo(String info) {
-        System.out.println(info);
+        LOG.info(info);
     }
 
     @Override
@@ -39,12 +42,12 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
     }
 
     public int askDiscard(Player player) {
-        System.out.println(player.getCharacter().getName());
-        System.out.println("Discard");
+        LOG.info(player.getCharacter().getName());
+        LOG.info("Discard");
         Hand hand = player.getHand();
         int handSize = hand.size();
         for (int i = 0; i < handSize; i++) {
-            System.out.println(i + ") " + hand.get(i).getName());
+            LOG.info(i + ") " + hand.get(i).getName());
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -56,25 +59,25 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     return cardNumber;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading input", e);
             }
         }
     }
 
     @Override
     public int askOthersCard(Player player, CardsInPlay cardsInPlay, boolean hasHand) {
-        System.out.println(player.getCharacter().getName());
-        System.out.println("Choose Other Players Card");
+        LOG.info(player.getCharacter().getName());
+        LOG.info("Choose Other Players Card");
         int handSize = cardsInPlay.size();
         if (hasHand) {
-            System.out.println("-1) Hand");
+            LOG.info("-1) Hand");
         }
         boolean hasGun = cardsInPlay.hasGun();
         if (hasGun) {
-            System.out.println("-2) Gun");
+            LOG.info("-2) Gun");
         }
         for (int i = 0; i < handSize; i++) {
-            System.out.println(i + ") " + cardsInPlay.get(i).getName());
+            LOG.info("{}) {}", i, cardsInPlay.get(i).getName());
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -92,7 +95,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     return cardNumber;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }
@@ -101,21 +104,20 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
     public int askPlay(Player player) {
         printGameState();
         printPrivateInfo(player);
-        System.out.println("Play");
+        LOG.info("Play");
         Hand hand = player.getHand();
         int handSize = hand.size();
-        System.out.println("-1) done playing");
+        LOG.info("-1) done playing");
         for (int i = 0; i < handSize; i++) {
             Card card = hand.get(i);
             boolean canPlay = turn.canPlay(player, card);
-            System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
+            LOG.info("{}) {} can play? {}", i, card.getName(), canPlay);
             if (canPlay) {
-                System.out.print(" Targets: ");
+                LOG.info(" Targets: ");
                 for (String name : turn.targets(player, card)) {
-                    System.out.print(name + " ");
+                    LOG.info("{} ", name);
                 }
             }
-            System.out.println();
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -127,22 +129,22 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     return cardNumber;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }
 
     private void printPrivateInfo(Player player) {
-        System.out.println(player.getRole().getRoleName());
+        LOG.info(player.getRole().getRoleName());
     }
 
     @Override
     public int askPlayer(Player player, List<String> otherPlayers) {
-        System.out.println(player.getCharacter().getName());
-        System.out.println("Choose Player");
+        LOG.info(player.getCharacter().getName());
+        LOG.info("Choose Player");
         int handSize = otherPlayers.size();
         for (int i = 0; i < handSize; i++) {
-            System.out.println(i + ") " + otherPlayers.get(i));
+            LOG.info("{}) {}", i, otherPlayers.get(i));
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -154,17 +156,17 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     return cardNumber;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }
 
     @Override
     public boolean chooseDiscard(Player player, Card card) {
-        System.out.println(player.getCharacter().getName());
-        System.out.println("Draw Card From Discard");
-        System.out.println("0) From Discard " + card.getName());
-        System.out.println("1) From Deck");
+        LOG.info(player.getCharacter().getName());
+        LOG.info("Draw Card From Discard");
+        LOG.info("0) From Discard {}", card.getName());
+        LOG.info("1) From Deck");
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
         while (true) {
@@ -177,18 +179,18 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     return false;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }
 
     @Override
     public int chooseGeneralStoreCard(Player player, List<Card> cards) {
-        System.out.println(player.getCharacter().getName());
-        System.out.println("Choose General Store Card");
+        LOG.info(player.getCharacter().getName());
+        LOG.info("Choose General Store Card");
         int handSize = cards.size();
         for (int i = 0; i < handSize; i++) {
-            System.out.println(i + ") " + cards.get(i).getName());
+            LOG.info(i + ") " + cards.get(i).getName());
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -200,28 +202,28 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     return cardNumber;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }
 
     @Override
     public List<Card> chooseTwoDiscardForLife(Player player) {
-        System.out.println(player.getCharacter().getName());
-        System.out.println("Discard Two cards for 1 Life, 4 for 2, etc");
+        LOG.info(player.getCharacter().getName());
+        LOG.info("Discard Two cards for 1 Life, 4 for 2, etc");
         Hand hand = player.getHand();
         int handSize = hand.size();
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
         List<Card> chosenCards = new ArrayList<>();
         while (true) {
-            System.out.println("-1) done choosing");
+            LOG.info("-1) done choosing");
             for (int i = 0; i < handSize; i++) {
                 String chosen = " not chosen";
                 if (chosenCards.contains(hand.get(i))) {
                     chosen = " chosen";
                 }
-                System.out.println(i + ") " + hand.get(i).getName() + chosen);
+                LOG.info("{}) {}{}", i, hand.get(i).getName(), chosen);
             }
             try {
                 String line = in.readLine();
@@ -239,7 +241,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }
@@ -247,21 +249,20 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
     @Override
     public int respondBang(Player player) {
         printPrivateInfo(player);
-        System.out.println("Respond Bang");
+        LOG.info("Respond Bang");
         Hand hand = player.getHand();
         int handSize = hand.size();
-        System.out.println("-1) done playing");
+        LOG.info("-1) done playing");
         for (int i = 0; i < handSize; i++) {
             Card card = hand.get(i);
             boolean canPlay = CardName.BANG.equals(card.getName()) || (CardName.MISSED.equals(card.getName()) && Character.CALAMITYJANET.equals(player.getCharacter()));
-            System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
+            LOG.info("{}) {} can play? {}", i, card.getName(), canPlay);
             if (canPlay) {
-                System.out.print(" Targets: ");
+                LOG.info(" Targets: ");
                 for (String name : turn.targets(player, card)) {
-                    System.out.print(name + " ");
+                    LOG.info(name + " ");
                 }
             }
-            System.out.println();
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -273,7 +274,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     return cardNumber;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }
@@ -281,21 +282,20 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
     @Override
     public int respondBeer(Player player) {
         printPrivateInfo(player);
-        System.out.println("Respond Beer");
+        LOG.info("Respond Beer");
         Hand hand = player.getHand();
         int handSize = hand.size();
-        System.out.println("-1) done playing");
+        LOG.info("-1) done playing");
         for (int i = 0; i < handSize; i++) {
             Card card = hand.get(i);
             boolean canPlay = CardName.BEER.equals(card.getName());
-            System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
+            LOG.info(i + ") " + card.getName() + " can play? " + canPlay);
             if (canPlay) {
-                System.out.print(" Targets: ");
+                LOG.info(" Targets: ");
                 for (String name : turn.targets(player, card)) {
-                    System.out.print(name + " ");
+                    LOG.info(name + " ");
                 }
             }
-            System.out.println();
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -307,7 +307,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     return cardNumber;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }
@@ -315,21 +315,20 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
     @Override
     public int respondMiss(Player player, boolean canSingleUse) {
         printPrivateInfo(player);
-        System.out.println("Respond Miss");
+        LOG.info("Respond Miss");
         Hand hand = player.getHand();
         int handSize = hand.size();
-        System.out.println("-1) done playing");
+        LOG.info("-1) done playing");
         for (int i = 0; i < handSize; i++) {
             Card card = hand.get(i);
             boolean canPlay = CardName.MISSED.equals(card.getName()) || (CardName.BANG.equals(card.getName()) && Character.CALAMITYJANET.equals(player.getCharacter()));
-            System.out.print(i + ") " + card.getName() + " can play? " + canPlay);
+            LOG.info("{}) {} can play? {}", i, card.getName(), canPlay);
             if (canPlay) {
-                System.out.print(" Targets: ");
+                LOG.info(" Targets: ");
                 for (String name : turn.targets(player, card)) {
-                    System.out.print(name + " ");
+                    LOG.info(name + " ");
                 }
             }
-            System.out.println();
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -341,17 +340,17 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     return cardNumber;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }
 
     @Override
     public boolean chooseFromPlayer(Player player) {
-        System.out.println(player.getCharacter().getName());
-        System.out.println("Draw Card From Player");
-        System.out.println("0) From Player");
-        System.out.println("1) From Deck");
+        LOG.info(player.getCharacter().getName());
+        LOG.info("Draw Card From Player");
+        LOG.info("0) From Player");
+        LOG.info("1) From Deck");
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
         while (true) {
@@ -364,18 +363,18 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     return false;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }
 
     @Override
     public int chooseDrawCard(Player player, List<Card> cards) {
-        System.out.println(player.getCharacter().getName());
-        System.out.println("Choose Draw Card to keep");
+        LOG.info(player.getCharacter().getName());
+        LOG.info("Choose Draw Card to keep");
         int handSize = cards.size();
         for (int i = 0; i < handSize; i++) {
-            System.out.println(i + ") " + cards.get(i).getName());
+            LOG.info(i + ") " + cards.get(i).getName());
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -387,18 +386,18 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     return cardNumber;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }
 
     @Override
     public int chooseCardToPutBack(Player player, List<Card> cards) {
-        System.out.println(player.getCharacter().getName());
-        System.out.println("Choose card put back");
+        LOG.info(player.getCharacter().getName());
+        LOG.info("Choose card put back");
         int handSize = cards.size();
         for (int i = 0; i < handSize; i++) {
-            System.out.println(i + ") " + cards.get(i).getName());
+            LOG.info(i + ") " + cards.get(i).getName());
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -410,38 +409,38 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     return cardNumber;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }
 
     public void printGameState() {
         GameState gameState = turn.getGameState();
-        System.out.println("Current Turn: " + gameState.getCurrentName());
-        System.out.println("Is game over: " + gameState.isGameOver());
-        System.out.println("Deck size: " + gameState.getDeckSize());
-        System.out.println("Discard top card: " + gameState.discardTopCard());
+        LOG.info("Current Turn: " + gameState.getCurrentName());
+        LOG.info("Is game over: " + gameState.isGameOver());
+        LOG.info("Deck size: " + gameState.getDeckSize());
+        LOG.info("Discard top card: " + gameState.discardTopCard());
         List<GameStatePlayer> players = gameState.getPlayers();
         for (GameStatePlayer player : players) {
-            System.out.println("Name: " + player.name);
-            System.out.println("Is Sheriff: " + player.isSheriff);
-            System.out.println("Ability: " + player.specialAbility);
-            System.out.println("Health: " + player.health);
-            System.out.println("Max: " + player.maxHealth);
-            System.out.println("Hand: " + player.handSize);
+            LOG.info("Name: " + player.name);
+            LOG.info("Is Sheriff: " + player.isSheriff);
+            LOG.info("Ability: " + player.specialAbility);
+            LOG.info("Health: " + player.health);
+            LOG.info("Max: " + player.maxHealth);
+            LOG.info("Hand: " + player.handSize);
             GameStateCard gun = player.gun;
             if (gun != null) {
-                System.out.println("Discard top card: " + gun.name);
-                System.out.println("Discard top card: " + gun.suit);
-                System.out.println("Discard top card: " + gun.type);
-                System.out.println("Discard top card: " + gun.value);
+                LOG.info("Discard top card: " + gun.name);
+                LOG.info("Discard top card: " + gun.suit);
+                LOG.info("Discard top card: " + gun.type);
+                LOG.info("Discard top card: " + gun.value);
             }
             List<GameStateCard> cards = player.inPlay;
             for (GameStateCard card : cards) {
-                System.out.println("name: " + card.name);
-                System.out.println("suit: " + card.suit);
-                System.out.println("type: " + card.type);
-                System.out.println("value: " + card.value);
+                LOG.info("name: " + card.name);
+                LOG.info("suit: " + card.suit);
+                LOG.info("type: " + card.type);
+                LOG.info("value: " + card.value);
             }
         }
     }
@@ -470,7 +469,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading Input", e);
             }
         }
     }

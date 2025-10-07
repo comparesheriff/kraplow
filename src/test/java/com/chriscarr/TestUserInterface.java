@@ -1,15 +1,19 @@
 package com.chriscarr;
 
-import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.CardsInPlay;
+import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.userinterface.UserInterface;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 public class TestUserInterface implements UserInterface {
+    private static final Logger LOG = getLogger(TestUserInterface.class);
 
     public int askDiscard(Player player) {
         return 0;
@@ -99,7 +103,7 @@ public class TestUserInterface implements UserInterface {
 
     public void printInfo(String info) {
         //do nothing
-        System.out.println(info);
+        LOG.info(info);
     }
 
     @Override
