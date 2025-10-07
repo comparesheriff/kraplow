@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -34,6 +35,7 @@ public class AjaxServlet extends HttpServlet {
                 return thread;
             }
     );
+    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -203,8 +205,7 @@ public class AjaxServlet extends HttpServlet {
                         response.getWriter().write(chat.message);
                         response.getWriter().write("</chat>");
                         response.getWriter().write("<timestamp>");
-                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                        response.getWriter().write(sdf.format(chat.timestamp));
+                        response.getWriter().write(dateFormat.format(chat.timestamp));
                         response.getWriter().write("</timestamp>");
                         response.getWriter().write("</chatmessage>");
                     }

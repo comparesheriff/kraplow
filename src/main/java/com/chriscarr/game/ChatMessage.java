@@ -1,13 +1,14 @@
 package com.chriscarr.game;
 
+import java.time.Instant;
 import java.util.Date;
 
 public class ChatMessage {
     String message;
-    Date timestamp;
+    Instant timestamp;
 
     public ChatMessage(String message) {
         this.message = message;
-        timestamp = new Date(System.currentTimeMillis());
+        timestamp = Instant.now();
     }
 }
