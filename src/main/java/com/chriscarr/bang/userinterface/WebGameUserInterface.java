@@ -22,6 +22,25 @@ public class WebGameUserInterface extends JSPUserInterface {
     int aiSleepMs;
     List<String> infoHistory;
 
+    @FunctionalInterface
+    interface Sleeper {
+        void sleep(long millis) throws InterruptedException;
+    }
+
+    private Sleeper sleeper = Thread::sleep;
+
+    void setSleeper(Sleeper sleeper) {
+        this.sleeper = Objects.requireNonNull(sleeper);
+    }
+
+    private int responsePollWaitMs = 100;
+    private int responsePollMaxMs = 360_000;
+
+    public void setResponsePollWaitMs(int responsePollWaitMs) {
+        this.responsePollWaitMs = Math.max(1, responsePollWaitMs);
+        this.responsePollMaxMs = Math.max(this.responsePollWaitMs, responsePollMaxMs);
+    }
+
     public WebGameUserInterface(List<String> users, int aiSleepMs) {
         infoHistory = new ArrayList<>();
         timedOutPlayers = new ArrayList<>();
@@ -41,11 +60,8 @@ public class WebGameUserInterface extends JSPUserInterface {
             lastMessage = infoHistory.getLast();
         }
 
-        try {
-            Thread.sleep(this.aiSleepMs);
-        } catch (InterruptedException e) {
-            //ignore
-        }
+        try { sleeper.sleep(this.aiSleepMs); } catch (InterruptedException ignored) {}
+
         Player aiPlayer = turn.getPlayerForName(player);
         if (message.indexOf("askOthersCard") == 0) {
             String[] splitMessage = message.split(",");
@@ -476,23 +492,19 @@ public class WebGameUserInterface extends JSPUserInterface {
     }
 
     protected void waitForResponse(String player) {
-        int maxWait = 360000;
-        int wait = 100;
         int waitCount = 0;
         while (responses.get(userFigureNames.get(player)).isEmpty()) {
             try {
-                //why wait?
-                Thread.sleep(wait);
-                waitCount += wait;
-                if (waitCount > maxWait) {
+                // polling ohne echten Sleep in Tests (Sleeper ist injizierbar)
+                sleeper.sleep(responsePollWaitMs);
+                waitCount += responsePollWaitMs;
+                if (waitCount > responsePollMaxMs) {
                     printInfo(player + " has timed out and AI has taken over for them.");
                     timedOutPlayers.add(userFigureNames.get(player));
                     //-5 is never a valid response, but it will trigger the AI to make a valid one
                     addResponse(userFigureNames.get(player), "-5");
                 }
-            } catch (InterruptedException e) {
-                // ignore
-            }
+            } catch (InterruptedException ignored) {}
         }
     }
 

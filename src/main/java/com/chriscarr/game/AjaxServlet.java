@@ -18,8 +18,19 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class AjaxServlet extends HttpServlet {
+
+    private static final ScheduledExecutorService CLEANUP = Executors.newSingleThreadScheduledExecutor(
+            r -> {
+                Thread thread = new Thread(r, "Cleanup");
+                thread.setDaemon(true);
+                return thread;
+            }
+    );
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -49,9 +60,9 @@ public class AjaxServlet extends HttpServlet {
                             }
                             if (gameState.isGameOver()) {
                                 response.getWriter().write("<gameover/>");
-                                Cleanup cleanup = new Cleanup(Integer.parseInt(gameId));
-                                cleanup.start();
+                                int gameIdInt = Integer.parseInt(gameId);
                                 WebGame.removeGame(Integer.parseInt(gameId));
+                                CLEANUP.schedule(() -> WebInit.remove(gameIdInt), 10, TimeUnit.SECONDS);
                             }
                             response.getWriter().write("<currentname>");
                             response.getWriter().write(gameState.getCurrentName());
@@ -375,20 +386,9 @@ public class AjaxServlet extends HttpServlet {
         response.getWriter().write("</type>");
     }
 
-    static class Cleanup extends Thread {
-        int gameId;
-
-        Cleanup(int gameId) {
-            this.gameId = gameId;
-        }
-
-        public void run() {
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                //ignore
-            }
-            WebInit.remove(gameId);
-        }
+    @Override
+    public void destroy() {
+        CLEANUP.shutdownNow();   // Executor aufräumen
+        super.destroy();
     }
 }
