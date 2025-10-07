@@ -1116,8 +1116,8 @@ function copyToClipboard() {
    			var pRole = document.getElementById("prole").value;
    			var pChar = document.getElementById("pchar").value;
    		} else {
-   			pRole = "random";
-   			pChar = "random";
+   			pRole = "RANDOM";
+   			pChar = "RANDOM";
    		}
       	sendXMLHttp(servletUrl + "?messageType=START&gameId=" + gameId + "&aiSleepMs=" + aiSpeed + "&pchar="+pChar+"&prole="+pRole, responseHandler);
    }
@@ -1329,14 +1329,14 @@ function copyToClipboard() {
 			result += '<p id="addcomputer"><input type="button" value="Add Computer Player +" onclick="addRobot();"></p>';
 			result += '<p>Expansions: (Side Step - '+isSidestep+')</p>';
 			result += '<p>Prefered options only work when playing alone against AI.</p>';
-			result += '<p id="pcharWrapper">Prefered Character <select id="pchar"><option value="random">Random</option>';
+			result += '<p id="pcharWrapper">Prefered Character <select id="pchar"><option value="RANDOM">Random</option>';
 			for (playerKey in playerInfo) {
 				if(playerInfo[playerKey].expansion == "base" || (isSidestep && playerInfo[playerKey].expansion == "sidestep")){
   					result += "<option value='"+playerKey+"'>"+playerKey+" - "+playerInfo[playerKey].description+"</option>";
 				}
 			}
 			result += '</select></p>';
-			result += '<p id="proleWrapper">Prefered Role <select id="prole"><option value="random">Random</option>';
+			result += '<p id="proleWrapper">Prefered Role <select id="prole"><option value="RANDOM">Random</option>';
 			result += '<option value="Sheriff">Sheriff - Kill the Outlaws and Renegades</option>';
 			result += '<option value="Deputy">Deputy - Kill the Outlaws and Renegades - Protect the Sheriff</option>';
 			result += '<option value="Outlaw">Outlaw - Kill the Sheriff</option>';
