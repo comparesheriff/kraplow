@@ -5,8 +5,12 @@ import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.cards.SingleUse;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.function.IntUnaryOperator;
 
 public class Hand extends ArrayList<Card> {
+
+    private IntUnaryOperator indexPicker = n -> java.util.concurrent.ThreadLocalRandom.current().nextInt(n);
 
     @Override
     public boolean add(Card card) {
@@ -50,7 +54,8 @@ public class Hand extends ArrayList<Card> {
         if (isEmpty()) {
             return null;
         }
-        return remove((int) (Math.random() * size()));
+        int idx = indexPicker.applyAsInt(size()); // 0..n-1
+        return remove(idx);
     }
 
     public int countBeers() {
@@ -71,5 +76,9 @@ public class Hand extends ArrayList<Card> {
             }
         }
         return null;
+    }
+
+    public void setIndexPicker(IntUnaryOperator picker) {
+        this.indexPicker = Objects.requireNonNull(picker);
     }
 }
