@@ -120,21 +120,16 @@ public class Turn {
                         otherPlayers.add(other);
                     }
                 }
-                userInterface.printInfo(Character.VERACUSTER
-                        + " will choose the abilities of another player");
-                Player chosenPlayer = getValidChosenPlayer(currentPlayer,
-                        otherPlayers, userInterface);
+                userInterface.printInfo(Character.VERACUSTER + " will choose the abilities of another player");
+                Player chosenPlayer = getValidChosenPlayer(currentPlayer, otherPlayers, userInterface);
                 currentPlayer.setCharacter(chosenPlayer.getCharacter());
-                userInterface.printInfo(currentPlayer.getCharacter().getName()
-                        + " chose the abilities of " + chosenPlayer.getName());
+                userInterface.printInfo(currentPlayer.getCharacter().getName() + " chose the abilities of " + chosenPlayer.getName());
             }
 
             if (isDynamiteExplode()) {
                 discardDynamite();
-                userInterface.printInfo("Dynamite Exploded on "
-                        + currentPlayer.getName());
-                damagePlayer(currentPlayer, players, currentPlayer, 3, null,
-                        deck, discard, userInterface);
+                userInterface.printInfo("Dynamite Exploded on " + currentPlayer.getName());
+                damagePlayer(currentPlayer, players, currentPlayer, 3, null, deck, discard, userInterface);
                 if (isGameOver(players)) {
                     userInterface.printInfo("Winners are " + getWinners(players) + " " + getRoles(players));
                     throw new EndOfGameException("Game over");
@@ -189,8 +184,7 @@ public class Turn {
             cards.remove(cardToPutBack);
             deck.add(cardToPutBack);
             hand.addAll(cards);
-            userInterface.printInfo(player.getCharacter().getName()
-                    + " put a card back on the draw pile");
+            userInterface.printInfo(player.getCharacter().getName() + " put a card back on the draw pile");
         } else if (Character.JESSEJONES.equals(player.getCharacter())) {
             List<Player> otherPlayers = new ArrayList<>();
             for (Player other : players) {
@@ -203,20 +197,16 @@ public class Turn {
                 chosenFromPlayer = userInterface.chooseFromPlayer(player);
             }
             if (chosenFromPlayer) {
-                Player chosenPlayer = getValidChosenPlayer(player,
-                        otherPlayers, userInterface);
+                Player chosenPlayer = getValidChosenPlayer(player, otherPlayers, userInterface);
                 Card randomCard = chosenPlayer.removeRandom();
                 hand.add(randomCard);
-                userInterface.printInfo(player.getCharacter().getName()
-                        + " drew a card from " + chosenPlayer.getName()
-                        + " hand.");
+                userInterface.printInfo(player.getCharacter().getName() + " drew a card from " + chosenPlayer.getName() + " hand.");
             } else {
                 if (deck.isEmpty()) {
                     userInterface.printInfo("Shuffling the deck");
                 }
                 hand.add(deck.pull());
-                userInterface.printInfo(player.getCharacter().getName()
-                        + " drew a card from the deck.");
+                userInterface.printInfo(player.getCharacter().getName() + " drew a card from the deck.");
             }
             hand.add(deck.pull());
         } else if (Character.PATBRENNAN.equals(player.getCharacter())) {
@@ -229,8 +219,7 @@ public class Turn {
                     }
                 }
                 if (!otherPlayers.isEmpty()) {
-                    Player chosenPlayer = getValidChosenPlayer(player,
-                            otherPlayers, userInterface);
+                    Player chosenPlayer = getValidChosenPlayer(player, otherPlayers, userInterface);
                     int chosenCard = -3;
                     while (chosenCard < -2 || chosenCard > chosenPlayer.getCardsInPlay().size() - 1) {
                         chosenCard = userInterface.askOthersCard(player, chosenPlayer.getCardsInPlay(), false);
@@ -258,18 +247,14 @@ public class Turn {
                 if (chosenDiscard) {
                     Card discardCard = discard.removeLast();
                     hand.add(discardCard);
-                    userInterface.printInfo(player.getCharacter().getName() + " drew a "
-                            + discardCard.getName()
-                            + " from the discard pile.");
+                    userInterface.printInfo(player.getCharacter().getName() + " drew a " + discardCard.getName() + " from the discard pile.");
                 } else {
                     hand.add(deck.pull());
-                    userInterface.printInfo(player.getCharacter().getName()
-                            + " drew a card from the deck.");
+                    userInterface.printInfo(player.getCharacter().getName() + " drew a card from the deck.");
                 }
             } else {
                 hand.add(deck.pull());
-                userInterface.printInfo(player.getCharacter().getName()
-                        + " drew a card from the deck.");
+                userInterface.printInfo(player.getCharacter().getName() + " drew a card from the deck.");
             }
             hand.add(deck.pull());
         } else if (Character.PIXIEPETE.equals(player.getCharacter())) {
@@ -283,14 +268,12 @@ public class Turn {
                 hand.add(deck.pull());
                 cardsToDraw -= 1;
             }
-            userInterface.printInfo(player.getName()
-                    + " drew " + (player.getMaxHealth() - player.getHealth() + 1) + " card(s) from the deck.");
+            userInterface.printInfo(player.getName() + " drew " + (player.getMaxHealth() - player.getHealth() + 1) + " card(s) from the deck.");
         } else if (Character.CLAUSTHESAINT.equals(player.getCharacter())) {
             List<Card> cards = pullCards(deck, players.size() + 1, userInterface);
             Player generalPlayer = Turn.getNextPlayer(player, players);
             while (!generalPlayer.equals(player)) {
-                Card card = chooseValidCardToPutBack(player, cards,
-                        userInterface);
+                Card card = chooseValidCardToPutBack(player, cards, userInterface);
                 cards.remove(card);
                 userInterface.printInfo(player.getName() + " gives " + generalPlayer.getName() + " a card.");
                 generalPlayer.getHand().add(card);
@@ -303,13 +286,10 @@ public class Turn {
             hand.add(secondCard);
             if (Character.BLACKJACK.equals(player.getCharacter())) {
                 CardSuit suit = secondCard.getSuit();
-                userInterface.printInfo(player.getCharacter().getName() + " drew a "
-                        + suit.getLabel() + " "
-                        + secondCard.getName());
+                userInterface.printInfo(player.getCharacter().getName() + " drew a " + suit.getLabel() + " " + secondCard.getName());
                 if (suit == CardSuit.HEARTS || suit == CardSuit.DIAMONDS) {
                     hand.add(deck.pull());
-                    userInterface.printInfo(player.getCharacter().getName()
-                            + " drew a third card from the deck.");
+                    userInterface.printInfo(player.getCharacter().getName() + " drew a third card from the deck.");
                 }
             }
         }
@@ -354,8 +334,7 @@ public class Turn {
                         userInterface.printInfo("Shuffling the deck");
                     }
                     playerHand.add(deck.pull());
-                    userInterface.printInfo(player.getName()
-                            + " ran out of cards and drew a card.");
+                    userInterface.printInfo(player.getName() + " ran out of cards and drew a card.");
                 }
             }
         }
@@ -376,8 +355,7 @@ public class Turn {
                     Hand playerHand = currentPlayer.getHand();
                     playerHand.add(deck.pull());
                     playerHand.add(deck.pull());
-                    userInterface.printInfo(currentPlayer.getName()
-                            + " traded one life for 2 cards.");
+                    userInterface.printInfo(currentPlayer.getName() + " traded one life for 2 cards.");
                     return;
                 }
             } else if (card > (hand.size() + singleUseInPlay.size() - 1) && Character.SIDKETCHUM.equals(currentPlayer.getCharacter())) {
@@ -398,8 +376,7 @@ public class Turn {
                     discard.add(playedCard);
                     hand.add(deck.pull());
                     hand.add(deck.pull());
-                    userInterface.printInfo(currentPlayer.getName()
-                            + " traded one blue card for 2 cards.");
+                    userInterface.printInfo(currentPlayer.getName() + " traded one blue card for 2 cards.");
                     return;
                 }
             } else if (card > (hand.size() - 1) && Character.UNCLEWILL.equals(currentPlayer.getCharacter())) {
@@ -445,9 +422,7 @@ public class Turn {
                         }
                         hand.remove(discardcard);
                         discard.add(discardcard);
-                        userInterface.printInfo(currentPlayer.getName()
-                                + " discards " + discardcard.getName()
-                                + " for shoot.");
+                        userInterface.printInfo(currentPlayer.getName() + " discards " + discardcard.getName() + " for shoot.");
                     }
                     Bang tempBang = new Bang(CardName.BANG, discardSuit, CardValue.SEVEN, CardType.PLAY);
                     boolean success = tempBang.play(currentPlayer, players, userInterface, deck, discard, this, true);
@@ -462,8 +437,7 @@ public class Turn {
         }
         if (hand.size() + singleUseInPlay.size() == 0 || card == -1) {
             donePlaying = true;
-            userInterface.printInfo(currentPlayer.getName()
-                    + " is finished playing.");
+            userInterface.printInfo(currentPlayer.getName() + " is finished playing.");
             CardsInPlay allCardsInPlayActivate = currentPlayer.getCardsInPlay();
             for (int i = 0; i < allCardsInPlayActivate.size(); i++) {
                 Card inPlayCardActivate = allCardsInPlay.get(i);
@@ -475,36 +449,22 @@ public class Turn {
         }
         if (card >= hand.size()) {
             int chosen = card - hand.size();
-            singleUseInPlay.get(chosen).play(currentPlayer, players, userInterface, deck,
-                    discard, this);
+            singleUseInPlay.get(chosen).play(currentPlayer, players, userInterface, deck, discard, this);
         } else {
             Card playedCard = hand.get(card);
             if (playedCard.canPlay(currentPlayer, players, bangsPlayed)) {
                 hand.remove(card);
-                if (Objects.equals(playedCard.getName(), CardName.GENERAL_STORE)
-                        || Objects.equals(playedCard.getName(), CardName.GATLING)
-                        || Objects.equals(playedCard.getName(), CardName.INDIANS)) {
-                    userInterface.printInfo(currentPlayer.getName() + " played a "
-                            + playedCard.getName() + ".");
+                if (Objects.equals(playedCard.getName(), CardName.GENERAL_STORE) || Objects.equals(playedCard.getName(), CardName.GATLING) || Objects.equals(playedCard.getName(), CardName.INDIANS)) {
+                    userInterface.printInfo(currentPlayer.getName() + " played a " + playedCard.getName() + ".");
                 }
-                boolean success = playedCard.play(currentPlayer, players, userInterface, deck,
-                        discard, this);
+                boolean success = playedCard.play(currentPlayer, players, userInterface, deck, discard, this);
                 if (success) {
                     if (playedCard instanceof Bang) {
                         bangsPlayed++;
                     }
                 }
-                if (!Objects.equals(playedCard.getName(), CardName.CAT_BALOU)
-                        && !Objects.equals(playedCard.getName(), CardName.PANIC)
-                        && !Objects.equals(playedCard.getName(), CardName.JAIL)
-                        && !Objects.equals(playedCard.getName(), CardName.MISSED)
-                        && !Objects.equals(playedCard.getName(), CardName.BANG)
-                        && !Objects.equals(playedCard.getName(), CardName.DUEL)
-                        && !Objects.equals(playedCard.getName(), CardName.GENERAL_STORE)
-                        && !Objects.equals(playedCard.getName(), CardName.GATLING)
-                        && !Objects.equals(playedCard.getName(), CardName.INDIANS)) {
-                    userInterface.printInfo(currentPlayer.getName() + " played a "
-                            + playedCard.getName() + ".");
+                if (!Objects.equals(playedCard.getName(), CardName.CAT_BALOU) && !Objects.equals(playedCard.getName(), CardName.PANIC) && !Objects.equals(playedCard.getName(), CardName.JAIL) && !Objects.equals(playedCard.getName(), CardName.MISSED) && !Objects.equals(playedCard.getName(), CardName.BANG) && !Objects.equals(playedCard.getName(), CardName.DUEL) && !Objects.equals(playedCard.getName(), CardName.GENERAL_STORE) && !Objects.equals(playedCard.getName(), CardName.GATLING) && !Objects.equals(playedCard.getName(), CardName.INDIANS)) {
+                    userInterface.printInfo(currentPlayer.getName() + " played a " + playedCard.getName() + ".");
                 }
             }
         }
@@ -523,8 +483,7 @@ public class Turn {
                         return playedMiss;
                     } else if (CardName.DODGE.equals(card.getName())) {
                         return playedMiss;
-                    } else if (CardName.BANG.equals(card.getName())
-                            && Character.CALAMITYJANET.equals(player.getCharacter())) {
+                    } else if (CardName.BANG.equals(card.getName()) && Character.CALAMITYJANET.equals(player.getCharacter())) {
                         return playedMiss;
                     } else if (Character.ELENAFUENTE.equals(player.getCharacter())) {
                         return playedMiss;
@@ -539,9 +498,7 @@ public class Turn {
     static int validPlayBeer(Player player, UserInterface userInterface) {
         while (true) {
             int playedBeer = userInterface.respondBeer(player);
-            if (playedBeer == -1
-                    || CardName.BEER.equals(player.getHand()
-                    .get(playedBeer).getName())) {
+            if (playedBeer == -1 || CardName.BEER.equals(player.getHand().get(playedBeer).getName())) {
                 return playedBeer;
             }
         }
@@ -557,8 +514,7 @@ public class Turn {
                 Card card = hand.get(playerShot);
                 if (CardName.BANG.equals(card.getName())) {
                     return playerShot;
-                } else if (CardName.MISSED.equals(card.getName())
-                        && Character.CALAMITYJANET.equals(player.getCharacter())) {
+                } else if (CardName.MISSED.equals(card.getName()) && Character.CALAMITYJANET.equals(player.getCharacter())) {
                     return playerShot;
                 }
             }
@@ -651,8 +607,7 @@ public class Turn {
         }
     }
 
-    public static Card draw(Player player, Deck deck, Discard discard,
-                            UserInterface userInterface) {
+    public static Card draw(Player player, Deck deck, Discard discard, UserInterface userInterface) {
         if (Character.LUCKYDUKE.equals(player.getCharacter())) {
             List<Card> cards = pullCards(deck, 2, userInterface);
             int chosenCard = -1;
@@ -661,20 +616,14 @@ public class Turn {
             }
             discard.addAll(cards);
             Card drawnCard = cards.get(chosenCard);
-            userInterface.printInfo(player.getName() + " drew a "
-                    + drawnCard.getValue().getLabel() + " of "
-                    + drawnCard.getSuit().getLabel() + " "
-                    + drawnCard.getName());
+            userInterface.printInfo(player.getName() + " drew a " + drawnCard.getValue().getLabel() + " of " + drawnCard.getSuit().getLabel() + " " + drawnCard.getName());
             return cards.get(chosenCard);
         } else {
             if (deck.isEmpty()) {
                 userInterface.printInfo("Shuffling the deck");
             }
             Card card = deck.pull();
-            userInterface.printInfo(player.getName() + " drew a "
-                    + card.getValue().getLabel() + " of "
-                    + card.getSuit().getLabel() + " "
-                    + card.getName());
+            userInterface.printInfo(player.getName() + " drew a " + card.getValue().getLabel() + " of " + card.getSuit().getLabel() + " " + card.getName());
             discard.add(card);
             return card;
         }
@@ -684,38 +633,30 @@ public class Turn {
         CardsInPlay currentCardsInPlay = currentPlayer.getCardsInPlay();
         if (currentCardsInPlay.hasItem(CardName.JAIL)) {
             Card jailCard = currentCardsInPlay.removeJail();
-            userInterface.printInfo(currentPlayer.getName()
-                    + " is drawing to break out of jail");
-            Card drawn = draw(currentPlayer, deck, discard,
-                    userInterface);
+            userInterface.printInfo(currentPlayer.getName() + " is drawing to break out of jail");
+            Card drawn = draw(currentPlayer, deck, discard, userInterface);
             boolean inJail = drawn.getSuit() != CardSuit.HEARTS;
             discard.add(jailCard);
             if (inJail) {
-                userInterface.printInfo(currentPlayer.getName()
-                        + " stays in jail");
+                userInterface.printInfo(currentPlayer.getName() + " stays in jail");
             } else {
-                userInterface.printInfo(currentPlayer.getName()
-                        + " breaks out of jail");
+                userInterface.printInfo(currentPlayer.getName() + " breaks out of jail");
             }
             return inJail;
         }
         return false;
     }
 
-    public static int isBarrelSave(Player player, Deck deck, Discard discard,
-                                   UserInterface userInterface, int missesRequired, Player shooter) {
+    public static int isBarrelSave(Player player, Deck deck, Discard discard, UserInterface userInterface, int missesRequired, Player shooter) {
         int misses = 0;
         if (Character.JOURDONNAIS.equals(player.getCharacter())) {
-            userInterface.printInfo(player.getName()
-                    + " is drawing to be saved by a barrel");
+            userInterface.printInfo(player.getName() + " is drawing to be saved by a barrel");
             Card drawn = draw(player, deck, discard, userInterface);
             if (drawn.getSuit() == CardSuit.HEARTS) {
                 misses = misses + 1;
-                userInterface.printInfo(player.getCharacter().getName() + " drew a "
-                        + CardSuit.HEARTS.getLabel() + " and was saved by his ability.");
+                userInterface.printInfo(player.getCharacter().getName() + " drew a " + CardSuit.HEARTS.getLabel() + " and was saved by his ability.");
             } else {
-                userInterface.printInfo(player.getCharacter().getName() + " drew a "
-                        + drawn.getSuit().getLabel() + " and was not saved by his ability.");
+                userInterface.printInfo(player.getCharacter().getName() + " drew a " + drawn.getSuit().getLabel() + " and was not saved by his ability.");
             }
         }
         if (misses >= missesRequired) {
@@ -724,29 +665,22 @@ public class Turn {
         CardsInPlay currentCardsInPlay = player.getCardsInPlay();
         if (currentCardsInPlay.hasItem(CardName.BARREL)) {
             if (Character.BELLESTAR.equals(shooter.getCharacter())) {
-                userInterface.printInfo(player.getName()
-                        + "'s barrel has no affect on " + shooter.getCharacter().getName());
+                userInterface.printInfo(player.getName() + "'s barrel has no affect on " + shooter.getCharacter().getName());
             } else {
-                userInterface.printInfo(player.getName()
-                        + " is drawing to be saved by a barrel");
+                userInterface.printInfo(player.getName() + " is drawing to be saved by a barrel");
                 Card drawn = draw(player, deck, discard, userInterface);
                 if (drawn.getSuit() == CardSuit.HEARTS) {
                     misses = misses + 1;
-                    userInterface.printInfo(player.getName() + " drew a "
-                            + CardSuit.HEARTS.getLabel() + " and was saved by their barrel.");
+                    userInterface.printInfo(player.getName() + " drew a " + CardSuit.HEARTS.getLabel() + " and was saved by their barrel.");
                 } else {
-                    userInterface.printInfo(player.getName() + " drew a "
-                            + drawn.getSuit().getLabel()
-                            + " and was not saved by their barrel.");
+                    userInterface.printInfo(player.getName() + " drew a " + drawn.getSuit().getLabel() + " and was not saved by their barrel.");
                 }
             }
         }
         return misses;
     }
 
-    public void damagePlayer(Player player, List<Player> players,
-                             Player currentPlayer, int damage, Player damager, Deck deck,
-                             Discard discard, UserInterface userInterface) {
+    public void damagePlayer(Player player, List<Player> players, Player currentPlayer, int damage, Player damager, Deck deck, Discard discard, UserInterface userInterface) {
         player.setHealth(player.getHealth() - damage);
         if (player.getHealth() <= 0 && players.size() > 2) {
             boolean doNotPlayBeer = false;
@@ -773,8 +707,7 @@ public class Turn {
             }
         }
         if (player.getHealth() <= 0) {
-            handleDeath(player, damager, currentPlayer, players, userInterface,
-                    deck, discard);
+            handleDeath(player, damager, currentPlayer, players, userInterface, deck, discard);
         } else {
             if (Character.BARTCASSIDY.equals(player.getCharacter())) {
                 for (int i = 0; i < damage; i++) {
@@ -782,46 +715,35 @@ public class Turn {
                         userInterface.printInfo("Shuffling the deck");
                     }
                     player.getHand().add(deck.pull());
-                    userInterface
-                            .printInfo(player.getCharacter().getName()
-                                    + " draws a card from the deck because he was damaged.");
+                    userInterface.printInfo(player.getCharacter().getName() + " draws a card from the deck because he was damaged.");
                 }
-            } else if (damager != null
-                    && Character.ELGRINGO.equals(player.getCharacter())) {
+            } else if (damager != null && Character.ELGRINGO.equals(player.getCharacter())) {
                 Hand otherHand = damager.getHand();
                 if (!otherHand.isEmpty()) {
                     Hand playerHand = player.getHand();
                     playerHand.add(otherHand.removeRandom());
-                    userInterface.printInfo(player.getCharacter().getName()
-                            + " draws a card from " + damager.getName()
-                            + " because he was damaged.");
+                    userInterface.printInfo(player.getCharacter().getName() + " draws a card from " + damager.getName() + " because he was damaged.");
                 }
             }
         }
     }
 
-    public void handleDeath(Player player, Player damager,
-                            Player currentPlayer, List<Player> players,
-                            UserInterface userInterface, Deck deck, Discard discard) {
+    public void handleDeath(Player player, Player damager, Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard) {
         //I think we can remove this
         //if (player.equals(currentPlayer)) {
         //TODO is this the right way to handle all death... set it to last player?
         //currentPlayer = getPreviousPlayer(currentPlayer, players);
         //}
         players.remove(player);
-        userInterface.printInfo(player.getName() + " is dead. Role was "
-                + player.getRole().getRoleName());
+        userInterface.printInfo(player.getName() + " is dead. Role was " + player.getRole().getRoleName());
         if (!isGameOver(players)) {
             deadDiscardAll(player, players, discard, deck);
             if (damager != null) {
-                if (damager.getRole() == Role.SHERIFF
-                        && player.getRole() == Role.DEPUTY) {
-                    userInterface.printInfo(damager.getName()
-                            + " killed own deputy, loses all cards");
+                if (damager.getRole() == Role.SHERIFF && player.getRole() == Role.DEPUTY) {
+                    userInterface.printInfo(damager.getName() + " killed own deputy, loses all cards");
                     discardAll(damager, discard);
                 } else if (player.getRole() == Role.OUTLAW) {
-                    userInterface.printInfo(damager.getName()
-                            + " killed an outlaw, draws 3 cards");
+                    userInterface.printInfo(damager.getName() + " killed an outlaw, draws 3 cards");
                     deckToHand(damager.getHand(), deck, 3, userInterface);
                 }
             }
@@ -852,8 +774,7 @@ public class Turn {
         }
     }
 
-    public void deadDiscardAll(Player player, List<Player> players,
-                               Discard discard, Deck deck) {
+    public void deadDiscardAll(Player player, List<Player> players, Discard discard, Deck deck) {
         List<Card> discardCards = new ArrayList<>();
         Hand hand = player.getHand();
         while (!hand.isEmpty()) {
@@ -890,8 +811,7 @@ public class Turn {
                 for (Card card : discardCards) {
                     vultureSam.getHand().add(card);
                 }
-                userInterface.printInfo(vultureSams.getFirst().getCharacter().getName() + " takes "
-                        + player.getName() + "'s cards.");
+                userInterface.printInfo(vultureSams.getFirst().getCharacter().getName() + " takes " + player.getName() + "'s cards.");
             } else {
                 //Two vulture sams
                 int playerIndex = 0;
@@ -942,9 +862,7 @@ public class Turn {
     }
 
     public static boolean isGameOver(List<Player> players) {
-        return isDead(Role.SHERIFF, players)
-                || (isDead(Role.RENEGADE, players)
-                && isDead(Role.OUTLAW, players));
+        return isDead(Role.SHERIFF, players) || (isDead(Role.RENEGADE, players) && isDead(Role.OUTLAW, players));
     }
 
     private static boolean isDead(Role role, List<Player> players) {
@@ -957,12 +875,9 @@ public class Turn {
     }
 
     public static String getWinners(List<Player> players) {
-        if (isDead(Role.DEPUTY, players)
-                && isDead(Role.OUTLAW, players)
-                && isDead(Role.SHERIFF, players) && players.size() == 1) {
+        if (isDead(Role.DEPUTY, players) && isDead(Role.OUTLAW, players) && isDead(Role.SHERIFF, players) && players.size() == 1) {
             return "Renegade";
-        } else if (isDead(Role.SHERIFF, players)
-                && (!isDead(Role.DEPUTY, players) || !isDead(Role.OUTLAW, players) || !isDead(Role.RENEGADE, players))) {
+        } else if (isDead(Role.SHERIFF, players) && (!isDead(Role.DEPUTY, players) || !isDead(Role.OUTLAW, players) || !isDead(Role.RENEGADE, players))) {
             return "Outlaws";
         } else if (isDead(Role.OUTLAW, players) && isDead(Role.RENEGADE, players)) {
             return "Sheriff and Deputies";
@@ -979,25 +894,20 @@ public class Turn {
         return result.toString();
     }
 
-    public static void discardTwoCardsForLife(Player player, Discard discard,
-                                              UserInterface userInterface) {
+    public static void discardTwoCardsForLife(Player player, Discard discard, UserInterface userInterface) {
         if (Character.SIDKETCHUM.equals(player.getCharacter())) {
             Hand hand = player.getHand();
             if (hand.size() >= 2) {
                 List<Card> cardsToDiscard = null;
                 while (cardsToDiscard == null || cardsToDiscard.size() % 2 != 0) {
-                    cardsToDiscard = userInterface
-                            .chooseTwoDiscardForLife(player);
+                    cardsToDiscard = userInterface.chooseTwoDiscardForLife(player);
                 }
                 for (Card card : cardsToDiscard) {
                     hand.remove(card);
                     discard.add(card);
-                    userInterface.printInfo(player.getCharacter().getName()
-                            + " discards " + card.getName()
-                            + " for life.");
+                    userInterface.printInfo(player.getCharacter().getName() + " discards " + card.getName() + " for life.");
                 }
-                player.setHealth(player.getHealth()
-                        + (cardsToDiscard.size() / 2));
+                player.setHealth(player.getHealth() + (cardsToDiscard.size() / 2));
                 if (player.getHealth() > player.getMaxHealth()) {
                     player.setHealth(player.getMaxHealth());
                 }
@@ -1047,8 +957,7 @@ public class Turn {
         }
     }
 
-    public static List<Player> getJailablePlayers(Player player,
-                                                  List<Player> players) {
+    public static List<Player> getJailablePlayers(Player player, List<Player> players) {
         List<Player> others = new ArrayList<>();
         Player cancelPlayer = new CancelPlayer();
         cancelPlayer.setHand(new Hand());
@@ -1079,8 +988,7 @@ public class Turn {
         return players.stream().map(Player::getName).collect(Collectors.toList());
     }
 
-    public static Player getValidChosenPlayer(Player player,
-                                              List<Player> choosable, UserInterface userInterface) {
+    public static Player getValidChosenPlayer(Player player, List<Player> choosable, UserInterface userInterface) {
         int chosenPlayer = -1;
         while (chosenPlayer < 0 || chosenPlayer > choosable.size() - 1) {
             chosenPlayer = userInterface.askPlayer(player, getPlayersNames(choosable));
@@ -1096,8 +1004,7 @@ public class Turn {
         return player.getHealth() == player.getMaxHealth();
     }
 
-    public static Card chooseValidCardToPutBack(Player player,
-                                                List<Card> cards, UserInterface userInterface) {
+    public static Card chooseValidCardToPutBack(Player player, List<Card> cards, UserInterface userInterface) {
         int cardIndex = -1;
         while (cardIndex < 0 || cardIndex > cards.size() - 1) {
             cardIndex = userInterface.chooseCardToPutBack(player, cards);
@@ -1167,8 +1074,7 @@ public class Turn {
         return card.canPlay(player, players, bangsPlayed);
     }
 
-    public static List<Card> validRespondTwoMiss(Player player,
-                                                 UserInterface userInterface) {
+    public static List<Card> validRespondTwoMiss(Player player, UserInterface userInterface) {
         List<Card> cards = null;
         boolean validCards = false;
         while (!validCards) {
@@ -1192,11 +1098,7 @@ public class Turn {
 
     private static boolean isInvalidCard(Player player, Card card) {
         //TODO figure this out xxx its broken
-        return !card.getName().equals(CardName.MISSED) &&
-                !card.getName().equals(CardName.DODGE) &&
-                (!card.getName().equals(CardName.BANG) || !Character.CALAMITYJANET.equals(player.getCharacter())) &&
-                !Character.ELENAFUENTE.equals(player.getCharacter()) &&
-                !(card instanceof SingleUseMissed);
+        return !card.getName().equals(CardName.MISSED) && !card.getName().equals(CardName.DODGE) && (!card.getName().equals(CardName.BANG) || !Character.CALAMITYJANET.equals(player.getCharacter())) && !Character.ELENAFUENTE.equals(player.getCharacter()) && !(card instanceof SingleUseMissed);
     }
 
     public String getRoleForName(String name) {

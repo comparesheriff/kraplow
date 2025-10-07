@@ -63,7 +63,7 @@ public class Card implements Playable {
 
     public static boolean isExplode(Card drawnCard) {
         if (drawnCard.suit == CardSuit.SPADES) {
-            return drawnCard.value.getValue() < 8;
+            return drawnCard.value.getValue() <= 9;
         }
         return false;
     }

@@ -5,11 +5,8 @@ import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.cards.SingleUse;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Hand extends ArrayList<Card> {
-
-    List<Card> cards = new ArrayList<>();
 
     @Override
     public boolean add(Card card) {
@@ -21,7 +18,7 @@ public class Hand extends ArrayList<Card> {
 
     public int countBangs() {
         int bangs = 0;
-        for (Card card : cards) {
+        for (Card card : this) {
             if (card.getName().equals(CardName.BANG)) {
                 bangs = bangs + 1;
             }
@@ -31,7 +28,7 @@ public class Hand extends ArrayList<Card> {
 
     public int countMisses() {
         int bangs = 0;
-        for (Card card : cards) {
+        for (Card card : this) {
             if (card.getName().equals(CardName.MISSED)) {
                 bangs = bangs + 1;
             }
@@ -40,9 +37,9 @@ public class Hand extends ArrayList<Card> {
     }
 
     public Card removeMiss() {
-        for (Card card : cards) {
+        for (Card card : this) {
             if (card.getName().equals(CardName.MISSED)) {
-                cards.remove(card);
+                remove(card);
                 return card;
             }
         }
@@ -50,12 +47,15 @@ public class Hand extends ArrayList<Card> {
     }
 
     public Card removeRandom() {
-        return cards.remove((int) (Math.random() * cards.size()));
+        if (isEmpty()) {
+            return null;
+        }
+        return remove((int) (Math.random() * size()));
     }
 
     public int countBeers() {
         int beers = 0;
-        for (Card card : cards) {
+        for (Card card : this) {
             if (card.getName().equals(CardName.BEER)) {
                 beers = beers + 1;
             }
@@ -64,9 +64,9 @@ public class Hand extends ArrayList<Card> {
     }
 
     public Card removeBeer() {
-        for (Card card : cards) {
+        for (Card card : this) {
             if (card.getName().equals(CardName.BEER)) {
-                cards.remove(card);
+                remove(card);
                 return card;
             }
         }

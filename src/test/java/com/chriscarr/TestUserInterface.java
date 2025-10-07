@@ -99,6 +99,7 @@ public class TestUserInterface implements UserInterface {
 
     public void printInfo(String info) {
         //do nothing
+        System.out.println(info);
     }
 
     @Override

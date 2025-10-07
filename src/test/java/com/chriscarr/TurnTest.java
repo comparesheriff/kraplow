@@ -1176,6 +1176,8 @@ public class TurnTest extends TestCase {
 
     public void testNoBeerPlayerKill() {
         Player player = new Player();
+        player.setCharacter(Character.RANDOM);
+        player.setRole(Role.RANDOM);
         Turn turn = new Turn();
         List<Player> players = new ArrayList<>();
         players.add(player);
@@ -1189,8 +1191,6 @@ public class TurnTest extends TestCase {
         other2.setCharacter(character2);
         players.add(other1);
         players.add(other2);
-        Character character = Character.RANDOM;
-        player.setCharacter(character);
         turn.setPlayers(players);
         player.setHealth(1);
         player.setHand(new Hand());
@@ -1204,6 +1204,7 @@ public class TurnTest extends TestCase {
 
     public void testBeerPlayerKill() {
         Player player = new Player();
+        player.setRole(Role.RANDOM);
         player.setHand(new Hand());
         Turn turn = new Turn();
         List<Player> players = new ArrayList<>();
@@ -1219,7 +1220,6 @@ public class TurnTest extends TestCase {
         other2.setCharacter(character2);
         players.add(other1);
         players.add(other2);
-        Character character = Character.RANDOM;
         turn.setPlayers(players);
         player.setHealth(1);
         turn.setUserInterface(new TestUserInterface());
@@ -1232,6 +1232,7 @@ public class TurnTest extends TestCase {
 
     public void testBeerPlayerKillNoPlay() {
         Player player = new Player();
+        player.setRole(Role.RANDOM);
         player.setHand(new Hand());
         Turn turn = new Turn();
         List<Player> players = new ArrayList<>();
@@ -1554,9 +1555,8 @@ public class TurnTest extends TestCase {
         Character character = Character.JOURDONNAIS;
         player.setCharacter(character);
         Deck deck = new Deck();
-        Card card = new Card();
+        Card card = new Card(CardName.BARREL, CardSuit.HEARTS, CardValue.NINE, CardType.ITEM);
         turn.setUserInterface(new TestUserInterface());
-        card.setSuit(CardSuit.HEARTS);
         deck.add(card);
         Discard discard = new Discard();
         turn.setDeck(deck);
@@ -1571,9 +1571,8 @@ public class TurnTest extends TestCase {
         Character character = Character.JOURDONNAIS;
         player.setCharacter(character);
         Deck deck = new Deck();
-        Card card = new Card();
+        Card card = new Card(CardName.BARREL, CardSuit.DIAMONDS, CardValue.NINE, CardType.ITEM);
         turn.setUserInterface(new TestUserInterface());
-        card.setSuit(CardSuit.DIAMONDS);
         deck.add(card);
         Discard discard = new Discard();
         turn.setDeck(deck);
@@ -1590,12 +1589,10 @@ public class TurnTest extends TestCase {
         player.setCharacter(character);
         player.getCardsInPlay().add(new Card(CardName.BARREL, CardSuit.HEARTS, CardValue.NINE, CardType.ITEM));
         Deck deck = new Deck();
-        Card card = new Card();
+        Card card = new Card(CardName.BARREL, CardSuit.DIAMONDS, CardValue.NINE, CardType.ITEM);
         turn.setUserInterface(new TestUserInterface());
-        card.setSuit(CardSuit.DIAMONDS);
         deck.add(card);
-        Card card2 = new Card();
-        card2.setSuit(CardSuit.DIAMONDS);
+        Card card2 = new Card(CardName.BARREL, CardSuit.DIAMONDS, CardValue.NINE, CardType.ITEM);
         deck.add(card2);
         Discard discard = new Discard();
         turn.setDeck(deck);
@@ -1612,12 +1609,10 @@ public class TurnTest extends TestCase {
         player.setCharacter(character);
         player.getCardsInPlay().add(new Card(CardName.BARREL, CardSuit.HEARTS, CardValue.NINE, CardType.ITEM));
         Deck deck = new Deck();
-        Card card = new Card();
+        Card card = new Card(CardName.BARREL, CardSuit.HEARTS, CardValue.NINE, CardType.ITEM);
         turn.setUserInterface(new TestUserInterface());
-        card.setSuit(CardSuit.HEARTS);
         deck.add(card);
-        Card card2 = new Card();
-        card2.setSuit(CardSuit.DIAMONDS);
+        Card card2 = new Card(CardName.BARREL, CardSuit.DIAMONDS, CardValue.NINE, CardType.ITEM);
         deck.add(card2);
         Discard discard = new Discard();
         turn.setDeck(deck);
@@ -1634,12 +1629,10 @@ public class TurnTest extends TestCase {
         player.setCharacter(character);
         player.getCardsInPlay().add(new Card(CardName.BARREL, CardSuit.HEARTS, CardValue.NINE, CardType.ITEM));
         Deck deck = new Deck();
-        Card card = new Card();
+        Card card = new Card(CardName.BARREL, CardSuit.HEARTS, CardValue.NINE, CardType.ITEM);
         turn.setUserInterface(new TestUserInterface());
-        card.setSuit(CardSuit.HEARTS);
         deck.add(card);
-        Card card2 = new Card();
-        card2.setSuit(CardSuit.HEARTS);
+        Card card2 = new Card(CardName.BARREL, CardSuit.HEARTS, CardValue.NINE, CardType.ITEM);
         deck.add(card2);
         Discard discard = new Discard();
         turn.setDeck(deck);
@@ -1656,12 +1649,10 @@ public class TurnTest extends TestCase {
         player.setCharacter(character);
         player.getCardsInPlay().add(new Card(CardName.BARREL, CardSuit.HEARTS, CardValue.NINE, CardType.ITEM));
         Deck deck = new Deck();
-        Card card = new Card();
+        Card card = new Card(CardName.BARREL, CardSuit.HEARTS, CardValue.NINE, CardType.ITEM);
         turn.setUserInterface(new TestUserInterface());
-        card.setSuit(CardSuit.HEARTS);
         deck.add(card);
-        Card card2 = new Card();
-        card2.setSuit(CardSuit.HEARTS);
+        Card card2 = new Card(CardName.BARREL, CardSuit.HEARTS, CardValue.NINE, CardType.ITEM);
         deck.add(card2);
         Discard discard = new Discard();
         turn.setDeck(deck);
