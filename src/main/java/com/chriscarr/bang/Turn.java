@@ -2,6 +2,7 @@ package com.chriscarr.bang;
 
 import com.chriscarr.bang.cards.*;
 import com.chriscarr.bang.gamestate.*;
+import com.chriscarr.bang.services.GameOverService;
 import com.chriscarr.bang.userinterface.UserInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,8 +131,8 @@ public class Turn {
                 discardDynamite();
                 userInterface.printInfo("Dynamite Exploded on " + currentPlayer.getName());
                 damagePlayer(currentPlayer, players, currentPlayer, 3, null, deck, discard, userInterface);
-                if (isGameOver(players)) {
-                    userInterface.printInfo("Winners are " + getWinners(players) + " " + getRoles(players));
+                if (GameOverService.isGameOver(players)) {
+                    userInterface.printInfo("Winners are " + GameOverService.getWinners(players) + " " + GameOverService.revealRolesOnGameEnd(players));
                     throw new EndOfGameException("Game over");
                 }
             } else {
@@ -142,8 +143,8 @@ public class Turn {
                 this.drawCards(currentPlayer, deck);
                 while (!donePlaying && players.contains(currentPlayer)) {
                     play();
-                    if (isGameOver(players)) {
-                        userInterface.printInfo("Winners are " + getWinners(players) + " " + getRoles(players));
+                    if (GameOverService.isGameOver(players)) {
+                        userInterface.printInfo("Winners are " + GameOverService.getWinners(players) + " " + GameOverService.revealRolesOnGameEnd(players));
                         throw new EndOfGameException("Game over");
                     }
                 }
@@ -824,7 +825,7 @@ public class Turn {
         players.remove(player);
         userInterface.printInfo(
             player.getName() + " is dead. Role was " + player.getRole().getRoleName());
-        if (!isGameOver(players)) {
+        if (!GameOverService.isGameOver(players)) {
             deadDiscardAll(player, players, discard, deck);
             if (damager != null) {
                 if (damager.getRole() == Role.SHERIFF && player.getRole() == Role.DEPUTY) {
@@ -960,50 +961,6 @@ public class Turn {
         }
     }
 
-    public static boolean isGameOver(List<Player> players) {
-        return isDead(Role.SHERIFF, players)
-            || (isDead(Role.RENEGADE, players) && isDead(Role.OUTLAW, players));
-    }
-
-    private static boolean isDead(Role role, List<Player> players) {
-        for (Player player : players) {
-            if (player.getRole() == role) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static String getWinners(List<Player> players) {
-        if (isDead(Role.DEPUTY, players)
-            && isDead(Role.OUTLAW, players)
-            && isDead(Role.SHERIFF, players)
-            && players.size() == 1) {
-            return "Renegade";
-        } else if (isDead(Role.SHERIFF, players)
-            && (!isDead(Role.DEPUTY, players)
-            || !isDead(Role.OUTLAW, players)
-            || !isDead(Role.RENEGADE, players))) {
-            return "Outlaws";
-        } else if (isDead(Role.OUTLAW, players) && isDead(Role.RENEGADE, players)) {
-            return "Sheriff and Deputies";
-        } else {
-            throw new RuntimeException("No Winner");
-        }
-    }
-
-    public static String getRoles(List<Player> players) {
-        StringBuilder result = new StringBuilder();
-        for (Player player : players) {
-            result
-                .append(player.getCharacter().getName())
-                .append(" was a ")
-                .append(player.getRole().getRoleName())
-                .append(". ");
-        }
-        return result.toString();
-    }
-
     public static void discardTwoCardsForLife(
         Player player, Discard discard, UserInterface userInterface) {
         if (Character.SIDKETCHUM.equals(player.getCharacter())) {
@@ -1137,7 +1094,7 @@ public class Turn {
     }
 
     public boolean isGameOver() {
-        return isGameOver(players);
+        return GameOverService.isGameOver(players);
     }
 
     public List<GameStatePlayer> getGameStatePlayers() {

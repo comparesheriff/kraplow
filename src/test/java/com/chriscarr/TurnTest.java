@@ -3,6 +3,7 @@ package com.chriscarr;
 import com.chriscarr.bang.*;
 import com.chriscarr.bang.Character;
 import com.chriscarr.bang.cards.*;
+import com.chriscarr.bang.services.GameOverService;
 import com.chriscarr.bang.services.TargetingService;
 import com.chriscarr.bang.userinterface.UserInterface;
 import junit.framework.TestCase;
@@ -1510,7 +1511,7 @@ public class TurnTest extends TestCase {
         List<Player> players = Setup.getNormalPlayers(4);
         Turn turn = new Turn();
         turn.setPlayers(players);
-        assertFalse(Turn.isGameOver(players));
+        assertFalse(GameOverService.isGameOver(players));
     }
 
     public void testRenegadeWin() {
@@ -1520,8 +1521,8 @@ public class TurnTest extends TestCase {
         players.add(renegade);
         Turn turn = new Turn();
         turn.setPlayers(players);
-        assertTrue(Turn.isGameOver(players));
-        assertEquals("Renegade", Turn.getWinners(players));
+        assertTrue(GameOverService.isGameOver(players));
+        assertEquals("Renegade", GameOverService.getWinners(players));
     }
 
     public void testOutlawWin() {
@@ -1531,8 +1532,8 @@ public class TurnTest extends TestCase {
         players.add(renegade);
         Turn turn = new Turn();
         turn.setPlayers(players);
-        assertTrue(Turn.isGameOver(players));
-        assertEquals("Outlaws", Turn.getWinners(players));
+        assertTrue(GameOverService.isGameOver(players));
+        assertEquals("Outlaws", GameOverService.getWinners(players));
     }
 
     public void testOutlawWinDeuptyAlive() {
@@ -1545,8 +1546,8 @@ public class TurnTest extends TestCase {
         players.add(renegade);
         Turn turn = new Turn();
         turn.setPlayers(players);
-        assertTrue(Turn.isGameOver(players));
-        assertEquals("Outlaws", Turn.getWinners(players));
+        assertTrue(GameOverService.isGameOver(players));
+        assertEquals("Outlaws", GameOverService.getWinners(players));
     }
 
     public void testOutlawWinDeuptyAlive2() {
@@ -1556,8 +1557,8 @@ public class TurnTest extends TestCase {
         players.add(deputy);
         Turn turn = new Turn();
         turn.setPlayers(players);
-        assertTrue(Turn.isGameOver(players));
-        assertEquals("Outlaws", Turn.getWinners(players));
+        assertTrue(GameOverService.isGameOver(players));
+        assertEquals("Outlaws", GameOverService.getWinners(players));
     }
 
     public void testSheriffDeputyWin() {
@@ -1567,8 +1568,8 @@ public class TurnTest extends TestCase {
         players.add(renegade);
         Turn turn = new Turn();
         turn.setPlayers(players);
-        assertTrue(Turn.isGameOver(players));
-        assertEquals("Sheriff and Deputies", Turn.getWinners(players));
+        assertTrue(GameOverService.isGameOver(players));
+        assertEquals("Sheriff and Deputies", GameOverService.getWinners(players));
     }
 
     public void testSheriffDeputyWin2() {
@@ -1581,8 +1582,8 @@ public class TurnTest extends TestCase {
         players.add(renegade2);
         Turn turn = new Turn();
         turn.setPlayers(players);
-        assertTrue(Turn.isGameOver(players));
-        assertEquals("Sheriff and Deputies", Turn.getWinners(players));
+        assertTrue(GameOverService.isGameOver(players));
+        assertEquals("Sheriff and Deputies", GameOverService.getWinners(players));
     }
 
     public void testNoOneWinRenegade() {
@@ -1596,7 +1597,7 @@ public class TurnTest extends TestCase {
         players.add(sheriff);
         turn.setPlayers(players);
         try {
-            Turn.getWinners(players);
+            GameOverService.getWinners(players);
             fail();
         } catch (RuntimeException e) {
             // expected
@@ -1614,7 +1615,7 @@ public class TurnTest extends TestCase {
         players.add(sheriff);
         turn.setPlayers(players);
         try {
-            Turn.getWinners(players);
+            GameOverService.getWinners(players);
             fail();
         } catch (RuntimeException e) {
             // expected
@@ -1635,7 +1636,7 @@ public class TurnTest extends TestCase {
         players.add(sheriff);
         turn.setPlayers(players);
         try {
-            Turn.getWinners(players);
+            GameOverService.getWinners(players);
             fail();
         } catch (RuntimeException e) {
             // expected
