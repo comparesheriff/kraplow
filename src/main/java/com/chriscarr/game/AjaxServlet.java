@@ -67,10 +67,16 @@ public class AjaxServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        doGet(req, resp);
+    }
+
     private void setResponseHeaders(HttpServletResponse response) {
         response.setContentType("application/xml");
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("X-Content-Type-Options", "nosniff");
     }
 
     @Override
