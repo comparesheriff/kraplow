@@ -15,7 +15,7 @@ public final class LobbyHandlers {
     }
 
     public static AjaxAction availableGames() {
-        return (request, response) -> {
+        return (_, response) -> {
             List<Integer> availableGames = WebGame.getAvailableGames();
             ArrayList<AvailableGameDto> dtos = new ArrayList<>(availableGames.size());
             for (Integer gameId : availableGames) {
@@ -42,9 +42,7 @@ public final class LobbyHandlers {
     }
 
     public static AjaxAction getGuestCounter() {
-        return (request, response) -> {
-            LobbyXmlWriter.writeGuestCounter(WebGame.getNextGuestCounter(), response);
-        };
+        return (_, response) -> LobbyXmlWriter.writeGuestCounter(WebGame.getNextGuestCounter(), response);
     }
 
     public static AjaxAction canStart() {
