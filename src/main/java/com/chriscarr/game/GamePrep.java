@@ -1,5 +1,7 @@
 package com.chriscarr.game;
 
+import jakarta.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class GamePrep {
         return joinedPlayers.size() < maxPlayers;
     }
 
+    @Nullable
     public String join(String handle) {
         if (canJoin()) {
             lastUpdated = System.currentTimeMillis();
@@ -63,6 +66,7 @@ public class GamePrep {
         }
     }
 
+    @Nullable
     public String joinAI(String handle) {
         if (canJoinAI()) {
             lastUpdated = System.currentTimeMillis();

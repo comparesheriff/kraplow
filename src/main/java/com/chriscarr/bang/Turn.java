@@ -4,6 +4,7 @@ import com.chriscarr.bang.cards.*;
 import com.chriscarr.bang.gamestate.*;
 import com.chriscarr.bang.services.GameOverService;
 import com.chriscarr.bang.userinterface.UserInterface;
+import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1141,6 +1142,7 @@ public class Turn {
             && !(card instanceof SingleUseMissed);
     }
 
+    @Nullable
     public String getRoleForName(String name) {
         for (Player player : players) {
             if (player.getName().equals(name)) {
@@ -1150,6 +1152,7 @@ public class Turn {
         return null;
     }
 
+    @Nullable
     public String roleToGoal(String name) {
         for (Player player : players) {
             if (player.getName().equals(name)) {

@@ -13,7 +13,7 @@ import java.util.function.IntUnaryOperator;
 public class Hand extends ArrayList<Card> {
 
     private IntUnaryOperator indexPicker =
-            n -> java.util.concurrent.ThreadLocalRandom.current().nextInt(n);
+        n -> java.util.concurrent.ThreadLocalRandom.current().nextInt(n);
 
     @Override
     public boolean add(Card card) {

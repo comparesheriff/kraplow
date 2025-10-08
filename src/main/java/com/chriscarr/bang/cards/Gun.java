@@ -13,12 +13,12 @@ public class Gun extends Card {
     }
 
     public boolean play(
-            Player currentPlayer,
-            List<Player> players,
-            UserInterface userInterface,
-            Deck deck,
-            Discard discard,
-            Turn turn) {
+        Player currentPlayer,
+        List<Player> players,
+        UserInterface userInterface,
+        Deck deck,
+        Discard discard,
+        Turn turn) {
         if (currentPlayer.hasGun()) {
             discard.add(currentPlayer.removeGun());
         }
@@ -28,12 +28,12 @@ public class Gun extends Card {
                     Gun gun = player.getCardsInPlay().removeGun();
                     discard.add(gun);
                     userInterface.printInfo(
-                            currentPlayer.getName()
-                                    + " plays a "
-                                    + this.getName()
-                                    + " and forces "
-                                    + player.getName()
-                                    + " to discard one from play.");
+                        currentPlayer.getName()
+                            + " plays a "
+                            + this.getName()
+                            + " and forces "
+                            + player.getName()
+                            + " to discard one from play.");
                 }
             }
         }

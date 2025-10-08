@@ -29,12 +29,12 @@ public class AjaxServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(AjaxServlet.class);
 
     private static final ScheduledExecutorService CLEANUP =
-            Executors.newSingleThreadScheduledExecutor(
-                    r -> {
-                        Thread thread = new Thread(r, "Cleanup");
-                        thread.setDaemon(true);
-                        return thread;
-                    });
+        Executors.newSingleThreadScheduledExecutor(
+            r -> {
+                Thread thread = new Thread(r, "Cleanup");
+                thread.setDaemon(true);
+                return thread;
+            });
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -48,7 +48,7 @@ public class AjaxServlet extends HttpServlet {
                 case "GETGAMESTATE" -> {
                     String gameId = request.getParameter("gameId");
                     JSPUserInterface userInterface =
-                            (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
+                        (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
                     if (userInterface != null) {
                         GameState gameState = userInterface.getGameState();
                         if (gameState != null) {
@@ -57,7 +57,7 @@ public class AjaxServlet extends HttpServlet {
                             for (GameStatePlayer player : gameState.getPlayers()) {
                                 if (userInterface instanceof WebGameUserInterface) {
                                     player.user =
-                                            ((WebGameUserInterface) userInterface).userFigureNames.get(player.name);
+                                        ((WebGameUserInterface) userInterface).userFigureNames.get(player.name);
                                 }
                                 writePlayer(player, response);
                             }
@@ -121,8 +121,8 @@ public class AjaxServlet extends HttpServlet {
                     response.getWriter().write("<playercount>");
                     if (gameId != null && !gameId.equals("null")) {
                         response
-                                .getWriter()
-                                .write(Integer.toString(WebGame.getCountPlayers(Integer.parseInt(gameId))));
+                            .getWriter()
+                            .write(Integer.toString(WebGame.getCountPlayers(Integer.parseInt(gameId))));
                     } else {
                         response.getWriter().write("0");
                     }
@@ -247,7 +247,7 @@ public class AjaxServlet extends HttpServlet {
                     String user = request.getParameter("user");
                     String gameId = request.getParameter("gameId");
                     JSPUserInterface userInterface =
-                            (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
+                        (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
                     if (userInterface != null) {
                         List<Message> messages = ((WebGameUserInterface) userInterface).getMessages(user);
                         if (!messages.isEmpty()) {
@@ -261,10 +261,10 @@ public class AjaxServlet extends HttpServlet {
                             response.getWriter().write("</text>");
                             response.getWriter().write("<hand>");
                             if (userInterface.isPlayerAlive(
-                                    ((WebGameUserInterface) userInterface).getPlayerForUser(user))) {
+                                ((WebGameUserInterface) userInterface).getPlayerForUser(user))) {
                                 Hand hand =
-                                        userInterface.getHandForUser(
-                                                ((WebGameUserInterface) userInterface).getPlayerForUser(user));
+                                    userInterface.getHandForUser(
+                                        ((WebGameUserInterface) userInterface).getPlayerForUser(user));
                                 for (Card value : hand) {
                                     response.getWriter().write("<card>");
                                     response.getWriter().write(value.getName().getDisplayName());
@@ -288,7 +288,7 @@ public class AjaxServlet extends HttpServlet {
                     String messageId = request.getParameter("messageId");
                     LOG.info("Response " + messageId);
                     JSPUserInterface userInterface =
-                            (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
+                        (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
                     if (userInterface != null) {
                         List<Message> messages = ((WebGameUserInterface) userInterface).getMessages(user);
                         if (!messages.isEmpty()) {
@@ -305,7 +305,7 @@ public class AjaxServlet extends HttpServlet {
                     String user = request.getParameter("user");
                     String gameId = request.getParameter("gameId");
                     JSPUserInterface userInterface =
-                            (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
+                        (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
                     if (userInterface != null) {
                         String name = ((WebGameUserInterface) userInterface).getPlayerForUser(user);
                         String role = userInterface.getRoleForName(name);
@@ -330,7 +330,7 @@ public class AjaxServlet extends HttpServlet {
     }
 
     private void printJoinInfoForUser(HttpServletResponse response, String gameId, String user)
-            throws IOException {
+        throws IOException {
         if (user != null) {
             response.getWriter().write("<joininfo>");
             response.getWriter().write("<user>");
@@ -346,7 +346,7 @@ public class AjaxServlet extends HttpServlet {
     }
 
     private void writePlayer(GameStatePlayer player, HttpServletResponse response)
-            throws IOException {
+        throws IOException {
         response.getWriter().write("<player>");
         response.getWriter().write("<handle>");
         response.getWriter().write(player.user);

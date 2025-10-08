@@ -30,6 +30,7 @@
         <maven.toolchain.plugin.version>3.0.0</maven.toolchain.plugin.version>
         <maven.war.plugin.version>3.4.0</maven.war.plugin.version>
         <spotless.plugin.version>2.43.0</spotless.plugin.version>
+        <jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
     </properties>
 
     <dependencies>
@@ -95,6 +96,11 @@
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>${jakarta.annotation-api.version}</version>
         </dependency>
     </dependencies>
 

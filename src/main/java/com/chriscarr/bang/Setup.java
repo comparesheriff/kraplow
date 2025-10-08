@@ -10,12 +10,14 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Setup {
     private static final Logger LOG = LoggerFactory.getLogger(Setup.class);
 
     private Deck deck;
     private List<Player> players;
+    private static Random rng = new Random();
 
     public Setup(int countPlayers, UserInterface userInterface, GameStateListener gameStateListener) {
         new Setup(countPlayers, userInterface, gameStateListener, false, Role.RANDOM, Character.RANDOM);
@@ -75,9 +77,9 @@ public class Setup {
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
-        Collections.shuffle(characterList);
+        Collections.shuffle(characterList, rng);
         List<Role> roles = getRoles(countCharacters);
-        Collections.shuffle(roles);
+        Collections.shuffle(roles, rng);
         for (int i = 0; i < countCharacters; i++) {
             Player player = new Player();
 
@@ -153,7 +155,7 @@ public class Setup {
         ArrayList<Player> players = new ArrayList<>();
 
         List<Role> roles = getRoles(countCharacters);
-        Collections.shuffle(roles);
+        Collections.shuffle(roles, rng);
         for (int i = 0; i < countCharacters; i++) {
             Player player = new Player();
 
@@ -175,5 +177,9 @@ public class Setup {
         }
 
         return players;
+    }
+
+    public void setRng(Random rng) {
+        Setup.rng = rng;
     }
 }
