@@ -222,11 +222,19 @@
                 <configuration>
                     <!-- Respect repo's .gitattributes to avoid cross-platform line-ending diffs -->
                     <lineEndings>GIT_ATTRIBUTES</lineEndings>
-                    <java>
-                        <googleJavaFormat/>
-                        <!-- Safe hygiene: strip imports that aren't used -->
-                        <removeUnusedImports/>
-                    </java>
+                    <formats>
+                        <format>
+                            <includes>
+                                <include>**/*.md</include>
+                                <include>**/*.xml</include>
+                                <include>**/*.json</include>
+                                <include>**/*.yml</include>
+                                <include>**/*.yaml</include>
+                                <include>**/*.properties</include>
+                            </includes>
+                            <trimTrailingWhitespace/>
+                        </format>
+                    </formats>
                 </configuration>
                 <executions>
                     <execution>
