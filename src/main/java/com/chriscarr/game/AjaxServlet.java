@@ -12,6 +12,8 @@ import com.chriscarr.game.ajax.AjaxRegistry;
 import com.chriscarr.game.ajax.MessageType;
 import com.chriscarr.game.ajax.handlers.ChatHandlers;
 import com.chriscarr.game.ajax.handlers.GameStateHandlers;
+import com.chriscarr.game.ajax.handlers.JoinHandlers;
+import com.chriscarr.game.ajax.handlers.LobbyHandlers;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,7 +41,14 @@ public class AjaxServlet extends HttpServlet {
     private final AjaxRegistry registry = new AjaxRegistry()
         .register(MessageType.CHAT, ChatHandlers.chat())
         .register(MessageType.GETCHAT, ChatHandlers.getChat(dateFormat))
-        .register(MessageType.GETGAMESTATE, GameStateHandlers.getGameState(CLEANUP));
+        .register(MessageType.GETGAMESTATE, GameStateHandlers.getGameState(CLEANUP))
+        .register(MessageType.JOIN, JoinHandlers.join())
+        .register(MessageType.JOINAI, JoinHandlers.joinAI())
+        .register(MessageType.LEAVE, JoinHandlers.leave())
+        .register(MessageType.AVAILABLEGAMES, LobbyHandlers.availableGames())
+        .register(MessageType.COUNTPLAYERS, LobbyHandlers.countPlayers())
+        .register(MessageType.GETGUESTCOUNTER, LobbyHandlers.getGuestCounter())
+        .register(MessageType.CANSTART, LobbyHandlers.canStart());
 
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -55,13 +64,6 @@ public class AjaxServlet extends HttpServlet {
             }
 
             switch (messageTypeParam) {
-                case "JOIN" -> handleJoin(request, response);
-                case "JOINAI" -> handleJoinAI(request, response);
-                case "LEAVE" -> handleLeave(request, response);
-                case "COUNTPLAYERS" -> handleCountPlayers(request, response);
-                case "GETGUESTCOUNTER" -> handleGetGuestCounter(response);
-                case "AVAILABLEGAMES" -> handleAvailableGames(response);
-                case "CANSTART" -> handleCanStart(request, response);
                 case "START" -> handleStart(request, response);
                 case "CREATE" -> handleCreate(request, response);
                 case "GETMESSAGE" -> handleGetMessage(request, response);
@@ -189,113 +191,6 @@ public class AjaxServlet extends HttpServlet {
         Character character = Character.valueOf(pChar);
         WebGame.start(Integer.parseInt(gameId), Integer.parseInt(aiSleepMs), role, character);
         response.getWriter().write("<ok/>");
-    }
-
-    private void handleCanStart(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String gameId = request.getParameter("gameId");
-        if (WebGame.canStart(Integer.parseInt(gameId))) {
-            response.getWriter().write("<yes/>");
-        } else {
-            response.getWriter().write("<no/>");
-        }
-    }
-
-    private void handleAvailableGames(HttpServletResponse response) throws IOException {
-        response.getWriter().write("<gameids>");
-        List<Integer> availableGames = WebGame.getAvailableGames();
-        for (Integer availableGame : availableGames) {
-            response.getWriter().write("<game>");
-            response.getWriter().write("<gameid>");
-            response.getWriter().write(Integer.toString(availableGame));
-            response.getWriter().write("</gameid>");
-            response.getWriter().write("<playercount>");
-            response.getWriter().write(Integer.toString(WebGame.getCountPlayers(availableGame)));
-            response.getWriter().write("</playercount>");
-            response.getWriter().write("<canjoin>");
-            response.getWriter().write(Boolean.toString(WebGame.canJoin(availableGame)));
-            response.getWriter().write("</canjoin>");
-            response.getWriter().write("<players>");
-            List<String> joinedPlayers = WebGame.getJoinedPlayers(availableGame);
-            for (String playerHandle : joinedPlayers) {
-                response.getWriter().write("<playerName>");
-                response.getWriter().write(playerHandle);
-                response.getWriter().write("</playerName>");
-            }
-            response.getWriter().write("</players>");
-            response.getWriter().write("</game>");
-        }
-        response.getWriter().write("</gameids>");
-    }
-
-    private void handleGetGuestCounter(HttpServletResponse response) throws IOException {
-        response.getWriter().write("<guestcounter>");
-        response.getWriter().write(Integer.toString(WebGame.getNextGuestCounter()));
-        response.getWriter().write("</guestcounter>");
-    }
-
-    private void handleCountPlayers(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String gameId = request.getParameter("gameId");
-        response.getWriter().write("<count>");
-        response.getWriter().write("<playercount>");
-        if (gameId != null && !gameId.equals("null")) {
-            response
-                .getWriter()
-                .write(Integer.toString(WebGame.getCountPlayers(Integer.parseInt(gameId))));
-        } else {
-            response.getWriter().write("0");
-        }
-        response.getWriter().write("</playercount>");
-        response.getWriter().write("<players>");
-        List<String> joinedPlayers = null;
-        if (gameId != null) {
-            joinedPlayers = WebGame.getJoinedPlayers(Integer.parseInt(gameId));
-        }
-        if (joinedPlayers != null) {
-            for (String playerHandle : joinedPlayers) {
-                response.getWriter().write("<playerName>");
-                response.getWriter().write(playerHandle);
-                response.getWriter().write("</playerName>");
-            }
-        }
-        response.getWriter().write("</players>");
-        response.getWriter().write("</count>");
-    }
-
-    private void handleLeave(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String user = request.getParameter("user");
-        String gameId = request.getParameter("gameId");
-        WebGame.leave(Integer.parseInt(gameId), user);
-        response.getWriter().write("<ok/>");
-    }
-
-    private void handleJoinAI(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String gameId = request.getParameter("gameId");
-        String handle = request.getParameter("handle");
-        String user = WebGame.joinAI(Integer.parseInt(gameId), handle);
-        printJoinInfoForUser(response, gameId, user);
-    }
-
-    private void handleJoin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String gameId = request.getParameter("gameId");
-        String handle = request.getParameter("handle");
-        String user = WebGame.join(Integer.parseInt(gameId), handle);
-        printJoinInfoForUser(response, gameId, user);
-    }
-
-    private void printJoinInfoForUser(HttpServletResponse response, String gameId, String user)
-        throws IOException {
-        if (user != null) {
-            response.getWriter().write("<joininfo>");
-            response.getWriter().write("<user>");
-            response.getWriter().write(user);
-            response.getWriter().write("</user>");
-            response.getWriter().write("<gameid>");
-            response.getWriter().write(gameId);
-            response.getWriter().write("</gameid>");
-            response.getWriter().write("</joininfo>");
-        } else {
-            response.getWriter().write("<fail/>");
-        }
     }
 
     @Override
