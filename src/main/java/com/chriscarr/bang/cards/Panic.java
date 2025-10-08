@@ -2,6 +2,7 @@ package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
 import com.chriscarr.bang.Character;
+import com.chriscarr.bang.services.TargetingService;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class Panic extends Card implements Playable {
      * @see main.bang.Playable#targets(main.bang.Player, java.util.List)
      */
     public List<Player> targets(Player player, List<Player> players) {
-        return Turn.getPlayersWithCards(Turn.getPlayersWithinRange(player, players));
+        return Turn.getPlayersWithCards(TargetingService.getPlayersWithinRange(player, players));
     }
 
     /* (non-Javadoc)

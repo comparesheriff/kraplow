@@ -1,6 +1,7 @@
 package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
+import com.chriscarr.bang.services.TargetingService;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class Springfield extends Card implements Playable {
      * @see main.chriscarr.bang.Playable#targets(main.bang.Player, java.util.List)
      */
     public List<Player> targets(Player player, List<Player> players) {
-        return Turn.others(player, players);
+        return TargetingService.others(player, players);
     }
 
     /* (non-Javadoc)

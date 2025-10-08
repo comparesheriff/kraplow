@@ -2,6 +2,7 @@ package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
 import com.chriscarr.bang.Character;
+import com.chriscarr.bang.services.TargetingService;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class Bang extends Card implements Playable {
      * targeted by the "Bang" card.
      */
     public List<Player> targets(Player player, List<Player> players) {
-        return Turn.getPlayersWithinRange(player, players);
+        return TargetingService.getPlayersWithinRange(player, players);
     }
 
     /**

@@ -3,6 +3,7 @@ package com.chriscarr;
 import com.chriscarr.bang.*;
 import com.chriscarr.bang.Character;
 import com.chriscarr.bang.cards.*;
+import com.chriscarr.bang.services.TargetingService;
 import com.chriscarr.bang.userinterface.UserInterface;
 import junit.framework.TestCase;
 
@@ -948,7 +949,7 @@ public class TurnTest extends TestCase {
         turn.setDiscard(new Discard());
         turn.setSheriffManualTest();
         Player sheriff = turn.getCurrentPlayer();
-        assertEquals(3, Turn.getPlayersWithinRange(sheriff, players).size());
+        assertEquals(3, TargetingService.getPlayersWithinRange(sheriff, players).size());
     }
 
     public void testBangDistanceWithMustang() {
@@ -964,7 +965,7 @@ public class TurnTest extends TestCase {
                 .getCardsInPlay()
                 .add(new Card(CardName.MUSTANG, CardSuit.CLUBS, CardValue.QUEEN, CardType.ITEM));
         }
-        assertEquals(1, Turn.getPlayersWithinRange(sheriff, players).size());
+        assertEquals(1, TargetingService.getPlayersWithinRange(sheriff, players).size());
     }
 
     public void testBangDistanceWithScope() {
@@ -978,7 +979,7 @@ public class TurnTest extends TestCase {
         sheriff
             .getCardsInPlay()
             .add(new Card(CardName.SCOPE, CardSuit.CLUBS, CardValue.QUEEN, CardType.ITEM));
-        assertEquals(4, Turn.getPlayersWithinRange(sheriff, players).size());
+        assertEquals(4, TargetingService.getPlayersWithinRange(sheriff, players).size());
     }
 
     public void testPanicDistance() {
@@ -989,7 +990,7 @@ public class TurnTest extends TestCase {
         turn.setDiscard(new Discard());
         turn.setSheriffManualTest();
         Player sheriff = turn.getCurrentPlayer();
-        assertEquals(3, Turn.getPlayersWithinRange(sheriff, players).size());
+        assertEquals(3, TargetingService.getPlayersWithinRange(sheriff, players).size());
     }
 
     public void testBangDistance() {
@@ -1003,7 +1004,7 @@ public class TurnTest extends TestCase {
         sheriff
             .getCardsInPlay()
             .setGun(new Gun(CardName.SCHOFIELD, CardSuit.CLUBS, CardValue.QUEEN, CardType.ITEM));
-        assertEquals(4, Turn.getPlayersWithinRange(sheriff, players).size());
+        assertEquals(4, TargetingService.getPlayersWithinRange(sheriff, players).size());
     }
 
     public void testBangDistanceRev() {
@@ -1017,7 +1018,7 @@ public class TurnTest extends TestCase {
         sheriff
             .getCardsInPlay()
             .setGun(new Gun(CardName.REV_CARBINE, CardSuit.CLUBS, CardValue.QUEEN, CardType.ITEM));
-        assertEquals(7, Turn.getPlayersWithinRange(sheriff, players).size());
+        assertEquals(7, TargetingService.getPlayersWithinRange(sheriff, players).size());
     }
 
     public void testDynamiteTwo() {
@@ -1795,7 +1796,7 @@ public class TurnTest extends TestCase {
             Character character = Character.PAULREGRET;
             player.setCharacter(character);
         }
-        assertEquals(1, Turn.getPlayersWithinRange(sheriff, players).size());
+        assertEquals(1, TargetingService.getPlayersWithinRange(sheriff, players).size());
     }
 
     public void testRoseDoolan() {
@@ -1808,7 +1809,7 @@ public class TurnTest extends TestCase {
         Player sheriff = turn.getCurrentPlayer();
         Character character = Character.ROSEDOOLAN;
         sheriff.setCharacter(character);
-        assertEquals(4, Turn.getPlayersWithinRange(sheriff, players).size());
+        assertEquals(4, TargetingService.getPlayersWithinRange(sheriff, players).size());
     }
 
     public void testWillyTheKid() {
