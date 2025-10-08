@@ -6,7 +6,7 @@ public final class XmlUtil {
 
     public static String escapeXml(String inputString) {
         if (inputString == null) {
-            return null;
+            return "";
         }
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < inputString.length(); i++) {
