@@ -5,135 +5,140 @@ import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.cards.Gun;
 import com.chriscarr.bang.gamestate.GameStateCard;
 import com.chriscarr.bang.gamestate.GameStateMapper;
+
 import java.util.List;
 import java.util.Optional;
 
 public class Player {
-  private Character character;
-  private Hand hand;
-  private CardsInPlay cardsInPlay;
-  private Role role;
-  private int maxHealth;
-  private int health;
+    private Character character;
+    private Hand hand;
+    private CardsInPlay cardsInPlay;
+    private Role role;
+    private int maxHealth;
+    private int health;
 
-  public void setInPlay(CardsInPlay cardsInPlay) {
-    this.cardsInPlay = cardsInPlay;
-  }
+    public void setInPlay(CardsInPlay cardsInPlay) {
+        this.cardsInPlay = cardsInPlay;
+    }
 
-  public void setHand(Hand hand) {
-    this.hand = hand;
-  }
+    public void setHand(Hand hand) {
+        this.hand = hand;
+    }
 
-  public void setRole(Role role) {
-    this.role = role;
-  }
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
-  public void setCharacter(Character character) {
-    this.character = character;
-  }
+    public void setCharacter(Character character) {
+        this.character = character;
+    }
 
-  public Character getCharacter() {
-    return character;
-  }
+    public Character getCharacter() {
+        return character;
+    }
 
-  public Role getRole() {
-    return role;
-  }
+    public Role getRole() {
+        return role;
+    }
 
-  public Hand getHand() {
-    return hand;
-  }
+    public Hand getHand() {
+        return hand;
+    }
 
-  public CardsInPlay getCardsInPlay() {
-    return cardsInPlay;
-  }
+    public CardsInPlay getCardsInPlay() {
+        return cardsInPlay;
+    }
 
-  public void setMaxHealth(int maxHealth) {
-    this.maxHealth = maxHealth;
-    this.health = maxHealth;
-  }
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
+    }
 
-  public int getMaxHealth() {
-    return maxHealth;
-  }
+    public int getMaxHealth() {
+        return maxHealth;
+    }
 
-  public void setHealth(int health) {
-    this.health = health;
-  }
+    public void setHealth(int health) {
+        this.health = health;
+    }
 
-  public int getHealth() {
-    return health;
-  }
+    public int getHealth() {
+        return health;
+    }
 
-  public void addInPlay(Card card) {
-    cardsInPlay.add(card);
-  }
+    public void addInPlay(Card card) {
+        cardsInPlay.add(card);
+    }
 
-  public boolean isInPlay(CardName name) {
-    return cardsInPlay.hasItem(name) || cardsInPlay.getGunName().equals(name);
-  }
+    public boolean isInPlay(CardName name) {
+        return cardsInPlay.hasItem(name) || cardsInPlay.getGunName().equals(name);
+    }
 
-  public String getName() {
-    return character.getName();
-  }
+    public String getName() {
+        return character.getName();
+    }
 
-  public int getGunRange() {
-    return cardsInPlay.getGunRange();
-  }
+    public int getGunRange() {
+        return cardsInPlay.getGunRange();
+    }
 
-  public void addHealth(int toAdd) {
-    health = health + toAdd;
-  }
+    public void addHealth(int toAdd) {
+        this.health = Math.min(this.maxHealth, this.health + toAdd);
+    }
 
-  public Optional<Card> removeRandom() {
-    return hand.removeRandom();
-  }
+    public void removeHealth(int toRemove) {
+        this.health = Math.max(0, this.health - toRemove);
+    }
 
-  public int countBeers() {
-    return hand.countBeers();
-  }
+    public Optional<Card> removeRandom() {
+        return hand.removeRandom();
+    }
 
-  public int countBangs() {
-    return hand.countBangs();
-  }
+    public int countBeers() {
+        return hand.countBeers();
+    }
 
-  public int countMisses() {
-    return hand.countMisses();
-  }
+    public int countBangs() {
+        return hand.countBangs();
+    }
 
-  public void setGun(Gun card) {
-    cardsInPlay.setGun(card);
-  }
+    public int countMisses() {
+        return hand.countMisses();
+    }
 
-  public CardName getGunName() {
-    return cardsInPlay.getGunName();
-  }
+    public void setGun(Gun card) {
+        cardsInPlay.setGun(card);
+    }
 
-  public boolean hasGun() {
-    return cardsInPlay.hasGun();
-  }
+    public CardName getGunName() {
+        return cardsInPlay.getGunName();
+    }
 
-  public Gun removeGun() {
-    return cardsInPlay.removeGun();
-  }
+    public boolean hasGun() {
+        return cardsInPlay.hasGun();
+    }
 
-  public int getHandSize() {
-    return hand.size();
-  }
+    public Gun removeGun() {
+        return cardsInPlay.removeGun();
+    }
 
-  public boolean isSheriff() {
-    return Role.SHERIFF.equals(role);
-  }
+    public int getHandSize() {
+        return hand.size();
+    }
 
-  public Optional<GameStateCard> getGameStateGun() {
-    return GameStateMapper.cardToGameStateCard(cardsInPlay.getGun());
-  }
+    public boolean isSheriff() {
+        return Role.SHERIFF.equals(role);
+    }
 
-  public String getSpecialAbility() {
-    return character.getSpecialAbilityText();
-  }
+    public Optional<GameStateCard> getGameStateGun() {
+        return GameStateMapper.cardToGameStateCard(cardsInPlay.getGun());
+    }
 
-  public List<GameStateCard> getGameStateInPlay() {
-    return cardsInPlay.getGameStateInPlay();
-  }
+    public String getSpecialAbility() {
+        return character.getSpecialAbilityText();
+    }
+
+    public List<GameStateCard> getGameStateInPlay() {
+        return cardsInPlay.getGameStateInPlay();
+    }
 }

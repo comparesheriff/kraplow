@@ -1302,6 +1302,7 @@ public class TurnTest extends TestCase {
         Player player = new Player();
         player.setRole(Role.RANDOM);
         player.setHand(new Hand());
+        player.setMaxHealth(4);
         Turn turn = new Turn();
         List<Player> players = new ArrayList<>();
         players.add(player);

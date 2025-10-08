@@ -386,7 +386,7 @@ public class Turn {
             if (card > (hand.size() + singleUseInPlay.size() - 1)
                 && Character.CHUCKWENGAM.equals(currentPlayer.getCharacter())) {
                 if (currentPlayer.getHealth() > 1) {
-                    currentPlayer.setHealth(currentPlayer.getHealth() - 1);
+                    currentPlayer.removeHealth(1);
                     Hand playerHand = currentPlayer.getHand();
                     playerHand.add(deck.pull());
                     playerHand.add(deck.pull());
@@ -795,18 +795,18 @@ public class Turn {
         Deck deck,
         Discard discard,
         UserInterface userInterface) {
-        player.setHealth(player.getHealth() - damage);
+        player.removeHealth(damage);
         if (player.getHealth() <= 0 && players.size() > 2) {
             boolean doNotPlayBeer = false;
             while (!doNotPlayBeer && player.getHealth() <= 0) {
                 int playedBeer = validPlayBeer(player, userInterface);
                 if (playedBeer != -1) {
                     if (Character.TEQUILAJOE.equals(player.getCharacter())) {
-                        player.setHealth(player.getHealth() + 2);
+                        player.addHealth(2);
                         discard.add(player.getHand().remove(playedBeer));
                         userInterface.printInfo(player.getName() + " plays a beer and gains two lives.");
                     } else {
-                        player.setHealth(player.getHealth() + 1);
+                        player.addHealth(1);
                         discard.add(player.getHand().remove(playedBeer));
                         userInterface.printInfo(player.getName() + " plays a beer and gains one life.");
                         if (Character.MOLLYSTARK.equals(player.getCharacter())) {
@@ -979,11 +979,11 @@ public class Turn {
             if (Character.GREGDIGGER.equals(alivePlayer.getCharacter())) {
                 int bonusHealth = 0;
                 if (alivePlayer.getHealth() < alivePlayer.getMaxHealth()) {
-                    alivePlayer.setHealth(alivePlayer.getHealth() + 1);
+                    alivePlayer.addHealth(1);
                     bonusHealth += 1;
                 }
                 if (alivePlayer.getHealth() < alivePlayer.getMaxHealth()) {
-                    alivePlayer.setHealth(alivePlayer.getHealth() + 1);
+                    alivePlayer.addHealth(1);
                     bonusHealth += 1;
                 }
                 userInterface.printInfo(
@@ -1059,10 +1059,7 @@ public class Turn {
                     userInterface.printInfo(
                         player.getCharacter().getName() + " discards " + card.getName() + " for life.");
                 }
-                player.setHealth(player.getHealth() + (cardsToDiscard.size() / 2));
-                if (player.getHealth() > player.getMaxHealth()) {
-                    player.setHealth(player.getMaxHealth());
-                }
+                player.addHealth((cardsToDiscard.size() / 2));
             }
         }
     }
