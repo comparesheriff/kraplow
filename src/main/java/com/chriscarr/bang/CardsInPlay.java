@@ -7,6 +7,7 @@ import com.chriscarr.bang.gamestate.GameStateCard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CardsInPlay extends ArrayList<Card> {
 
@@ -47,24 +48,24 @@ public class CardsInPlay extends ArrayList<Card> {
         return gun.getName().equals(CardName.VOLCANIC);
     }
 
-    public Card removeDynamite() {
+    public Optional<Card> removeDynamite() {
         for (Card card : this) {
             if (card.getName().equals(CardName.DYNAMITE)) {
                 remove(card);
-                return card;
+                return Optional.of(card);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
-    public Card removeJail() {
+    public Optional<Card> removeJail() {
         for (Card card : this) {
             if (card.getName().equals(CardName.JAIL)) {
                 remove(card);
-                return card;
+                return Optional.of(card);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public CardName getGunName() {
@@ -82,7 +83,7 @@ public class CardsInPlay extends ArrayList<Card> {
     public List<GameStateCard> getGameStateInPlay() {
         List<GameStateCard> gameStateCards = new ArrayList<>();
         for (Card card : this) {
-            gameStateCards.add(Turn.cardToGameStateCard(card));
+            gameStateCards.add(Turn.cardToGameStateCard(card).orElseThrow());
         }
         return gameStateCards;
     }

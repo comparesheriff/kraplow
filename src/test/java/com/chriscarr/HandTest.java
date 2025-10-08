@@ -5,7 +5,7 @@ import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.cards.CardName;
 import junit.framework.TestCase;
 
-import static org.junit.Assert.assertThrows;
+import java.util.Optional;
 
 public class HandTest extends TestCase {
     public void testHandAddCard() {
@@ -27,7 +27,7 @@ public class HandTest extends TestCase {
     }
 
     public void testRemoveRandom_empty_returnsNull() {
-        assertNull(new Hand().removeRandom());
+        assertEquals(Optional.empty(), new Hand().removeRandom());
     }
 
     public void testRemoveRandom_doesNotChangeSize_whenEmpty() {
@@ -39,10 +39,13 @@ public class HandTest extends TestCase {
 
     public void testRemoveRandom_isDeterministic_withPicker() {
         Hand h = new Hand();
-        h.add(TestCardFactory.CLUBS()); h.add(TestCardFactory.DIAMONDS()); h.add(TestCardFactory.HEARTS());
+        h.add(TestCardFactory.CLUBS());
+        h.add(TestCardFactory.DIAMONDS());
+        h.add(TestCardFactory.HEARTS());
         h.setIndexPicker(n -> 1);                  // immer Index 1
-        Card removed = h.removeRandom();
-        assertEquals(CardName.VOLCANIC, removed.getName());
+        Optional<Card> removed = h.removeRandom();
+        assertTrue(removed.isPresent());
+        assertEquals(CardName.VOLCANIC, removed.get().getName());
         assertEquals(2, h.size());
     }
 }

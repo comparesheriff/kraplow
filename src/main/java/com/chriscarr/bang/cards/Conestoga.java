@@ -31,7 +31,7 @@ public class Conestoga extends SingleUse implements Playable {
             }
             Hand hand = currentPlayer.getHand();
             if (chosenCard == -1) {
-                hand.add(otherPlayer.getHand().removeRandom());
+                otherPlayer.getHand().removeRandom().ifPresent(hand::add);
                 userInterface.printInfo(currentPlayer.getName() + " takes a card from " + otherPlayer.getName() + "'s hand with a " + this.getName());
             } else if (chosenCard == -2) {
                 Card card = otherPlayer.getCardsInPlay().removeGun();

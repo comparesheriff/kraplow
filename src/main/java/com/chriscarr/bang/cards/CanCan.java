@@ -5,6 +5,7 @@ import com.chriscarr.bang.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CanCan extends SingleUse implements Playable {
 
@@ -30,9 +31,11 @@ public class CanCan extends SingleUse implements Playable {
                 chosenCard = userInterface.askOthersCard(currentPlayer, otherPlayer.getCardsInPlay(), !otherPlayer.getHand().isEmpty());
             }
             if (chosenCard == -1) {
-                Card discardedCard = otherPlayer.getHand().removeRandom();
-                discard.add(discardedCard);
-                userInterface.printInfo(currentPlayer.getName() + " discards a " + discardedCard.getName() + " from " + otherPlayer.getName() + "'s hand with a " + this.getName());
+                Optional<Card> cardOptional = otherPlayer.getHand().removeRandom();
+                if (cardOptional.isPresent()) {
+                    discard.add(cardOptional.get());
+                    userInterface.printInfo(currentPlayer.getName() + " discards a " + cardOptional.get().getName() + " from " + otherPlayer.getName() + "'s hand with a " + this.getName());
+                }
             } else if (chosenCard == -2) {
                 Gun card = otherPlayer.getCardsInPlay().removeGun();
                 discard.add(card);

@@ -6,6 +6,7 @@ import com.chriscarr.bang.cards.SingleUse;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.IntUnaryOperator;
 
 public class Hand extends ArrayList<Card> {
@@ -40,22 +41,22 @@ public class Hand extends ArrayList<Card> {
         return bangs;
     }
 
-    public Card removeMiss() {
+    public Optional<Card> removeMiss() {
         for (Card card : this) {
             if (card.getName().equals(CardName.MISSED)) {
                 remove(card);
-                return card;
+                return Optional.of(card);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
-    public Card removeRandom() {
+    public Optional<Card> removeRandom() {
         if (isEmpty()) {
-            return null;
+            return Optional.empty();
         }
         int idx = indexPicker.applyAsInt(size()); // 0..n-1
-        return remove(idx);
+        return Optional.ofNullable(remove(idx));
     }
 
     public int countBeers() {
@@ -68,14 +69,14 @@ public class Hand extends ArrayList<Card> {
         return beers;
     }
 
-    public Card removeBeer() {
+    public Optional<Card> removeBeer() {
         for (Card card : this) {
             if (card.getName().equals(CardName.BEER)) {
                 remove(card);
-                return card;
+                return Optional.of(card);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public void setIndexPicker(IntUnaryOperator picker) {

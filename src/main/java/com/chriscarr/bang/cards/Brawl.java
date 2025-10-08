@@ -4,6 +4,7 @@ import com.chriscarr.bang.*;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Brawl extends Card implements Playable {
     public Brawl(CardName name, CardSuit suit, CardValue value, CardType type) {
@@ -55,9 +56,11 @@ public class Brawl extends Card implements Playable {
                 chosenCard = userInterface.askOthersCard(currentPlayer, brawlPlayer.getCardsInPlay(), !brawlPlayer.getHand().isEmpty());
             }
             if (chosenCard == -1) {
-                Card card = brawlPlayer.getHand().removeRandom();
-                discard.add(card);
-                userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + brawlPlayer.getName() + "'s hand with a Brawl");
+                Optional<Card> cardOptional = brawlPlayer.getHand().removeRandom();
+                if (cardOptional.isPresent()) {
+                    discard.add(cardOptional.get());
+                    userInterface.printInfo(currentPlayer.getName() + " discards a " + cardOptional.get().getName() + " from " + brawlPlayer.getName() + "'s hand with a Brawl");
+                };
             } else if (chosenCard == -2) {
                 Card card = brawlPlayer.getCardsInPlay().removeGun();
                 discard.add(card);

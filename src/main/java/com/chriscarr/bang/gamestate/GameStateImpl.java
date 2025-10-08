@@ -3,6 +3,7 @@ package com.chriscarr.bang.gamestate;
 import com.chriscarr.bang.Turn;
 
 import java.util.List;
+import java.util.Optional;
 
 public class GameStateImpl implements GameState {
 
@@ -24,7 +25,7 @@ public class GameStateImpl implements GameState {
     }
 
     @Override
-    public GameStateCard discardTopCard() {
+    public Optional<GameStateCard> discardTopCard() {
         return turn.getDiscardTopCard();
     }
 

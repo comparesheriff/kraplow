@@ -65,7 +65,11 @@ public class WebGameUserInterface extends JSPUserInterface {
 
         try { sleeper.sleep(this.aiSleepMs); } catch (InterruptedException ignored) {}
 
-        Player aiPlayer = turn.getPlayerForName(player);
+        Optional<Player> aiPlayerOptional = turn.getPlayerForName(player);
+        if (aiPlayerOptional.isEmpty()) {
+            throw new RuntimeException("Player " + player + " not found");
+        }
+        Player aiPlayer = aiPlayerOptional.get();
         if (message.indexOf("askOthersCard") == 0) {
             String[] splitMessage = message.split(",");
 
@@ -144,8 +148,7 @@ public class WebGameUserInterface extends JSPUserInterface {
             int duelIndex = lastMessage.indexOf(" duels ");
             if (duelIndex != -1) {
                 String otherPlayer = lastMessage.substring(0, duelIndex);
-                Player other = turn.getPlayerForName(otherPlayer);
-                if (aiPlayer.getRole() == Role.DEPUTY && other.getRole() == Role.SHERIFF) {
+                if (aiPlayer.getRole() == Role.DEPUTY && turn.getPlayerForName(otherPlayer).map(other -> other.getRole() == Role.SHERIFF).orElse(false)) {
                     //Let the sheriff kill you(Not great for the sheriff)
                     return "-1";
                 }
@@ -323,8 +326,7 @@ public class WebGameUserInterface extends JSPUserInterface {
     public boolean hurtEveryone(Player player) {
         Role role = player.getRole();
         if (role == Role.DEPUTY || (role == Role.RENEGADE && turn.countPlayers() > 2)) {
-            Player sheriff = turn.getSheriff();
-            return sheriff.getHealth() > 3;
+            return turn.getSheriff().map(s -> s.getHealth() > 3).orElse(false);
         }
         return true;
     }
@@ -332,8 +334,7 @@ public class WebGameUserInterface extends JSPUserInterface {
     public boolean healEveryone(Player player) {
         Role role = player.getRole();
         if (role == Role.DEPUTY || (role == Role.RENEGADE && turn.countPlayers() > 2)) {
-            Player sheriff = turn.getSheriff();
-            return sheriff.getHealth() < 3;
+            return turn.getSheriff().map(s -> s.getHealth() < 3).orElse(false);
         }
         return player.getHealth() < player.getMaxHealth();
     }
@@ -367,7 +368,11 @@ public class WebGameUserInterface extends JSPUserInterface {
             String name = names[i];
             name = name.trim();
             if (!name.equals("Cancel")) {
-                Player other = turn.getPlayerForName(name);
+                Optional<Player> otherOptional = turn.getPlayerForName(name);
+                if (otherOptional.isEmpty()) {
+                    throw new RuntimeException("Player " + name + " not found");
+                }
+                Player other = otherOptional.get();
                 Role otherRole = other.getRole();
                 if (role == Role.OUTLAW && otherRole == Role.SHERIFF) {
                     if (!takeCard || playerGotCardIWantToTake(player, other)) {
@@ -394,8 +399,7 @@ public class WebGameUserInterface extends JSPUserInterface {
         for (int i = 0; i < names.length - 1; i++) {
             if (!names[i].equals("Cancel")) {
                 if (role == Role.OUTLAW) {
-                    Player other = turn.getPlayerForName(names[i]);
-                    if (!takeCard || playerGotCardIWantToTake(player, other)) {
+                    if (!takeCard || turn.getPlayerForName(names[i]).map(other -> playerGotCardIWantToTake(player, other)).orElse(false)) {
                         targets.add(i);
                     }
                 }

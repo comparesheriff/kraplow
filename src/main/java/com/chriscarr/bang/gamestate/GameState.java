@@ -1,6 +1,7 @@
 package com.chriscarr.bang.gamestate;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GameState {
 
@@ -12,7 +13,7 @@ public interface GameState {
 
     int getDeckSize();
 
-    GameStateCard discardTopCard();
+    Optional<GameStateCard> discardTopCard();
 
     String timeout();
 

@@ -6,6 +6,7 @@ import com.chriscarr.bang.cards.Gun;
 import com.chriscarr.bang.gamestate.GameStateCard;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Player {
     private Character character;
@@ -84,7 +85,7 @@ public class Player {
         health = health + toAdd;
     }
 
-    public Card removeRandom() {
+    public Optional<Card> removeRandom() {
         return hand.removeRandom();
     }
 
@@ -124,7 +125,7 @@ public class Player {
         return Role.SHERIFF.equals(role);
     }
 
-    public GameStateCard getGameStateGun() {
+    public Optional<GameStateCard> getGameStateGun() {
         return Turn.cardToGameStateCard(cardsInPlay.getGun());
     }
 

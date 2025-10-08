@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -75,10 +76,10 @@ public class AjaxServlet extends HttpServlet {
                             response.getWriter().write("<decksize>");
                             response.getWriter().write(Integer.toString(gameState.getDeckSize()));
                             response.getWriter().write("</decksize>");
-                            GameStateCard topCard = gameState.discardTopCard();
-                            if (topCard != null) {
+                            Optional<GameStateCard> topCard = gameState.discardTopCard();
+                            if (topCard.isPresent()) {
                                 response.getWriter().write("<discardtopcard>");
-                                writeCard(topCard, response);
+                                writeCard(topCard.get(), response);
                                 response.getWriter().write("</discardtopcard>");
                             }
                             response.getWriter().write("<roles>");

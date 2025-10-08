@@ -9,10 +9,7 @@ import com.chriscarr.bang.userinterface.UserInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -50,13 +47,13 @@ public class Turn {
         return players.size();
     }
 
-    public Player getPlayerForName(String name) {
+    public Optional<Player> getPlayerForName(String name) {
         for (Player player : players) {
             if (player.getName().equals(name)) {
-                return player;
+                return Optional.of(player);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public static Player getNextPlayer(Player player, List<Player> players) {
@@ -201,8 +198,7 @@ public class Turn {
             }
             if (chosenFromPlayer) {
                 Player chosenPlayer = getValidChosenPlayer(player, otherPlayers, userInterface);
-                Card randomCard = chosenPlayer.removeRandom();
-                hand.add(randomCard);
+                chosenPlayer.removeRandom().ifPresent(hand::add);
                 userInterface.printInfo(player.getCharacter().getName() + " drew a card from " + chosenPlayer.getName() + " hand.");
             } else {
                 if (deck.isEmpty()) {
@@ -587,17 +583,20 @@ public class Turn {
     public void passDynamite() {
         CardsInPlay currentCardsInPlay = currentPlayer.getCardsInPlay();
         if (currentCardsInPlay.hasItem(CardName.DYNAMITE)) {
-            Card dynamiteCard = currentCardsInPlay.removeDynamite();
+            Optional<Card> dynamiteOptional = currentCardsInPlay.removeDynamite();
+            if (dynamiteOptional.isEmpty()) {
+                throw new IllegalStateException("Dynamite card not found in cards in play.");
+            }
             Player nextPlayer = getNextPlayer(currentPlayer, players);
             CardsInPlay nextCardsInPlay = nextPlayer.getCardsInPlay();
             if (!nextCardsInPlay.hasItem(CardName.DYNAMITE)) {
                 userInterface.printInfo("Dynamite Passed to " + nextPlayer.getName());
-                nextCardsInPlay.add(dynamiteCard);
+                nextCardsInPlay.add(dynamiteOptional.get());
             } else {
                 nextPlayer = getNextPlayer(nextPlayer, players);
                 nextCardsInPlay = nextPlayer.getCardsInPlay();
                 userInterface.printInfo("Dynamite Passed to " + nextPlayer.getName());
-                nextCardsInPlay.add(dynamiteCard);
+                nextCardsInPlay.add(dynamiteOptional.get());
             }
         }
     }
@@ -605,8 +604,7 @@ public class Turn {
     public void discardDynamite() {
         CardsInPlay currentCardsInPlay = currentPlayer.getCardsInPlay();
         if (currentCardsInPlay.hasItem(CardName.DYNAMITE)) {
-            Card dynamiteCard = currentCardsInPlay.removeDynamite();
-            discard.add(dynamiteCard);
+            currentCardsInPlay.removeDynamite().ifPresent(discard::add);
         }
     }
 
@@ -635,11 +633,14 @@ public class Turn {
     public boolean isInJail() {
         CardsInPlay currentCardsInPlay = currentPlayer.getCardsInPlay();
         if (currentCardsInPlay.hasItem(CardName.JAIL)) {
-            Card jailCard = currentCardsInPlay.removeJail();
+            Optional<Card> jailOptional = currentCardsInPlay.removeJail();
+            if (jailOptional.isEmpty()) {
+                throw new IllegalStateException("Jail card not found in cards in play.");
+            }
             userInterface.printInfo(currentPlayer.getName() + " is drawing to break out of jail");
             Card drawn = draw(currentPlayer, deck, discard, userInterface);
             boolean inJail = drawn.getSuit() != CardSuit.HEARTS;
-            discard.add(jailCard);
+            discard.add(jailOptional.get());
             if (inJail) {
                 userInterface.printInfo(currentPlayer.getName() + " stays in jail");
             } else {
@@ -724,7 +725,7 @@ public class Turn {
                 Hand otherHand = damager.getHand();
                 if (!otherHand.isEmpty()) {
                     Hand playerHand = player.getHand();
-                    playerHand.add(otherHand.removeRandom());
+                    otherHand.removeRandom().ifPresent(playerHand::add);
                     userInterface.printInfo(player.getCharacter().getName() + " draws a card from " + damager.getName() + " because he was damaged.");
                 }
             }
@@ -1019,24 +1020,24 @@ public class Turn {
         return new GameStateImpl(this);
     }
 
-    public GameStateCard getDiscardTopCard() {
+    public Optional<GameStateCard> getDiscardTopCard() {
         if (!discard.isEmpty()) {
             return cardToGameStateCard(discard.getLast());
         } else {
-            return null;
+            return Optional.empty();
         }
     }
 
-    public static GameStateCard cardToGameStateCard(Card fromCard) {
+    public static Optional<GameStateCard> cardToGameStateCard(Card fromCard) {
         if (fromCard == null) {
-            return null;
+            return Optional.empty();
         }
         GameStateCard card = new GameStateCard();
         card.name = fromCard.getName();
         card.suit = fromCard.getSuit().getLabel();
         card.value = fromCard.getValue().getLabel();
         card.type = fromCard.getType().getTypeName();
-        return card;
+        return Optional.of(card);
     }
 
     public int getDeckSize() {
@@ -1055,7 +1056,7 @@ public class Turn {
             gameStatePlayer.health = player.getHealth();
             gameStatePlayer.maxHealth = player.getMaxHealth();
             gameStatePlayer.handSize = player.getHandSize();
-            gameStatePlayer.gun = player.getGameStateGun();
+            gameStatePlayer.gun = player.getGameStateGun().orElse(null);
             gameStatePlayer.isSheriff = player.isSheriff();
             gameStatePlayer.specialAbility = player.getSpecialAbility();
             gameStatePlayer.inPlay = player.getGameStateInPlay();
@@ -1130,12 +1131,12 @@ public class Turn {
         return userInterface.getTimeout();
     }
 
-    public Player getSheriff() {
+    public Optional<Player> getSheriff() {
         for (Player player : players) {
             if (player.isSheriff()) {
-                return player;
+                return Optional.of(player);
             }
         }
-        return null;
+        return Optional.empty();
     }
 }

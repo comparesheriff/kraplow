@@ -5,6 +5,7 @@ import com.chriscarr.bang.Character;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CatBalou extends Card implements Playable {
     public CatBalou(CardName name, CardSuit suit, CardValue value, CardType type) {
@@ -41,9 +42,11 @@ public class CatBalou extends Card implements Playable {
             chosenCard = userInterface.askOthersCard(currentPlayer, other.getCardsInPlay(), !other.getHand().isEmpty());
         }
         if (chosenCard == -1) {
-            Card card = other.getHand().removeRandom();
-            discard.add(card);
-            userInterface.printInfo(currentPlayer.getName() + " discards a " + card.getName() + " from " + other.getName() + "'s hand with a Cat Balou");
+            Optional<Card> cardOptional = other.getHand().removeRandom();
+            if (cardOptional.isPresent()) {
+                discard.add(cardOptional.get());
+                userInterface.printInfo(currentPlayer.getName() + " discards a " + cardOptional.get().getName() + " from " + other.getName() + "'s hand with a Cat Balou");
+            }
         } else if (chosenCard == -2) {
             Card card = other.getCardsInPlay().removeGun();
             discard.add(card);
