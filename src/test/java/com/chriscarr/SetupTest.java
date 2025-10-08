@@ -1,6 +1,7 @@
 package com.chriscarr;
 
 import com.chriscarr.bang.*;
+import com.chriscarr.bang.Character;
 import com.chriscarr.bang.cards.*;
 import junit.framework.TestCase;
 
@@ -21,20 +22,26 @@ public class SetupTest extends TestCase {
 
     public void testSetupPlayers() {
         Deck deck = Setup.setupDeck(false);
-        List<Player> players = Setup.getPlayers(7, deck);
+        List<Player> players = Setup.getPlayers(7);
         assertEquals(7, players.size());
+    }
+
+    public void testSetupPinsRequestedFirst() {
+        var players = Setup.getPlayers(4, false, Role.SHERIFF, Character.CALAMITYJANET);
+        assertEquals(Role.SHERIFF, players.getFirst().getRole());
+        assertEquals(Character.CALAMITYJANET, players.getFirst().getCharacter());
     }
 
     public void testSetupPlayersHealth() {
         Deck deck = Setup.setupDeck(false);
-        List<Player> players = Setup.getPlayers(7, deck);
+        List<Player> players = Setup.getPlayers(7);
         int health = players.get(6).getHealth();
         assertTrue(health == 3 || health == 4 || health == 5);
     }
 
     public void testSetupPlayersRoles() {
         Deck deck = Setup.setupDeck(false);
-        List<Player> players = Setup.getPlayers(7, deck);
+        List<Player> players = Setup.getPlayers(7);
         int sheriff = 0;
         int outlaw = 0;
         int deputy = 0;
@@ -58,7 +65,7 @@ public class SetupTest extends TestCase {
 
     public void testSetupPlayersRoles4() {
         Deck deck = Setup.setupDeck(false);
-        List<Player> players = Setup.getPlayers(4, deck);
+        List<Player> players = Setup.getPlayers(4);
         int sheriff = 0;
         int outlaw = 0;
         int deputy = 0;
@@ -82,7 +89,7 @@ public class SetupTest extends TestCase {
 
     public void testSetupPlayersRoles5() {
         Deck deck = Setup.setupDeck(false);
-        List<Player> players = Setup.getPlayers(5, deck);
+        List<Player> players = Setup.getPlayers(5);
         int sheriff = 0;
         int outlaw = 0;
         int deputy = 0;
@@ -106,7 +113,7 @@ public class SetupTest extends TestCase {
 
     public void testSetupPlayersRoles6() {
         Deck deck = Setup.setupDeck(false);
-        List<Player> players = Setup.getPlayers(6, deck);
+        List<Player> players = Setup.getPlayers(6);
         int sheriff = 0;
         int outlaw = 0;
         int deputy = 0;
@@ -130,7 +137,7 @@ public class SetupTest extends TestCase {
 
     public void testHands() {
         Deck deck = Setup.setupDeck(false);
-        List<Player> players = Setup.getPlayers(4, deck);
+        List<Player> players = Setup.getPlayers(4);
         Setup.drawHands(players, deck);
         int maxHealth = players.get(3).getMaxHealth();
         Hand hand = players.get(3).getHand();

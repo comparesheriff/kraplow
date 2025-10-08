@@ -32,7 +32,7 @@ public class Setup {
         deck.shuffle();
         Discard discard = new Discard();
         deck.setDiscard(discard);
-        players = getPlayers(countPlayers, deck, sidestep, pRole, pChar);
+        players = getPlayers(countPlayers, sidestep, pRole, pChar);
         drawHands(players, deck);
         Turn turn = new Turn();
         turn.setDeck(deck);
@@ -60,12 +60,12 @@ public class Setup {
         return deck;
     }
 
-    public static List<Player> getPlayers(int countCharacters, Deck deck) {
-        return getPlayers(countCharacters, deck, false, Role.RANDOM, Character.RANDOM);
+    public static List<Player> getPlayers(int countCharacters) {
+        return getPlayers(countCharacters, false, Role.RANDOM, Character.RANDOM);
     }
 
     public static List<Player> getPlayers(
-        int countCharacters, Deck deck, boolean sidestep, Role pRole, Character pChar) {
+        int countCharacters, boolean sidestep, Role pRole, Character pChar) {
         List<Player> players = new ArrayList<>();
         List<Character> characterList = new ArrayList<>(Character.CHARACTERS);
         try {
@@ -81,12 +81,14 @@ public class Setup {
         for (int i = 0; i < countCharacters; i++) {
             Player player = new Player();
 
-            if (i == 0 && Character.RANDOM.equals(pChar) && characterList.contains(pChar)) {
+            //move specific character to front if player has chosen a non random character
+            if (i == 0 && !Character.RANDOM.equals(pChar) && characterList.contains(pChar)) {
                 characterList.remove(pChar);
                 characterList.addFirst(pChar);
             }
             Character character = characterList.get(i);
-            if (i == 0 && !pRole.equals(Role.RANDOM) && roles.contains(pRole)) {
+            //move specific role to front if player has chosen a non random role
+            if (i == 0 && !Role.RANDOM.equals(pRole) && roles.contains(pRole)) {
                 roles.remove(pRole);
                 roles.addFirst(pRole);
             }
