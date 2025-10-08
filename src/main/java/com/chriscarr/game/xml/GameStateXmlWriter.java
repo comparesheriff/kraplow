@@ -1,0 +1,111 @@
+package com.chriscarr.game.xml;
+
+import com.chriscarr.bang.gamestate.GameState;
+import com.chriscarr.bang.gamestate.GameStateCard;
+import com.chriscarr.bang.gamestate.GameStatePlayer;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.List;
+
+public final class GameStateXmlWriter {
+    private GameStateXmlWriter() {
+    }
+
+    public static void writeGameState(GameState gameState, List<String> roles, HttpServletResponse resp) throws IOException {
+        resp.getWriter().write("<gamestate>");
+        resp.getWriter().write("<players>");
+        for (GameStatePlayer p : gameState.getPlayers()) {
+            writePlayer(p, resp);
+        }
+        resp.getWriter().write("</players>");
+
+        if (gameState.timeout() != null) {
+            resp.getWriter().write("<timeout>" + gameState.timeout() + "</timeout>");
+        }
+
+        resp.getWriter().write("<currentname>");
+        resp.getWriter().write(gameState.getCurrentName());
+        resp.getWriter().write("</currentname>");
+
+        resp.getWriter().write("<decksize>");
+        resp.getWriter().write(Integer.toString(gameState.getDeckSize()));
+        resp.getWriter().write("</decksize>");
+
+        gameState.discardTopCard().ifPresent(top -> {
+            try {
+                resp.getWriter().write("<discardtopcard>");
+                writeCard(top, resp);
+                resp.getWriter().write("</discardtopcard>");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        if (roles != null && !roles.isEmpty()) {
+            resp.getWriter().write("<roles>");
+            for (String role : roles) {
+                resp.getWriter().write("<role>" + role + "</role>");
+            }
+            resp.getWriter().write("</roles>");
+        }
+
+        resp.getWriter().write("</gamestate>");
+    }
+
+    public static void writePlayer(GameStatePlayer player, HttpServletResponse response) throws IOException {
+        response.getWriter().write("<player>");
+        response.getWriter().write("<handle>");
+        response.getWriter().write(player.user);
+        response.getWriter().write("</handle>");
+        response.getWriter().write("<name>");
+        response.getWriter().write(player.name);
+        response.getWriter().write("</name>");
+        response.getWriter().write("<specialability>");
+        response.getWriter().write(player.specialAbility);
+        response.getWriter().write("</specialability>");
+        response.getWriter().write("<health>");
+        response.getWriter().write(Integer.toString(player.health));
+        response.getWriter().write("</health>");
+        response.getWriter().write("<maxhealth>");
+        response.getWriter().write(Integer.toString(player.maxHealth));
+        response.getWriter().write("</maxhealth>");
+        response.getWriter().write("<handsize>");
+        response.getWriter().write(Integer.toString(player.handSize));
+        response.getWriter().write("</handsize>");
+        if (player.isSheriff) {
+            response.getWriter().write("<issheriff/>");
+        }
+        if (player.gun != null) {
+            response.getWriter().write("<gun>");
+            writeCard(player.gun, response);
+            response.getWriter().write("</gun>");
+        }
+        List<GameStateCard> inPlay = player.inPlay;
+        if (inPlay != null && !inPlay.isEmpty()) {
+            response.getWriter().write("<inplay>");
+            for (GameStateCard inPlayCard : inPlay) {
+                response.getWriter().write("<inplaycard>");
+                writeCard(inPlayCard, response);
+                response.getWriter().write("</inplaycard>");
+            }
+            response.getWriter().write("</inplay>");
+        }
+        response.getWriter().write("</player>");
+    }
+
+    public static void writeCard(GameStateCard card, HttpServletResponse response) throws IOException {
+        response.getWriter().write("<name>");
+        response.getWriter().write(card.name.getDisplayName());
+        response.getWriter().write("</name>");
+        response.getWriter().write("<suit>");
+        response.getWriter().write(card.suit);
+        response.getWriter().write("</suit>");
+        response.getWriter().write("<value>");
+        response.getWriter().write(card.value);
+        response.getWriter().write("</value>");
+        response.getWriter().write("<type>");
+        response.getWriter().write(card.type);
+        response.getWriter().write("</type>");
+    }
+}

@@ -1,7 +1,7 @@
 package com.chriscarr.game.ajax;
 
 public enum MessageType {
-    CHAT, GETCHAT;
+    CHAT, GETCHAT, GETGAMESTATE;
 
     public static MessageType fromString(String string) {
         try {

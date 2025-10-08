@@ -4,9 +4,6 @@ import com.chriscarr.bang.Character;
 import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.Role;
 import com.chriscarr.bang.cards.Card;
-import com.chriscarr.bang.gamestate.GameState;
-import com.chriscarr.bang.gamestate.GameStateCard;
-import com.chriscarr.bang.gamestate.GameStatePlayer;
 import com.chriscarr.bang.userinterface.JSPUserInterface;
 import com.chriscarr.bang.userinterface.Message;
 import com.chriscarr.bang.userinterface.WebGameUserInterface;
@@ -14,6 +11,7 @@ import com.chriscarr.game.ajax.AjaxAction;
 import com.chriscarr.game.ajax.AjaxRegistry;
 import com.chriscarr.game.ajax.MessageType;
 import com.chriscarr.game.ajax.handlers.ChatHandlers;
+import com.chriscarr.game.ajax.handlers.GameStateHandlers;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,12 +20,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class AjaxServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(AjaxServlet.class);
@@ -43,7 +38,8 @@ public class AjaxServlet extends HttpServlet {
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
     private final AjaxRegistry registry = new AjaxRegistry()
         .register(MessageType.CHAT, ChatHandlers.chat())
-        .register(MessageType.GETCHAT, ChatHandlers.getChat(dateFormat));
+        .register(MessageType.GETCHAT, ChatHandlers.getChat(dateFormat))
+        .register(MessageType.GETGAMESTATE, GameStateHandlers.getGameState(CLEANUP));
 
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -59,7 +55,6 @@ public class AjaxServlet extends HttpServlet {
             }
 
             switch (messageTypeParam) {
-                case "GETGAMESTATE" -> handleGetGameState(request, response);
                 case "JOIN" -> handleJoin(request, response);
                 case "JOINAI" -> handleJoinAI(request, response);
                 case "LEAVE" -> handleLeave(request, response);
@@ -287,59 +282,6 @@ public class AjaxServlet extends HttpServlet {
         printJoinInfoForUser(response, gameId, user);
     }
 
-    private void handleGetGameState(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String gameId = request.getParameter("gameId");
-        JSPUserInterface userInterface =
-            (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
-        if (userInterface != null) {
-            GameState gameState = userInterface.getGameState();
-            if (gameState != null) {
-                response.getWriter().write("<gamestate>");
-                response.getWriter().write("<players>");
-                for (GameStatePlayer player : gameState.getPlayers()) {
-                    if (userInterface instanceof WebGameUserInterface) {
-                        player.user =
-                            ((WebGameUserInterface) userInterface).userFigureNames.get(player.name);
-                    }
-                    writePlayer(player, response);
-                }
-                response.getWriter().write("</players>");
-                if (gameState.timeout() != null) {
-                    response.getWriter().write("<timeout>" + gameState.timeout() + "</timeout>");
-                }
-                if (gameState.isGameOver()) {
-                    response.getWriter().write("<gameover/>");
-                    int gameIdInt = Integer.parseInt(gameId);
-                    WebGame.removeGame(Integer.parseInt(gameId));
-                    CLEANUP.schedule(() -> WebInit.remove(gameIdInt), 10, TimeUnit.SECONDS);
-                }
-                response.getWriter().write("<currentname>");
-                response.getWriter().write(gameState.getCurrentName());
-                response.getWriter().write("</currentname>");
-                response.getWriter().write("<decksize>");
-                response.getWriter().write(Integer.toString(gameState.getDeckSize()));
-                response.getWriter().write("</decksize>");
-                Optional<GameStateCard> topCard = gameState.discardTopCard();
-                if (topCard.isPresent()) {
-                    response.getWriter().write("<discardtopcard>");
-                    writeCard(topCard.get(), response);
-                    response.getWriter().write("</discardtopcard>");
-                }
-                response.getWriter().write("<roles>");
-                ArrayList<String> roles = userInterface.getRoles();
-                for (String role : roles) {
-                    response.getWriter().write("<role>" + role + "</role>");
-                }
-                response.getWriter().write("</roles>");
-                response.getWriter().write("</gamestate>");
-            } else {
-                response.getWriter().write("<gamestate/>");
-            }
-        } else {
-            response.getWriter().write("<gamestate/>");
-        }
-    }
-
     private void printJoinInfoForUser(HttpServletResponse response, String gameId, String user)
         throws IOException {
         if (user != null) {
@@ -354,63 +296,6 @@ public class AjaxServlet extends HttpServlet {
         } else {
             response.getWriter().write("<fail/>");
         }
-    }
-
-    private void writePlayer(GameStatePlayer player, HttpServletResponse response)
-        throws IOException {
-        response.getWriter().write("<player>");
-        response.getWriter().write("<handle>");
-        response.getWriter().write(player.user);
-        response.getWriter().write("</handle>");
-        response.getWriter().write("<name>");
-        response.getWriter().write(player.name);
-        response.getWriter().write("</name>");
-        response.getWriter().write("<specialability>");
-        response.getWriter().write(player.specialAbility);
-        response.getWriter().write("</specialability>");
-        response.getWriter().write("<health>");
-        response.getWriter().write(Integer.toString(player.health));
-        response.getWriter().write("</health>");
-        response.getWriter().write("<maxhealth>");
-        response.getWriter().write(Integer.toString(player.maxHealth));
-        response.getWriter().write("</maxhealth>");
-        response.getWriter().write("<handsize>");
-        response.getWriter().write(Integer.toString(player.handSize));
-        response.getWriter().write("</handsize>");
-        if (player.isSheriff) {
-            response.getWriter().write("<issheriff/>");
-        }
-        if (player.gun != null) {
-            response.getWriter().write("<gun>");
-            writeCard(player.gun, response);
-            response.getWriter().write("</gun>");
-        }
-        List<GameStateCard> inPlay = player.inPlay;
-        if (inPlay != null && !inPlay.isEmpty()) {
-            response.getWriter().write("<inplay>");
-            for (GameStateCard inPlayCard : inPlay) {
-                response.getWriter().write("<inplaycard>");
-                writeCard(inPlayCard, response);
-                response.getWriter().write("</inplaycard>");
-            }
-            response.getWriter().write("</inplay>");
-        }
-        response.getWriter().write("</player>");
-    }
-
-    private void writeCard(GameStateCard card, HttpServletResponse response) throws IOException {
-        response.getWriter().write("<name>");
-        response.getWriter().write(card.name.getDisplayName());
-        response.getWriter().write("</name>");
-        response.getWriter().write("<suit>");
-        response.getWriter().write(card.suit);
-        response.getWriter().write("</suit>");
-        response.getWriter().write("<value>");
-        response.getWriter().write(card.value);
-        response.getWriter().write("</value>");
-        response.getWriter().write("<type>");
-        response.getWriter().write(card.type);
-        response.getWriter().write("</type>");
     }
 
     @Override
