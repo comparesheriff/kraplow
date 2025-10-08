@@ -47,7 +47,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
         Hand hand = player.getHand();
         int handSize = hand.size();
         for (int i = 0; i < handSize; i++) {
-            LOG.info(i + ") " + hand.get(i).getName());
+            LOG.info("{}) {}", i, hand.get(i).getName());
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -190,7 +190,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
         LOG.info("Choose General Store Card");
         int handSize = cards.size();
         for (int i = 0; i < handSize; i++) {
-            LOG.info(i + ") " + cards.get(i).getName());
+            LOG.info("{}) {}", i, cards.get(i).getName());
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -263,7 +263,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
             if (canPlay) {
                 LOG.info(" Targets: ");
                 for (String name : turn.targets(player, card)) {
-                    LOG.info(name + " ");
+                    LOG.info("{} ", name);
                 }
             }
         }
@@ -292,11 +292,11 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
         for (int i = 0; i < handSize; i++) {
             Card card = hand.get(i);
             boolean canPlay = CardName.BEER.equals(card.getName());
-            LOG.info(i + ") " + card.getName() + " can play? " + canPlay);
+            LOG.info("{}) {} can play? {}", i, card.getName(), canPlay);
             if (canPlay) {
                 LOG.info(" Targets: ");
                 for (String name : turn.targets(player, card)) {
-                    LOG.info(name + " ");
+                    LOG.info("{} ", name);
                 }
             }
         }
@@ -332,7 +332,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
             if (canPlay) {
                 LOG.info(" Targets: ");
                 for (String name : turn.targets(player, card)) {
-                    LOG.info(name + " ");
+                    LOG.info("{} ", name);
                 }
             }
         }
@@ -380,7 +380,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
         LOG.info("Choose Draw Card to keep");
         int handSize = cards.size();
         for (int i = 0; i < handSize; i++) {
-            LOG.info(i + ") " + cards.get(i).getName());
+            LOG.info("{}) {}", i, cards.get(i).getName());
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -403,7 +403,7 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
         LOG.info("Choose card put back");
         int handSize = cards.size();
         for (int i = 0; i < handSize; i++) {
-            LOG.info(i + ") " + cards.get(i).getName());
+            LOG.info("{}) {}", i, cards.get(i).getName());
         }
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
@@ -422,31 +422,31 @@ public class ManualUserInterface implements UserInterface, GameStateListener {
 
     public void printGameState() {
         GameState gameState = turn.getGameState();
-        LOG.info("Current Turn: " + gameState.getCurrentName());
-        LOG.info("Is game over: " + gameState.isGameOver());
-        LOG.info("Deck size: " + gameState.getDeckSize());
-        LOG.info("Discard top card: " + gameState.discardTopCard());
+        LOG.info("Current Turn: {}", gameState.getCurrentName());
+        LOG.info("Is game over: {}", gameState.isGameOver());
+        LOG.info("Deck size: {}", gameState.getDeckSize());
+        LOG.info("Discard top card: {}", gameState.discardTopCard());
         List<GameStatePlayer> players = gameState.getPlayers();
         for (GameStatePlayer player : players) {
-            LOG.info("Name: " + player.name);
-            LOG.info("Is Sheriff: " + player.isSheriff);
-            LOG.info("Ability: " + player.specialAbility);
-            LOG.info("Health: " + player.health);
-            LOG.info("Max: " + player.maxHealth);
-            LOG.info("Hand: " + player.handSize);
+            LOG.info("Name: {}", player.name);
+            LOG.info("Is Sheriff: {}", player.isSheriff);
+            LOG.info("Ability: {}", player.specialAbility);
+            LOG.info("Health: {}", player.health);
+            LOG.info("Max: {}", player.maxHealth);
+            LOG.info("Hand: {}", player.handSize);
             GameStateCard gun = player.gun;
             if (gun != null) {
-                LOG.info("Discard top card: " + gun.name);
-                LOG.info("Discard top card: " + gun.suit);
-                LOG.info("Discard top card: " + gun.type);
-                LOG.info("Discard top card: " + gun.value);
+                LOG.info("Discard top card: {}", gun.name);
+                LOG.info("Discard top card: {}", gun.suit);
+                LOG.info("Discard top card: {}", gun.type);
+                LOG.info("Discard top card: {}", gun.value);
             }
             List<GameStateCard> cards = player.inPlay;
             for (GameStateCard card : cards) {
-                LOG.info("name: " + card.name);
-                LOG.info("suit: " + card.suit);
-                LOG.info("type: " + card.type);
-                LOG.info("value: " + card.value);
+                LOG.info("name: {}", card.name);
+                LOG.info("suit: {}", card.suit);
+                LOG.info("type: {}", card.type);
+                LOG.info("value: {}", card.value);
             }
         }
     }
