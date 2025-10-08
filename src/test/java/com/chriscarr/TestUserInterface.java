@@ -103,7 +103,7 @@ public class TestUserInterface implements UserInterface {
 
     public void printInfo(String info) {
         //do nothing
-        LOG.info(info);
+        LOG.debug(info);
     }
 
     @Override
