@@ -45,7 +45,9 @@ public final class GameStateXmlWriter {
         if (roles != null && !roles.isEmpty()) {
             resp.getWriter().write("<roles>");
             for (String role : roles) {
-                resp.getWriter().write("<role>" + role + "</role>");
+                resp.getWriter().write("<role>");
+                resp.getWriter().write(XmlUtil.escapeXml(role));
+                resp.getWriter().write("</role>");
             }
             resp.getWriter().write("</roles>");
         }
@@ -56,13 +58,13 @@ public final class GameStateXmlWriter {
     public static void writePlayer(GameStatePlayer player, HttpServletResponse response) throws IOException {
         response.getWriter().write("<player>");
         response.getWriter().write("<handle>");
-        response.getWriter().write(player.user);
+        response.getWriter().write(XmlUtil.escapeXml(player.user));
         response.getWriter().write("</handle>");
         response.getWriter().write("<name>");
-        response.getWriter().write(player.name);
+        response.getWriter().write(XmlUtil.escapeXml(player.name));
         response.getWriter().write("</name>");
         response.getWriter().write("<specialability>");
-        response.getWriter().write(player.specialAbility);
+        response.getWriter().write(XmlUtil.escapeXml(player.specialAbility));
         response.getWriter().write("</specialability>");
         response.getWriter().write("<health>");
         response.getWriter().write(Integer.toString(player.health));
@@ -96,16 +98,16 @@ public final class GameStateXmlWriter {
 
     public static void writeCard(GameStateCard card, HttpServletResponse response) throws IOException {
         response.getWriter().write("<name>");
-        response.getWriter().write(card.name.getDisplayName());
+        response.getWriter().write(XmlUtil.escapeXml(card.name.getDisplayName()));
         response.getWriter().write("</name>");
         response.getWriter().write("<suit>");
-        response.getWriter().write(card.suit);
+        response.getWriter().write(XmlUtil.escapeXml(card.suit));
         response.getWriter().write("</suit>");
         response.getWriter().write("<value>");
-        response.getWriter().write(card.value);
+        response.getWriter().write(XmlUtil.escapeXml(card.value));
         response.getWriter().write("</value>");
         response.getWriter().write("<type>");
-        response.getWriter().write(card.type);
+        response.getWriter().write(XmlUtil.escapeXml(card.type));
         response.getWriter().write("</type>");
     }
 }
