@@ -9,7 +9,15 @@ import java.util.Random;
 
 public class Deck extends ArrayList<Card> {
     private Discard discard;
-    private Random rng = new Random();
+    private final Random rng;
+
+    public Deck() {
+        this(new Random());
+    }
+
+    public Deck(Random rng) {
+        this.rng = Objects.requireNonNull(rng);
+    }
 
     public Card pull() {
         if (isEmpty()) {
@@ -29,7 +37,4 @@ public class Deck extends ArrayList<Card> {
         this.discard = discard;
     }
 
-    public void setRng(Random rng) {
-        this.rng = Objects.requireNonNull(rng);
-    }
 }

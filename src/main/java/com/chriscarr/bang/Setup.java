@@ -179,7 +179,7 @@ public class Setup {
         return players;
     }
 
-    public void setRng(Random rng) {
-        Setup.rng = rng;
+    static void setRngForTests(Random r) { // nur test-intern verwenden
+        rng = r;
     }
 }

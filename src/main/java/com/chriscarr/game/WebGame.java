@@ -9,10 +9,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class WebGame {
-    private static int gameCounter = 0;
-    private static int guestCounter = 0;
+    private static final AtomicInteger gameCounter = new AtomicInteger();
+    private static final AtomicInteger guestCounter = new AtomicInteger();
     private static final Map<Integer, GamePrep> gamePreps = new ConcurrentHashMap<>();
     private static final Map<String, List<ChatMessage>> chatLogs = new ConcurrentHashMap<>();
     private static final Map<String, Session> sessions = new ConcurrentHashMap<>();
@@ -23,10 +24,10 @@ public class WebGame {
     }
 
     public static int create(String visibility, boolean sidestep) {
-        int gameId = gameCounter;
+        int gameId = gameCounter.get();
         GamePrep gamePrep = new GamePrep(visibility, sidestep);
         gamePreps.put(gameId, gamePrep);
-        gameCounter++;
+        gameCounter.incrementAndGet();
         chatLogs.put(Integer.toString(gameId), new ArrayList<>());
         gameHandles.put(Integer.toString(gameId), new ArrayList<>());
         return gameId;
@@ -158,7 +159,7 @@ public class WebGame {
     }
 
     public static int getNextGuestCounter() {
-        return guestCounter++;
+        return guestCounter.incrementAndGet();
     }
 
     public static List<Session> getSessions() {
