@@ -10,7 +10,10 @@ import com.chriscarr.bang.gamestate.GameStatePlayer;
 import com.chriscarr.bang.userinterface.JSPUserInterface;
 import com.chriscarr.bang.userinterface.Message;
 import com.chriscarr.bang.userinterface.WebGameUserInterface;
-import com.chriscarr.game.xml.XmlUtil;
+import com.chriscarr.game.ajax.AjaxAction;
+import com.chriscarr.game.ajax.AjaxRegistry;
+import com.chriscarr.game.ajax.MessageType;
+import com.chriscarr.game.ajax.handlers.ChatHandlers;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,14 +39,26 @@ public class AjaxServlet extends HttpServlet {
                 thread.setDaemon(true);
                 return thread;
             });
+
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private final AjaxRegistry registry = new AjaxRegistry()
+        .register(MessageType.CHAT, ChatHandlers.chat())
+        .register(MessageType.GETCHAT, ChatHandlers.getChat(dateFormat));
+
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         setResponseHeaders(response);
 
-        String messageType = request.getParameter("messageType");
-        if (messageType != null && !messageType.isEmpty()) {
-            switch (messageType) {
+        String messageTypeParam = request.getParameter("messageType");
+        if (messageTypeParam != null && !messageTypeParam.isEmpty()) {
+            MessageType messageType = MessageType.fromString(messageTypeParam);
+            AjaxAction ajaxAction = registry.get(messageType);
+            if (ajaxAction != null) {
+                ajaxAction.handle(request, response);
+                return;
+            }
+
+            switch (messageTypeParam) {
                 case "GETGAMESTATE" -> handleGetGameState(request, response);
                 case "JOIN" -> handleJoin(request, response);
                 case "JOINAI" -> handleJoinAI(request, response);
@@ -52,15 +67,13 @@ public class AjaxServlet extends HttpServlet {
                 case "GETGUESTCOUNTER" -> handleGetGuestCounter(response);
                 case "AVAILABLEGAMES" -> handleAvailableGames(response);
                 case "CANSTART" -> handleCanStart(request, response);
-                case "CHAT" -> handleChat(request, response);
-                case "GETCHAT" -> handleGetChat(request, response);
                 case "START" -> handleStart(request, response);
                 case "CREATE" -> handleCreate(request, response);
                 case "GETMESSAGE" -> handleGetMessage(request, response);
                 case "SENDRESPONSE" -> handleSendResponse(request, response);
                 case "GETPLAYERINFO" -> handleGetPlayerInfo(request, response);
                 default -> {
-                    LOG.error("Unknown message type: {}", messageType);
+                    LOG.error("Unknown message type: {}", messageTypeParam);
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     response.getWriter().write("<error>unknown message type</error>");
                 }
@@ -180,51 +193,6 @@ public class AjaxServlet extends HttpServlet {
         String pChar = request.getParameter("pchar");
         Character character = Character.valueOf(pChar);
         WebGame.start(Integer.parseInt(gameId), Integer.parseInt(aiSleepMs), role, character);
-        response.getWriter().write("<ok/>");
-    }
-
-    private void handleGetChat(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String guestCounter = request.getParameter("guestCounter");
-        String handle = request.getParameter("handle");
-        String gameId = request.getParameter("gameid");
-        if (gameId == null) {
-            gameId = "lobby";
-        }
-        WebGame.updateSession(guestCounter, handle);
-        List<ChatMessage> chatLog = WebGame.getChatLog(gameId);
-        response.getWriter().write("<chats>");
-        for (ChatMessage chat : chatLog) {
-            response.getWriter().write("<chatmessage>");
-            response.getWriter().write("<chat>");
-            response.getWriter().write(XmlUtil.escapeXml(chat.message));
-            response.getWriter().write("</chat>");
-            response.getWriter().write("<timestamp>");
-            response.getWriter().write(dateFormat.format(chat.timestamp));
-            response.getWriter().write("</timestamp>");
-            response.getWriter().write("</chatmessage>");
-        }
-        List<Session> sessions = WebGame.getSessions();
-        for (Session session : sessions) {
-            response.getWriter().write("<session>");
-            String outHandle = session.handle;
-            if (outHandle == null) {
-                outHandle = "Unknown";
-            }
-            response.getWriter().write(outHandle);
-            response.getWriter().write("</session>");
-        }
-        response.getWriter().write("</chats>");
-    }
-
-    private void handleChat(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String chat = request.getParameter("chat");
-        chat = XmlUtil.escapeXml(chat);
-        LOG.info("chat: {}", chat);
-        String gameId = request.getParameter("gameid");
-        if (gameId == null) {
-            gameId = "lobby";
-        }
-        WebGame.addChat(chat, gameId);
         response.getWriter().write("<ok/>");
     }
 
