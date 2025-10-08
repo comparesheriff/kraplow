@@ -1,9 +1,9 @@
 package com.chriscarr.bang.userinterface;
 
 public interface Message {
-  void setMessage(String message);
+    void setMessage(String message);
 
-  String getMessage();
+    String getMessage();
 
-  int getId();
+    int getId();
 }

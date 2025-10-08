@@ -5,12 +5,12 @@ import com.chriscarr.bang.userinterface.ManualUserInterface;
 
 public class ManualTest {
 
-  public ManualTest() {
-    ManualUserInterface x = new ManualUserInterface();
-    new Setup(7, x, x);
-  }
+    public ManualTest() {
+        ManualUserInterface x = new ManualUserInterface();
+        new Setup(7, x, x);
+    }
 
-  public static void main(String[] args) {
-    new ManualTest();
-  }
+    public static void main(String[] args) {
+        new ManualTest();
+    }
 }

@@ -21,10 +21,10 @@
     <div id="gameInfo">
         <p>Private:<input type="checkbox" id="private" name="private" value="private"/></p>
         <p>AI Speed - Instant:<input type="radio" id="aiSpeedInstant" name="aiSpeed" value="0"/> Fast:<input
-                type="radio" id="aiSpeedFast" name="aiSpeed" value="1500" checked="checked"/> Slow:<input type="radio"
-                                                                                                          id="aiSpeedSlow"
-                                                                                                          name="aiSpeed"
-                                                                                                          value="3500"/>
+            type="radio" id="aiSpeedFast" name="aiSpeed" value="1500" checked="checked"/> Slow:<input type="radio"
+                                                                                                      id="aiSpeedSlow"
+                                                                                                      name="aiSpeed"
+                                                                                                      value="3500"/>
         </p>
         <p>Expansion Sidestep Township - 4-8 players (Beta):<input type="checkbox" id="sidestep" name="sidestep"
                                                                    value="sidestep"/> Status: Everything Implemented,
@@ -42,7 +42,8 @@
             <div style="float:left; width:100px; height:178px;" id="chatNames"></div>
         </div>
         <div id="chatInput">
-            <form onSubmit="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = ''; return false;">
+            <form
+                onSubmit="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = ''; return false;">
                 Chat <input type="text" id="chatinput"><input type="button" value="Send"
                                                               onClick="sendChat(getServletUrl(), parseSendChat, document.getElementById('chatinput').value); document.getElementById('chatinput').value = '';">
             </form>
@@ -58,7 +59,7 @@
                                                                          href="https://github.com/ccarrster/kraplow">Github
     Project</a>
     <div>Thank you to <a target="_blank" href="https://www.instagram.com/valevidart/">Valentina Conte</a> and <a
-            href="https://www.instagram.com/myriam_art_designs" target="_blank">Myriam Salvado</a> for some beautiful
+        href="https://www.instagram.com/myriam_art_designs" target="_blank">Myriam Salvado</a> for some beautiful
         artwork and Lestodante for the layout/editing pictures.
     </div>
 </div>

@@ -1,142 +1,143 @@
 package com.chriscarr;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 import com.chriscarr.bang.CardsInPlay;
 import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.userinterface.UserInterface;
-import java.util.ArrayList;
-import java.util.List;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.slf4j.LoggerFactory.getLogger;
+
 public class TestUserInterface implements UserInterface {
-  private static final Logger LOG = getLogger(TestUserInterface.class);
+    private static final Logger LOG = getLogger(TestUserInterface.class);
 
-  public int askDiscard(Player player) {
-    return 0;
-  }
-
-  public int askPlay() {
-    return -1;
-  }
-
-  @Override
-  public int respondBang(Player player) {
-    // TODO Auto-generated method stub
-    return -1;
-  }
-
-  @Override
-  public List<Card> chooseTwoDiscardForShoot(Player player) {
-    // TODO Auto-generated method stub
-    return new ArrayList<>();
-  }
-
-  @Override
-  public int askBlueDiscard(Player player) {
-    return -1;
-  }
-
-  @Override
-  public int chooseGeneralStoreCard(Player generalPlayer, List<Card> generalStoreCards) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
-  @Override
-  public int askPlayer(Player player, List<String> otherPlayers) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
-  @Override
-  public int askOthersCard(Player player, CardsInPlay cardsInPlay, boolean hasHand) {
-    if (!cardsInPlay.isEmpty()) {
-      return 0;
-    } else if (cardsInPlay.hasGun()) {
-      return -2;
-    } else {
-      return -1;
+    public int askDiscard(Player player) {
+        return 0;
     }
-  }
 
-  public int respondBeer(Player player) {
-    if (player.countBeers() > 0) {
-      return 0;
-    } else {
-      return -1;
+    public int askPlay() {
+        return -1;
     }
-  }
 
-  @Override
-  public List<Card> chooseTwoDiscardForLife(Player player) {
-    List<Card> cards = new ArrayList<>();
-    Hand hand = player.getHand();
-    cards.add(hand.get(0));
-    cards.add(hand.get(1));
-    return cards;
-  }
+    @Override
+    public int respondBang(Player player) {
+        // TODO Auto-generated method stub
+        return -1;
+    }
 
-  @Override
-  public int respondMiss(Player miss, boolean canSingleUse) {
-    // TODO Auto-generated method stub
-    return -1;
-  }
+    @Override
+    public List<Card> chooseTwoDiscardForShoot(Player player) {
+        // TODO Auto-generated method stub
+        return new ArrayList<>();
+    }
 
-  @Override
-  public int askPlay(Player player) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
+    @Override
+    public int askBlueDiscard(Player player) {
+        return -1;
+    }
 
-  @Override
-  public boolean chooseDiscard(Player player, Card card) {
-    // TODO Auto-generated method stub
-    return true;
-  }
+    @Override
+    public int chooseGeneralStoreCard(Player generalPlayer, List<Card> generalStoreCards) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
-  public void printInfo(String info) {
-    // do nothing
-    LOG.debug(info);
-  }
+    @Override
+    public int askPlayer(Player player, List<String> otherPlayers) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
-  @Override
-  public boolean chooseFromPlayer(Player player) {
-    // TODO Auto-generated method stub
-    return true;
-  }
+    @Override
+    public int askOthersCard(Player player, CardsInPlay cardsInPlay, boolean hasHand) {
+        if (!cardsInPlay.isEmpty()) {
+            return 0;
+        } else if (cardsInPlay.hasGun()) {
+            return -2;
+        } else {
+            return -1;
+        }
+    }
 
-  @Override
-  public int chooseDrawCard(Player player, List<Card> cards) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
+    public int respondBeer(Player player) {
+        if (player.countBeers() > 0) {
+            return 0;
+        } else {
+            return -1;
+        }
+    }
 
-  @Override
-  public int chooseCardToPutBack(Player player, List<Card> cards) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
+    @Override
+    public List<Card> chooseTwoDiscardForLife(Player player) {
+        List<Card> cards = new ArrayList<>();
+        Hand hand = player.getHand();
+        cards.add(hand.get(0));
+        cards.add(hand.get(1));
+        return cards;
+    }
 
-  @Override
-  public List<Card> respondTwoMiss(Player player) {
-    return new ArrayList<>();
-  }
+    @Override
+    public int respondMiss(Player miss, boolean canSingleUse) {
+        // TODO Auto-generated method stub
+        return -1;
+    }
 
-  @Override
-  public String getRoleForName(String name) {
-    return null;
-  }
+    @Override
+    public int askPlay(Player player) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
-  public String getGoalForName(String name) {
-    return null;
-  }
+    @Override
+    public boolean chooseDiscard(Player player, Card card) {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-  @Override
-  public String getTimeout() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    public void printInfo(String info) {
+        // do nothing
+        LOG.debug(info);
+    }
+
+    @Override
+    public boolean chooseFromPlayer(Player player) {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public int chooseDrawCard(Player player, List<Card> cards) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int chooseCardToPutBack(Player player, List<Card> cards) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public List<Card> respondTwoMiss(Player player) {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public String getRoleForName(String name) {
+        return null;
+    }
+
+    public String getGoalForName(String name) {
+        return null;
+    }
+
+    @Override
+    public String getTimeout() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

@@ -6,10 +6,11 @@ import com.chriscarr.bang.Role;
 import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class WebGameUserInterface extends JSPUserInterface {
   private static final Logger LOG = LoggerFactory.getLogger(WebGameUserInterface.class);
@@ -93,9 +94,9 @@ public class WebGameUserInterface extends JSPUserInterface {
     } else if (message.indexOf("askDiscard") == 0) {
       String commandStripped = message.replace("askDiscard ", "");
       CardName[] cards =
-          Arrays.stream(commandStripped.split(", "))
-              .map(CardName::valueOf)
-              .toArray(CardName[]::new);
+              Arrays.stream(commandStripped.split(", "))
+                      .map(CardName::valueOf)
+                      .toArray(CardName[]::new);
       if (turn.countPlayers() == 2) {
         for (int i = 0; i < cards.length - 1; i++) {
           if (cards[i].equals(CardName.BEER)) {
@@ -121,15 +122,15 @@ public class WebGameUserInterface extends JSPUserInterface {
       }
       for (int i = 0; i < cards.length - 1; i++) {
         if (!(cards[i].equals(CardName.BEER)
-            || cards[i].equals(CardName.MISSED)
-            || cards[i].equals(CardName.BANG))) {
+                || cards[i].equals(CardName.MISSED)
+                || cards[i].equals(CardName.BANG))) {
           return Integer.toString(i);
         }
       }
       return "0";
     } else if (message.indexOf("chooseGeneralStoreCard") == 0
-        || message.indexOf("chooseDrawCard") == 0
-        || message.indexOf("chooseCardToPutBack") == 0) {
+            || message.indexOf("chooseDrawCard") == 0
+            || message.indexOf("chooseCardToPutBack") == 0) {
       return "0";
     } else if (message.indexOf("askPlayer") == 0) {
       String commandStripped = message.replace("askPlayer ", "");
@@ -137,7 +138,7 @@ public class WebGameUserInterface extends JSPUserInterface {
       int playerToHurt = whoToHurt(aiPlayer, dollarsReplaced);
       return Integer.toString(playerToHurt);
     } else if (message.indexOf("chooseTwoDiscardForLife") == 0
-        || message.indexOf("respondTwoMiss") == 0) {
+            || message.indexOf("respondTwoMiss") == 0) {
       return "-1";
     } else if (message.indexOf("respondMiss") == 0) {
       String options = message.replace("respondMiss", "");
@@ -155,7 +156,7 @@ public class WebGameUserInterface extends JSPUserInterface {
       if (duelIndex != -1) {
         String otherPlayer = lastMessage.substring(0, duelIndex);
         if (aiPlayer.getRole() == Role.DEPUTY
-            && turn.getPlayerForName(otherPlayer)
+                && turn.getPlayerForName(otherPlayer)
                 .map(other -> other.getRole() == Role.SHERIFF)
                 .orElse(false)) {
           // Let the sheriff kill you(Not great for the sheriff)
@@ -192,8 +193,8 @@ public class WebGameUserInterface extends JSPUserInterface {
         }
         if (card.indexOf("Remington") == 0) {
           if (!aiPlayer.hasGun()
-              || aiPlayer.isInPlay(CardName.VOLCANIC)
-              || aiPlayer.isInPlay(CardName.SCHOFIELD)) {
+                  || aiPlayer.isInPlay(CardName.VOLCANIC)
+                  || aiPlayer.isInPlay(CardName.SCHOFIELD)) {
             if (!aiPlayer.isInPlay(CardName.REMINGTON)) {
               return Integer.toString(i);
             }
@@ -243,9 +244,9 @@ public class WebGameUserInterface extends JSPUserInterface {
         }
         if (card.indexOf("Rev. Carbine") == 0) {
           if (!aiPlayer.hasGun()
-              || aiPlayer.isInPlay(CardName.VOLCANIC)
-              || aiPlayer.isInPlay(CardName.SCHOFIELD)
-              || aiPlayer.isInPlay(CardName.REMINGTON)) {
+                  || aiPlayer.isInPlay(CardName.VOLCANIC)
+                  || aiPlayer.isInPlay(CardName.SCHOFIELD)
+                  || aiPlayer.isInPlay(CardName.REMINGTON)) {
             if (!aiPlayer.isInPlay(CardName.REV_CARBINE)) {
               return Integer.toString(i);
             }
@@ -320,10 +321,10 @@ public class WebGameUserInterface extends JSPUserInterface {
 
   private boolean isGun(CardName cardName) {
     return cardName.equals(CardName.VOLCANIC)
-        || cardName.equals(CardName.SCHOFIELD)
-        || cardName.equals(CardName.REMINGTON)
-        || cardName.equals(CardName.REV_CARBINE)
-        || cardName.equals(CardName.WINCHESTER);
+            || cardName.equals(CardName.SCHOFIELD)
+            || cardName.equals(CardName.REMINGTON)
+            || cardName.equals(CardName.REV_CARBINE)
+            || cardName.equals(CardName.WINCHESTER);
   }
 
   private boolean isThisGunBetter(CardName thisGun, CardName thatGun) {
@@ -414,7 +415,7 @@ public class WebGameUserInterface extends JSPUserInterface {
       if (!names[i].equals("Cancel")) {
         if (role == Role.OUTLAW) {
           if (!takeCard
-              || turn.getPlayerForName(names[i])
+                  || turn.getPlayerForName(names[i])
                   .map(other -> playerGotCardIWantToTake(player, other))
                   .orElse(false)) {
             targets.add(i);
@@ -440,7 +441,7 @@ public class WebGameUserInterface extends JSPUserInterface {
     List<Message> playerMessages = messages.get(userFigureNames.get(player));
     playerMessages.add(new MessageImpl(player + "-" + message));
     if (userFigureNames.get(player).contains("AI")
-        || timedOutPlayers.contains(userFigureNames.get(player))) {
+            || timedOutPlayers.contains(userFigureNames.get(player))) {
       while (messages.isEmpty()) {
         // REFACTORING - should something be happening here?
       }

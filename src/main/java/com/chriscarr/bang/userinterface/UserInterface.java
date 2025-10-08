@@ -3,6 +3,7 @@ package com.chriscarr.bang.userinterface;
 import com.chriscarr.bang.CardsInPlay;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
+
 import java.util.List;
 
 public interface UserInterface {

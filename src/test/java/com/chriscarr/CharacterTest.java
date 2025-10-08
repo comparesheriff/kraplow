@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 
 public class CharacterTest extends TestCase {
 
-  public void testCharacter() {
-    assertEquals(Character.RANDOM, Character.valueOf("RANDOM"));
-  }
+    public void testCharacter() {
+        assertEquals(Character.RANDOM, Character.valueOf("RANDOM"));
+    }
 }

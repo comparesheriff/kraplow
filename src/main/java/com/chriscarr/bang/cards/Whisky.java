@@ -2,6 +2,7 @@ package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
 import com.chriscarr.bang.userinterface.UserInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +29,12 @@ public class Whisky extends Card implements Playable {
    * @see main.chriscarr.bang.Playable#play(main.chriscarr.bang.Player, java.util.List, main.bang.UserInterface, main.bang.Deck, main.chriscarr.bang.Discard)
    */
   public boolean play(
-      Player currentPlayer,
-      List<Player> players,
-      UserInterface userInterface,
-      Deck deck,
-      Discard discard,
-      Turn turn) {
+          Player currentPlayer,
+          List<Player> players,
+          UserInterface userInterface,
+          Deck deck,
+          Discard discard,
+          Turn turn) {
     int cardDiscard = userInterface.askDiscard(currentPlayer);
     if (cardDiscard == -1) {
       return false;
