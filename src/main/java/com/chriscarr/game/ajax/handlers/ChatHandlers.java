@@ -4,6 +4,7 @@ import com.chriscarr.game.ChatMessage;
 import com.chriscarr.game.Session;
 import com.chriscarr.game.WebGame;
 import com.chriscarr.game.ajax.AjaxAction;
+import com.chriscarr.game.xml.GenericXmlWriter;
 import com.chriscarr.game.xml.XmlUtil;
 
 import java.time.format.DateTimeFormatter;
@@ -21,7 +22,7 @@ public final class ChatHandlers {
                 gameId = "lobby";
             }
             WebGame.addChat(chat, gameId);
-            response.getWriter().write("<ok/>");
+            GenericXmlWriter.writeOk(response);
         };
     }
 

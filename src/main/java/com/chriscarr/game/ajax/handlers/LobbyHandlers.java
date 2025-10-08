@@ -4,10 +4,10 @@ import com.chriscarr.game.WebGame;
 import com.chriscarr.game.ajax.AjaxAction;
 import com.chriscarr.game.ajax.dto.AvailableGameDto;
 import com.chriscarr.game.ajax.dto.CountPlayersDto;
+import com.chriscarr.game.http.ParamUtil;
 import com.chriscarr.game.xml.LobbyXmlWriter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public final class LobbyHandlers {
@@ -30,14 +30,13 @@ public final class LobbyHandlers {
 
     public static AjaxAction countPlayers() {
         return (request, response) -> {
-            String gameId = request.getParameter("gameId");
-            if (gameId != null && !gameId.equals("null")) {
-                int count = WebGame.getCountPlayers(Integer.parseInt(gameId));
-                List<String> players = WebGame.getJoinedPlayers(Integer.parseInt(gameId));
-                LobbyXmlWriter.writeCountPlayers(new CountPlayersDto(count, players), response);
-            } else {
-                LobbyXmlWriter.writeCountPlayers(new CountPlayersDto(0, Collections.emptyList()), response);
+            Integer gameId = ParamUtil.intParamOr400(request, response, "gameId");
+            if (gameId == null) {
+                return;
             }
+            int count = WebGame.getCountPlayers(gameId);
+            List<String> players = WebGame.getJoinedPlayers(gameId);
+            LobbyXmlWriter.writeCountPlayers(new CountPlayersDto(count, players), response);
         };
     }
 
@@ -47,8 +46,11 @@ public final class LobbyHandlers {
 
     public static AjaxAction canStart() {
         return (request, response) -> {
-            String gameId = request.getParameter("gameId");
-            LobbyXmlWriter.writeCanStart(WebGame.canStart(Integer.parseInt(gameId)), response);
+            Integer gameId = ParamUtil.intParamOr400(request, response, "gameId");
+            if (gameId == null) {
+                return;
+            }
+            LobbyXmlWriter.writeCanStart(WebGame.canStart(gameId), response);
         };
     }
 }

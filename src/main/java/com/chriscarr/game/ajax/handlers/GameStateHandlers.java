@@ -6,6 +6,7 @@ import com.chriscarr.bang.userinterface.WebGameUserInterface;
 import com.chriscarr.game.WebGame;
 import com.chriscarr.game.WebInit;
 import com.chriscarr.game.ajax.AjaxAction;
+import com.chriscarr.game.http.ParamUtil;
 import com.chriscarr.game.xml.GameStateXmlWriter;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -17,8 +18,11 @@ public final class GameStateHandlers {
 
     public static AjaxAction getGameState(ScheduledExecutorService cleanup) {
         return (request, response) -> {
-            String gameId = request.getParameter("gameId");
-            JSPUserInterface ui = (JSPUserInterface) WebInit.getUserInterface(Integer.parseInt(gameId));
+            Integer gameId = ParamUtil.intParamOr400(request, response, "gameId");
+            if (gameId == null) {
+                return;
+            }
+            JSPUserInterface ui = (JSPUserInterface) WebInit.getUserInterface(gameId);
             if (ui == null) {
                 response.getWriter().write("<gamestate/>");
                 return;
@@ -37,9 +41,8 @@ public final class GameStateHandlers {
 
             if (gameState.isGameOver()) {
                 response.getWriter().write("<gameover/>");
-                int gameIdInt = Integer.parseInt(gameId);
-                WebGame.removeGame(Integer.parseInt(gameId));
-                cleanup.schedule(() -> WebInit.remove(gameIdInt), 10, TimeUnit.SECONDS);
+                WebGame.removeGame(gameId);
+                cleanup.schedule(() -> WebInit.remove(gameId), 10, TimeUnit.SECONDS);
             }
         };
     }

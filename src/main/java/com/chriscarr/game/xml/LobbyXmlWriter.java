@@ -16,10 +16,10 @@ public final class LobbyXmlWriter {
         for (AvailableGameDto game : games) {
             resp.getWriter().write("<game>");
             resp.getWriter().write("<gameid>");
-            resp.getWriter().write(Integer.toString(game.gameId()));
+            resp.getWriter().write(game.gameId());
             resp.getWriter().write("</gameid>");
             resp.getWriter().write("<playercount>");
-            resp.getWriter().write(Integer.toString(game.playerCount()));
+            resp.getWriter().write(game.playerCount());
             resp.getWriter().write("</playercount>");
             resp.getWriter().write("<canjoin>");
             resp.getWriter().write(Boolean.toString(game.canJoin()));
@@ -39,7 +39,7 @@ public final class LobbyXmlWriter {
     public static void writeCountPlayers(CountPlayersDto dto, HttpServletResponse resp) throws IOException {
         resp.getWriter().write("<count>");
         resp.getWriter().write("<playercount>");
-        resp.getWriter().write(Integer.toString(dto.playerCount()));
+        resp.getWriter().write(dto.playerCount());
         resp.getWriter().write("</playercount>");
         resp.getWriter().write("<players>");
         List<String> joinedPlayers = dto.playerHandles();
@@ -54,7 +54,7 @@ public final class LobbyXmlWriter {
 
     public static void writeGuestCounter(int guestCounter, HttpServletResponse resp) throws IOException {
         resp.getWriter().write("<guestcounter>");
-        resp.getWriter().write(Integer.toString(guestCounter));
+        resp.getWriter().write(guestCounter);
         resp.getWriter().write("</guestcounter>");
     }
 

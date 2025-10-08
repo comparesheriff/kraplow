@@ -4,7 +4,8 @@ import com.chriscarr.bang.Character;
 import com.chriscarr.bang.Role;
 import com.chriscarr.game.WebGame;
 import com.chriscarr.game.ajax.AjaxAction;
-import com.chriscarr.game.xml.MessageXmlWriter;
+import com.chriscarr.game.http.ParamUtil;
+import com.chriscarr.game.xml.GenericXmlWriter;
 
 public final class CommandHandlers {
     private CommandHandlers() {
@@ -16,19 +17,22 @@ public final class CommandHandlers {
             boolean sidestep = request.getParameterMap().containsKey("sidestep");
             int gameId = WebGame.create(visibility, sidestep);
             response.getWriter().write("<gameid>");
-            response.getWriter().write(Integer.toString(gameId));
+            response.getWriter().write(gameId);
             response.getWriter().write("</gameid>");
         };
     }
 
     public static AjaxAction startGame() {
         return (request, response) -> {
-            String gameId = request.getParameter("gameId");
-            String aiSleepMs = request.getParameter("aiSleepMs");
+            Integer gameId = ParamUtil.intParamOr400(request, response, "gameId");
+            Integer aiSleepMs = ParamUtil.intParamOr400(request, response, "aiSleepMs");
+            if (gameId == null || aiSleepMs == null) {
+                return;
+            }
             Role role = Role.valueOf(request.getParameter("prole"));
-            com.chriscarr.bang.Character character = Character.valueOf(request.getParameter("pchar"));
-            WebGame.start(Integer.parseInt(gameId), Integer.parseInt(aiSleepMs), role, character);
-            MessageXmlWriter.writeOk(response);
+            Character character = Character.valueOf(request.getParameter("pchar"));
+            WebGame.start(gameId, aiSleepMs, role, character);
+            GenericXmlWriter.writeOk(response);
         };
     }
 }

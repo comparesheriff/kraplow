@@ -9,14 +9,10 @@ public final class MessageXmlWriter {
     private MessageXmlWriter() {
     }
 
-    public static void writeOk(HttpServletResponse resp) throws IOException {
-        resp.getWriter().write("<ok/>");
-    }
-
     public static void writeMessage(int id, String text, List<String> cardDisplayNames, HttpServletResponse resp) throws IOException {
         resp.getWriter().write("<message>");
         resp.getWriter().write("<id>");
-        resp.getWriter().write(Integer.toString(id));
+        resp.getWriter().write(id);
         resp.getWriter().write("</id>");
         resp.getWriter().write("<text>");
         resp.getWriter().write(XmlUtil.escapeXml(text));
