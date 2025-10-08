@@ -4,6 +4,7 @@ import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.cards.Gun;
 import com.chriscarr.bang.gamestate.GameStateCard;
+import com.chriscarr.bang.gamestate.GameStateMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class CardsInPlay extends ArrayList<Card> {
     }
 
     public boolean isGunVolcanic() {
-        return gun.getName().equals(CardName.VOLCANIC);
+        return gun != null && gun.getName().equals(CardName.VOLCANIC);
     }
 
     public Optional<Card> removeDynamite() {
@@ -81,10 +82,6 @@ public class CardsInPlay extends ArrayList<Card> {
     }
 
     public List<GameStateCard> getGameStateInPlay() {
-        List<GameStateCard> gameStateCards = new ArrayList<>();
-        for (Card card : this) {
-            gameStateCards.add(Turn.cardToGameStateCard(card).orElseThrow());
-        }
-        return gameStateCards;
+        return stream().map(card -> GameStateMapper.cardToGameStateCard(card).orElseThrow()).toList();
     }
 }

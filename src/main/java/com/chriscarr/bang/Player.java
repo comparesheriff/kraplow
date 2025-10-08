@@ -4,6 +4,7 @@ import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.cards.Gun;
 import com.chriscarr.bang.gamestate.GameStateCard;
+import com.chriscarr.bang.gamestate.GameStateMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -126,7 +127,7 @@ public class Player {
     }
 
     public Optional<GameStateCard> getGameStateGun() {
-        return Turn.cardToGameStateCard(cardsInPlay.getGun());
+        return GameStateMapper.cardToGameStateCard(cardsInPlay.getGun());
     }
 
     public String getSpecialAbility() {

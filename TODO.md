@@ -41,17 +41,17 @@ Global improvements (small, safe steps)
   - SpotBugs plugin: com.github.spotbugs:spotbugs-maven-plugin:4.8.6.4 with low-effort detectors
   - Start with: unused imports, long method warnings, cyclomatic complexity hints
   - Run manually: mvn -DskipTests=false test checkstyle:check spotbugs:check (do not fail build initially)
-- [ ] Replace magic strings with enums/typed constants.
+- [x] Replace magic strings with enums/typed constants.
   - Example: CardName enum with entries SHOOT, MISSED, BEER, PANIC, CAT_BALOU, SCHOFIELD, VOLCANIC, REMINGTON, WINCHESTER, REV_CARBINE, DYNAMITE, JAIL, etc.
   - Migration layer: add Card.getCardName(): Optional<CardName> and keep getName() returning String; call getCardName().orElse(null) in transitional checks.
   - Replace usages: if (card.getName().equals(Card.CARDBANG)) → if (card.getCardName().orElse(null) == CardName.SHOOT)
-- [ ] Prefer Optional over null for lookups that can miss.
+- [x] Prefer Optional over null for lookups that can miss.
   - Example: Turn.getPlayerForName(String) → Optional<Player> getPlayerByName(String name)
   - Call sites: Optional<Player> p = turn.getPlayerByName("Alice"); p.ifPresent(...)
 - [ ] Add equals/hashCode/toString for value-like classes.
   - Card: Define identity semantics explicitly. Suggested approach during migration: identity by object (default Object.equals) for cards in play/hand; add a valueToString() for logging. For DTOs (GameStateCard, GameStatePlayer): use value semantics (all fields).
   - Add toString() for Card as "Card{name='Beer', suit=HEARTS, value=NINE, type=BROWN}".
-- [ ] Introduce lightweight logging via slf4j + logback.
+- [x] Introduce lightweight logging via slf4j + logback.
   - Add dependencies: org.slf4j:slf4j-api and ch.qos.logback:logback-classic (test/runtime).
   - Usage example: private static final Logger log = LoggerFactory.getLogger(Turn.class); log.debug("Bangs played: {}", bangsPlayed);
   - Keep userInterface.printInfo for user-facing messages only.

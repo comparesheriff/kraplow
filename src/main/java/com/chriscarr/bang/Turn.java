@@ -1,10 +1,7 @@
 package com.chriscarr.bang;
 
 import com.chriscarr.bang.cards.*;
-import com.chriscarr.bang.gamestate.GameState;
-import com.chriscarr.bang.gamestate.GameStateCard;
-import com.chriscarr.bang.gamestate.GameStateImpl;
-import com.chriscarr.bang.gamestate.GameStatePlayer;
+import com.chriscarr.bang.gamestate.*;
 import com.chriscarr.bang.userinterface.UserInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1022,22 +1019,10 @@ public class Turn {
 
     public Optional<GameStateCard> getDiscardTopCard() {
         if (!discard.isEmpty()) {
-            return cardToGameStateCard(discard.getLast());
+            return GameStateMapper.cardToGameStateCard(discard.getLast());
         } else {
             return Optional.empty();
         }
-    }
-
-    public static Optional<GameStateCard> cardToGameStateCard(Card fromCard) {
-        if (fromCard == null) {
-            return Optional.empty();
-        }
-        GameStateCard card = new GameStateCard();
-        card.name = fromCard.getName();
-        card.suit = fromCard.getSuit().getLabel();
-        card.value = fromCard.getValue().getLabel();
-        card.type = fromCard.getType().getTypeName();
-        return Optional.of(card);
     }
 
     public int getDeckSize() {
