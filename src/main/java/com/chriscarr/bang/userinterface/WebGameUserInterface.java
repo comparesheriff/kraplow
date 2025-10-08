@@ -63,7 +63,10 @@ public class WebGameUserInterface extends JSPUserInterface {
             lastMessage = infoHistory.getLast();
         }
 
-        try { sleeper.sleep(this.aiSleepMs); } catch (InterruptedException ignored) {}
+        try {
+            sleeper.sleep(this.aiSleepMs);
+        } catch (InterruptedException ignored) {
+        }
 
         Optional<Player> aiPlayerOptional = turn.getPlayerForName(player);
         if (aiPlayerOptional.isEmpty()) {
@@ -511,7 +514,8 @@ public class WebGameUserInterface extends JSPUserInterface {
                     //-5 is never a valid response, but it will trigger the AI to make a valid one
                     addResponse(userFigureNames.get(player), "-5");
                 }
-            } catch (InterruptedException ignored) {}
+            } catch (InterruptedException ignored) {
+            }
         }
     }
 

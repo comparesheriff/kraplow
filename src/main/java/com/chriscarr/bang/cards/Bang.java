@@ -23,13 +23,13 @@ public class Bang extends Card implements Playable {
      * Determines whether the "Bang" card can be played by a given player under
      * the current game conditions.
      *
-     * @param player       The player attempting to play the "Bang" card.
-     * @param players      The list of all players in the game.
-     * @param bangsPlayed  The number of "Bang" cards already played by the player
-     *                     during their current turn.
+     * @param player      The player attempting to play the "Bang" card.
+     * @param players     The list of all players in the game.
+     * @param bangsPlayed The number of "Bang" cards already played by the player
+     *                    during their current turn.
      * @return true if the "Bang" card can be played based on the player's state,
-     *         the rules for using multiple "Bang" cards, and the list of valid targets;
-     *         false otherwise.
+     * the rules for using multiple "Bang" cards, and the list of valid targets;
+     * false otherwise.
      */
     public boolean canPlay(Player player, List<Player> players, int bangsPlayed) {
         boolean hasBangsPlayed = bangsPlayed > 0;
@@ -48,7 +48,7 @@ public class Bang extends Card implements Playable {
      * @param player  The player who is playing the "Bang" card and attempting to target other players.
      * @param players The list of all players currently in the game, including potential targets.
      * @return A list of players who are within the range of the specified player's gun
-     *         and can be targeted by the "Bang" card.
+     * and can be targeted by the "Bang" card.
      */
     public List<Player> targets(Player player, List<Player> players) {
         return Turn.getPlayersWithinRange(player, players);
@@ -69,7 +69,7 @@ public class Bang extends Card implements Playable {
      * @param skipDiscard   A flag indicating whether discarding a card is skipped
      *                      as part of the play action.
      * @return true if the "Bang" card was played successfully and the action was
-     *         carried out; false otherwise.
+     * carried out; false otherwise.
      */
     public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn, boolean skipDiscard) {
         return this.shoot(currentPlayer, players, userInterface, deck, discard, turn, skipDiscard);
@@ -87,7 +87,7 @@ public class Bang extends Card implements Playable {
      * @param discard       The discard pile where used cards are stored.
      * @param turn          The current turn in the game.
      * @return true if the card was played successfully and the action was valid;
-     *         false otherwise.
+     * false otherwise.
      */
     public boolean play(Player currentPlayer, List<Player> players, UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
         return this.play(currentPlayer, players, userInterface, deck, discard, turn, false);

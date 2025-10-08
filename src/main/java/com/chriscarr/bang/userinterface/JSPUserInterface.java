@@ -10,7 +10,6 @@ import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStateListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class JSPUserInterface implements UserInterface, GameStateListener {

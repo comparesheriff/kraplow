@@ -1,7 +1,7 @@
 package com.chriscarr;
 
-import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.CardsInPlay;
+import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.userinterface.UserInterface;

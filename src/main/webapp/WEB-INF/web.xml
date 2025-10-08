@@ -16,9 +16,9 @@
   limitations under the License.
 -->
 
-<!DOCTYPE web-app 
-    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" 
-    "http://java.sun.com/dtd/web-app_2_3.dtd">
+<!DOCTYPE web-app
+        PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
 
@@ -27,11 +27,11 @@
 
     <display-name>My Web Application</display-name>
     <description>
-      This is version X.X of an application to perform
-      a wild and wonderful task, based on servlets and
-      JSP pages.  It was written by Dave Developer
-      (dave@mycompany.com), who should be contacted for
-      more information.
+        This is version X.X of an application to perform
+        a wild and wonderful task, based on servlets and
+        JSP pages. It was written by Dave Developer
+        (dave@mycompany.com), who should be contacted for
+        more information.
     </description>
 
 
@@ -53,12 +53,12 @@
     -->
 
     <context-param>
-      <param-name>webmaster</param-name>
-      <param-value>myaddress@mycompany.com</param-value>
-      <description>
-        The EMAIL address of the administrator to whom questions
-        and comments about this application should be addressed.
-      </description>
+        <param-name>webmaster</param-name>
+        <param-value>myaddress@mycompany.com</param-value>
+        <description>
+            The EMAIL address of the administrator to whom questions
+            and comments about this application should be addressed.
+        </description>
     </context-param>
 
 
@@ -87,15 +87,14 @@
          You can define any number of servlets, including zero.
     -->
 
-    
 
     <servlet>
-      <servlet-name>graph</servlet-name>
-      <description>
-        This servlet produces GIF images that are dynamically generated
-        graphs, based on the input parameters included on the request.
-        It is generally mapped to a specific request URI like "/graph".
-      </description>
+        <servlet-name>graph</servlet-name>
+        <description>
+            This servlet produces GIF images that are dynamically generated
+            graphs, based on the input parameters included on the request.
+            It is generally mapped to a specific request URI like "/graph".
+        </description>
     </servlet>
 
 
@@ -119,10 +118,10 @@
 
 
     <servlet-mapping>
-      <servlet-name>graph</servlet-name>
-      <url-pattern>/graph</url-pattern>
+        <servlet-name>graph</servlet-name>
+        <url-pattern>/graph</url-pattern>
     </servlet-mapping>
-    
+
     <servlet>
         <servlet-name>Grapes</servlet-name>
         <servlet-class>com.chriscarr.game.AjaxServlet</servlet-class>
@@ -134,14 +133,13 @@
     </servlet-mapping>
 
 
-
     <!-- Define the default session timeout for your application,
          in minutes.  From a servlet or JSP page, you can modify
          the timeout for a particular session dynamically by using
          HttpSession.getMaxInactiveInterval(). -->
 
     <session-config>
-      <session-timeout>30</session-timeout>    <!-- 30 minutes -->
+        <session-timeout>30</session-timeout>    <!-- 30 minutes -->
     </session-config>
     <listener>
         <listener-class>com.chriscarr.infra.LoggingBootstrap</listener-class>

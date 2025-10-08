@@ -60,7 +60,7 @@ public class Brawl extends Card implements Playable {
                 if (cardOptional.isPresent()) {
                     discard.add(cardOptional.get());
                     userInterface.printInfo(currentPlayer.getName() + " discards a " + cardOptional.get().getName() + " from " + brawlPlayer.getName() + "'s hand with a Brawl");
-                };
+                }
             } else if (chosenCard == -2) {
                 Card card = brawlPlayer.getCardsInPlay().removeGun();
                 discard.add(card);

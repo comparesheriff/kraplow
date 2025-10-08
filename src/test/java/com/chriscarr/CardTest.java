@@ -85,7 +85,7 @@ public class CardTest extends TestCase {
         assertEquals(2, new Gun(CardName.SCHOFIELD, CardSuit.SPADES, CardValue.TWO, CardType.GUN).getRange());
         assertEquals(3, new Gun(CardName.REMINGTON, CardSuit.SPADES, CardValue.TWO, CardType.GUN).getRange());
         assertEquals(4, new Gun(CardName.WINCHESTER, CardSuit.SPADES, CardValue.TWO, CardType.GUN).getRange());
-        assertEquals(5,  new Gun(CardName.REV_CARBINE, CardSuit.SPADES, CardValue.TWO, CardType.GUN).getRange());
+        assertEquals(5, new Gun(CardName.REV_CARBINE, CardSuit.SPADES, CardValue.TWO, CardType.GUN).getRange());
     }
 
     public void testGunMultiBang() {
