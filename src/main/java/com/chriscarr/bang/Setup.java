@@ -4,13 +4,15 @@ import com.chriscarr.bang.cards.BangDeck;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameStateListener;
 import com.chriscarr.bang.userinterface.UserInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Setup {
+  private static final Logger LOG = LoggerFactory.getLogger(Setup.class);
 
   private Deck deck;
   private List<Player> players;
@@ -71,8 +73,7 @@ public class Setup {
         characterList.addAll(Character.CHARACTERSSIDESTEP);
       }
     } catch (Exception e) {
-      Logger logger = Logger.getLogger(Setup.class.getName());
-      logger.log(Level.SEVERE, e.getMessage(), e);
+      LOG.error(e.getMessage(), e);
     }
     Collections.shuffle(characterList);
     List<Role> roles = getRoles(countCharacters);
