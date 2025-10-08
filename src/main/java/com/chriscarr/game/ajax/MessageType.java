@@ -10,7 +10,12 @@ public enum MessageType {
     AVAILABLEGAMES,
     COUNTPLAYERS,
     GETGUESTCOUNTER,
-    CANSTART;
+    CANSTART,
+    GETMESSAGE,
+    SENDRESPONSE,
+    GETPLAYERINFO,
+    CREATE,
+    START;
 
     public static MessageType fromString(String string) {
         try {
