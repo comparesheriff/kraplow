@@ -8,7 +8,7 @@ public final class XmlUtil {
         if (inputString == null) {
             return null;
         }
-        StringBuilder sb = new StringBuilder(inputString);
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < inputString.length(); i++) {
             char c = inputString.charAt(i);
             switch (c) {

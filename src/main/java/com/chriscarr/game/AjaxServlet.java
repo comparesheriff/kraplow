@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -26,7 +27,8 @@ public class AjaxServlet extends HttpServlet {
                 return thread;
             });
 
-    private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault());
+
     private final AjaxRegistry registry = new AjaxRegistry()
         .register(MessageType.CHAT, ChatHandlers.chat())
         .register(MessageType.GETCHAT, ChatHandlers.getChat(dateFormat))

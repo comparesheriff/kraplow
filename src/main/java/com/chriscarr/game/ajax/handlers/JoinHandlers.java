@@ -57,7 +57,7 @@ public final class JoinHandlers {
             response.getWriter().write(XmlUtil.escapeXml(user));
             response.getWriter().write("</user>");
             response.getWriter().write("<gameid>");
-            response.getWriter().write(gameId);
+            response.getWriter().print(gameId);
             response.getWriter().write("</gameid>");
             response.getWriter().write("</joininfo>");
         } else {

@@ -17,7 +17,7 @@ public final class CommandHandlers {
             boolean sidestep = request.getParameterMap().containsKey("sidestep");
             int gameId = WebGame.create(visibility, sidestep);
             response.getWriter().write("<gameid>");
-            response.getWriter().write(gameId);
+            response.getWriter().print(gameId);
             response.getWriter().write("</gameid>");
         };
     }

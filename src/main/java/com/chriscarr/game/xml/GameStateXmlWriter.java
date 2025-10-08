@@ -29,7 +29,7 @@ public final class GameStateXmlWriter {
         resp.getWriter().write("</currentname>");
 
         resp.getWriter().write("<decksize>");
-        resp.getWriter().write(gameState.getDeckSize());
+        resp.getWriter().print(gameState.getDeckSize());
         resp.getWriter().write("</decksize>");
 
         gameState.discardTopCard().ifPresent(top -> {
@@ -67,13 +67,13 @@ public final class GameStateXmlWriter {
         response.getWriter().write(XmlUtil.escapeXml(player.specialAbility));
         response.getWriter().write("</specialability>");
         response.getWriter().write("<health>");
-        response.getWriter().write(player.health);
+        response.getWriter().print(player.health);
         response.getWriter().write("</health>");
         response.getWriter().write("<maxhealth>");
-        response.getWriter().write(player.maxHealth);
+        response.getWriter().print(player.maxHealth);
         response.getWriter().write("</maxhealth>");
         response.getWriter().write("<handsize>");
-        response.getWriter().write(player.handSize);
+        response.getWriter().print(player.handSize);
         response.getWriter().write("</handsize>");
         if (player.isSheriff) {
             response.getWriter().write("<issheriff/>");

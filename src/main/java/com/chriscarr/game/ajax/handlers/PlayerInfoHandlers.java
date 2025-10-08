@@ -25,6 +25,10 @@ public final class PlayerInfoHandlers {
                 return;
             }
             String name = ((WebGameUserInterface) ui).getPlayerForUser(user);
+            if (name == null) {
+                GenericXmlWriter.writeOk(response);
+                return;
+            }
             String role = ui.getRoleForName(name);
             String goal = ui.getGoalForName(name);
 

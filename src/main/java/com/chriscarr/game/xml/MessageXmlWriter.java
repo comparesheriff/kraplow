@@ -12,7 +12,7 @@ public final class MessageXmlWriter {
     public static void writeMessage(int id, String text, List<String> cardDisplayNames, HttpServletResponse resp) throws IOException {
         resp.getWriter().write("<message>");
         resp.getWriter().write("<id>");
-        resp.getWriter().write(id);
+        resp.getWriter().print(id);
         resp.getWriter().write("</id>");
         resp.getWriter().write("<text>");
         resp.getWriter().write(XmlUtil.escapeXml(text));

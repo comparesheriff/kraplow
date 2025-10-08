@@ -472,7 +472,7 @@ public class WebGameUserInterface extends JSPUserInterface {
     }
 
     public List<Message> getMessages(String user) {
-        return messages.get(user);
+        return messages.getOrDefault(user, Collections.emptyList());
     }
 
     public GameState getGameState() {
