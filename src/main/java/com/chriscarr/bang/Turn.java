@@ -1162,25 +1162,16 @@ public class Turn {
     }
 
     public static List<Card> validRespondTwoMiss(Player player, UserInterface userInterface) {
-        List<Card> cards = null;
-        boolean validCards = false;
-        while (!validCards) {
-            cards = userInterface.respondTwoMiss(player);
-            LOG.info(String.valueOf(cards.size()));
+        while (true) {
+            List<Card> cards = Optional.ofNullable(userInterface.respondTwoMiss(player)).orElseGet(Collections::emptyList);
+            LOG.debug("Cards: {}", cards);
             if (cards.isEmpty()) {
-                validCards = true;
-            } else if (cards.size() == 2) {
-                validCards = true;
-                for (Card card : cards) {
-                    boolean invalidCard = isInvalidCard(player, card);
-                    if (invalidCard) {
-                        validCards = false;
-                        break;
-                    }
-                }
+                return cards;
+            }
+            if (cards.size() == 2 && cards.stream().noneMatch(card -> isInvalidCard(player, card))) {
+                return cards;
             }
         }
-        return cards;
     }
 
     private static boolean isInvalidCard(Player player, Card card) {
