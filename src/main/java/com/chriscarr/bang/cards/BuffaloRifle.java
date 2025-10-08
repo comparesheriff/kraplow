@@ -5,28 +5,31 @@ import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
-
 import java.util.List;
 
 public class BuffaloRifle extends SingleUse implements Playable {
 
-    public BuffaloRifle(CardName name, CardSuit suit, CardValue value, CardType type) {
-        super(name, suit, value, type);
+  public BuffaloRifle(CardName name, CardSuit suit, CardValue value, CardType type) {
+    super(name, suit, value, type);
+  }
+
+  public List<Player> targets(Player player, List<Player> players) {
+    return Turn.others(player, players);
+  }
+
+  public boolean activate(
+      Player currentPlayer,
+      List<Player> players,
+      UserInterface userInterface,
+      Deck deck,
+      Discard discard,
+      Turn turn) {
+
+    boolean result = this.shoot(currentPlayer, players, userInterface, deck, discard, turn, true);
+    if (result) {
+      removeFromInPlay(currentPlayer);
+      discard.add(this);
     }
-
-    public List<Player> targets(Player player, List<Player> players) {
-        return Turn.others(player, players);
-    }
-
-    public boolean activate(Player currentPlayer, List<Player> players,
-                            UserInterface userInterface, Deck deck, Discard discard, Turn turn) {
-
-        boolean result = this.shoot(currentPlayer, players, userInterface, deck, discard, turn, true);
-        if (result) {
-            removeFromInPlay(currentPlayer);
-            discard.add(this);
-        }
-        return result;
-    }
-
+    return result;
+  }
 }

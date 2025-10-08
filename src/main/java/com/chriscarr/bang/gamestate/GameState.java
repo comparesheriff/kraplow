@@ -5,16 +5,15 @@ import java.util.Optional;
 
 public interface GameState {
 
-    List<GameStatePlayer> getPlayers();
+  List<GameStatePlayer> getPlayers();
 
-    String getCurrentName();
+  String getCurrentName();
 
-    boolean isGameOver();
+  boolean isGameOver();
 
-    int getDeckSize();
+  int getDeckSize();
 
-    Optional<GameStateCard> discardTopCard();
+  Optional<GameStateCard> discardTopCard();
 
-    String timeout();
-
+  String timeout();
 }

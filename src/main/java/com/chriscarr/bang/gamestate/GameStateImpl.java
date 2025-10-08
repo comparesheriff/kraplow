@@ -1,55 +1,53 @@
 package com.chriscarr.bang.gamestate;
 
 import com.chriscarr.bang.Turn;
-
 import java.util.List;
 import java.util.Optional;
 
 public class GameStateImpl implements GameState {
 
-    Turn turn;
-    boolean gameOver = false;
+  Turn turn;
+  boolean gameOver = false;
 
-    public GameStateImpl(Turn turn) {
-        this.turn = turn;
+  public GameStateImpl(Turn turn) {
+    this.turn = turn;
+  }
+
+  public GameStateImpl(Turn turn, boolean gameOver) {
+    this.turn = turn;
+    this.gameOver = gameOver;
+  }
+
+  @Override
+  public List<GameStatePlayer> getPlayers() {
+    return turn.getGameStatePlayers();
+  }
+
+  @Override
+  public Optional<GameStateCard> discardTopCard() {
+    return turn.getDiscardTopCard();
+  }
+
+  @Override
+  public String getCurrentName() {
+    return turn.getCurrentPlayer().getName();
+  }
+
+  @Override
+  public int getDeckSize() {
+    return turn.getDeckSize();
+  }
+
+  @Override
+  public boolean isGameOver() {
+    if (gameOver) {
+      return true;
+    } else {
+      return turn.isGameOver();
     }
+  }
 
-    public GameStateImpl(Turn turn, boolean gameOver) {
-        this.turn = turn;
-        this.gameOver = gameOver;
-    }
-
-    @Override
-    public List<GameStatePlayer> getPlayers() {
-        return turn.getGameStatePlayers();
-    }
-
-    @Override
-    public Optional<GameStateCard> discardTopCard() {
-        return turn.getDiscardTopCard();
-    }
-
-    @Override
-    public String getCurrentName() {
-        return turn.getCurrentPlayer().getName();
-    }
-
-    @Override
-    public int getDeckSize() {
-        return turn.getDeckSize();
-    }
-
-    @Override
-    public boolean isGameOver() {
-        if (gameOver) {
-            return true;
-        } else {
-            return turn.isGameOver();
-        }
-    }
-
-    public String timeout() {
-        return turn.getTimeout();
-    }
-
+  public String timeout() {
+    return turn.getTimeout();
+  }
 }
