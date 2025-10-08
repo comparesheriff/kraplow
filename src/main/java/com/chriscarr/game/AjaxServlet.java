@@ -36,11 +36,12 @@ public class AjaxServlet extends HttpServlet {
                 return thread;
             }
     );
-    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        response.setContentType("text/xml");
+        response.setContentType("application/xml");
+        response.setCharacterEncoding("UTF-8");
         response.setHeader("Cache-Control", "no-cache");
 
         String messageType = request.getParameter("messageType");
