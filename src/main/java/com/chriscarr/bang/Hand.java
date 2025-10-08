@@ -7,6 +7,7 @@ import com.chriscarr.bang.cards.SingleUse;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.IntUnaryOperator;
 
 public class Hand extends ArrayList<Card> {
@@ -33,13 +34,13 @@ public class Hand extends ArrayList<Card> {
     }
 
     public int countMisses() {
-        int bangs = 0;
+        int misses = 0;
         for (Card card : this) {
             if (card.getName().equals(CardName.MISSED)) {
-                bangs = bangs + 1;
+                misses = misses + 1;
             }
         }
-        return bangs;
+        return misses;
     }
 
     public Optional<Card> removeMiss() {
@@ -80,7 +81,8 @@ public class Hand extends ArrayList<Card> {
         return Optional.empty();
     }
 
-    public void setIndexPicker(IntUnaryOperator picker) {
-        this.indexPicker = Objects.requireNonNull(picker);
+    public void setRandom(Random rnd) {
+        Objects.requireNonNull(rnd);
+        this.indexPicker = rnd::nextInt;
     }
 }

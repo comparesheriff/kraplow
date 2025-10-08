@@ -6,6 +6,7 @@ import com.chriscarr.bang.cards.CardName;
 import junit.framework.TestCase;
 
 import java.util.Optional;
+import java.util.Random;
 
 public class HandTest extends TestCase {
     public void testHandAddCard() {
@@ -42,7 +43,7 @@ public class HandTest extends TestCase {
         h.add(TestCardFactory.CLUBS());
         h.add(TestCardFactory.DIAMONDS());
         h.add(TestCardFactory.HEARTS());
-        h.setIndexPicker(n -> 1); // immer Index 1
+        h.setRandom(new Random(123));
         Optional<Card> removed = h.removeRandom();
         assertTrue(removed.isPresent());
         assertEquals(CardName.VOLCANIC, removed.get().getName());
