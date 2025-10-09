@@ -2,6 +2,7 @@ package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
 import com.chriscarr.bang.Character;
+import com.chriscarr.bang.turn.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.List;

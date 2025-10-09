@@ -1,5 +1,7 @@
-package com.chriscarr.bang;
+package com.chriscarr.bang.turn;
 
+import com.chriscarr.bang.*;
+import com.chriscarr.bang.Character;
 import com.chriscarr.bang.cards.*;
 import com.chriscarr.bang.gamestate.*;
 import com.chriscarr.bang.services.GameOverService;

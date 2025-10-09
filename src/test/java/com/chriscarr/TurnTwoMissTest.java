@@ -1,8 +1,8 @@
 package com.chriscarr;
 
 import com.chriscarr.bang.Player;
-import com.chriscarr.bang.Turn;
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.bang.turn.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
 import junit.framework.TestCase;
 

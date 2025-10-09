@@ -14,7 +14,10 @@ How to use this document
 - Keep public APIs stable during each sprint; use adapter layers and translation methods while migrating.
 
 Project overview and hotspots
-- com.chriscarr.bang.Turn is very large (~1200 lines) and mixes responsibilities: turn flow, rules resolution, targeting/range, damage, discard/death handling, game-state mapping, and UI prompts. This is the main refactor hotspot.
+
+- com.chriscarr.bang.turn.Turn is very large (~1200 lines) and mixes responsibilities: turn flow, rules resolution,
+  targeting/range, damage, discard/death handling, game-state mapping, and UI prompts. This is the main refactor
+  hotspot.
 - com.chriscarr.bang.cards.Card centralizes many card-name constants and embeds attack resolution logic (shoot) that overlaps with Turn responsibilities.
 - Several card classes (e.g., Panic, CatBalou, Conestoga) duplicate “choose opponent → choose card in hand/in-play → take/discard → print info” logic.
 - User interfaces (JSPUserInterface, WebGameUserInterface) contain AI, messaging, and UI concerns together; Turn calls directly into UI, creating tight coupling.

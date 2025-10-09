@@ -3,6 +3,7 @@ package com.chriscarr.bang;
 import com.chriscarr.bang.cards.BangDeck;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameStateListener;
+import com.chriscarr.bang.turn.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
 import com.chriscarr.infra.Rng;
 import org.slf4j.Logger;

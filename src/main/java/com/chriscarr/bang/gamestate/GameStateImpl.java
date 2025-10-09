@@ -1,6 +1,6 @@
 package com.chriscarr.bang.gamestate;
 
-import com.chriscarr.bang.Turn;
+import com.chriscarr.bang.turn.Turn;
 
 import java.util.List;
 import java.util.Optional;
