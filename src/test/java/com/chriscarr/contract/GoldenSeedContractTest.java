@@ -12,6 +12,8 @@ import com.chriscarr.infra.Rng;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.Mockito;
 
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import java.util.regex.Pattern;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class GoldenSeedContractTest {
     private static final Pattern TAG_GAMEID = Pattern.compile("<gameid>(\\d+)</gameid>");
     private static final Pattern TAG_USER = Pattern.compile("<user>([^<]+)</user>");
@@ -56,22 +59,24 @@ public class GoldenSeedContractTest {
      * Ein kurzer Durchlauf von CREATE -> JOIN×4 -> START -> GETGAMESTATE -> GETMESSAGE(user1)
      */
     private static Snap runScenario(long seed) throws Exception {
-        Rng.seed(seed);
+        synchronized (Rng.class) {
+            Rng.seed(seed);
 
-        int gameId = createGame();
-        String user1 = join(gameId, "Alfred");
-        String user2 = join(gameId, "Bernhard");
-        String user3 = join(gameId, "Caroline");
-        String user4 = join(gameId, "Dagobert");
+            int gameId = createGame();
+            String user1 = join(gameId, "Alfred");
+            String user2 = join(gameId, "Bernhard");
+            String user3 = join(gameId, "Caroline");
+            String user4 = join(gameId, "Dagobert");
 
-        // START: nutze gültige Enum-Namen dynamisch (erstes Element), damit der Test unabhängig von konkreten Namen ist
-        String playerRole = Role.values()[0].name();
-        String playerCharacter = Character.values()[0].name();
-        startGame(gameId, 0, playerRole, playerCharacter);
+            // START: nutze gültige Enum-Namen dynamisch (erstes Element), damit der Test unabhängig von konkreten Namen ist
+            String playerRole = Role.values()[0].name();
+            String playerCharacter = Character.values()[0].name();
+            startGame(gameId, 0, playerRole, playerCharacter);
 
-        String gameState = normalize(xml_getGameState(gameId));
-        String firstMsg = normalize(xml_getMessage(gameId, user1));
-        return new Snap(gameState, firstMsg);
+            String gameState = normalize(xml_getGameState(gameId));
+            String firstMsg = normalize(xml_getMessage(gameId, user1));
+            return new Snap(gameState, firstMsg);
+        }
     }
 
     // ---------- Ajax-Helpers ----------
