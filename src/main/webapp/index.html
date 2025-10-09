@@ -8,14 +8,21 @@
     </style>
     <script>
         function copyToClipboard() {
-            var copyText = document.getElementById("joinurl");
-            copyText.select();
-            document.execCommand("Copy");
+            const el = document.getElementById("joinurl");
+            const text = el ? (el.value || el.textContent) : "";
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text);
+            } else if (el && el.select) {
+                el.select();
+                document.execCommand("copy");
+            }
         }
     </script>
 </head>
 <body onload="timedCount();" style="background:url(wood.jpg) repeat;">
 <div>
+    <h1>Bang! <small style="font-size:14px;font-weight:normal">(<a href="/westerncardgame/ui/modern.html">Modern UI
+        (alpha)</a>)</small></h1>
     <div id="gameSetup"></div>
     <div id="gameState" style="float:left;"></div>
     <div id="gameInfo">
@@ -49,7 +56,7 @@
             </form>
         </div>
         <div><textarea id="gameLog" rows='10' cols='60' style="display:none;" readonly></textarea></div>
-        <div id="gameMessages" style="height:256px; width:533; display:none; border:2px solid #000;"></div>
+        <div id="gameMessages" style="height:256px; width:533px; display:none; border:2px solid #000;"></div>
         <div id="remainingroles"></div>
     </div>
     <div style="clear:both;"></div>
@@ -106,28 +113,23 @@
         return "/westerncardgame/chat";
     }
 
-    function initRequest() {
-        if (window.XMLHttpRequest) {
-            return new XMLHttpRequest();
-        } else if (window.ActiveXObject) {
-            isIE = true;
-            return new ActiveXObject("Microsoft.XMLHTTP");
-        }
+    function enc(s) {
+        return encodeURIComponent(s == null ? "" : String(s));
     }
 
     function sendXMLHttp(url, responseHandler) {
-        var req = initRequest();
-        req.onreadystatechange = function () {
-            if (req.readyState == 4) {
-                if (req.status == 200) {
-                    responseHandler(req.responseXML);
-                } else if (req.status == 204) {
+        fetch(url, {method: 'GET', headers: {'Accept': 'application/xml'}, cache: 'no-store'})
+            .then(res => res.text().then(text => ({status: res.status, text: text})))
+            .then(({status, text}) => {
+                if (status === 200) {
+                    const xml = new DOMParser().parseFromString(text, "application/xml");
+                    responseHandler(xml);
+                } else if (status === 204) {
                     alert('error');
                 }
-            }
-        };
-        req.open("GET", url, true);
-        req.send(null);
+            })
+            .catch(() => {/* wie vorher: still schlucken */
+            })
     }
 
     var gameStateResult = null;
@@ -734,12 +736,12 @@
             var splitInfo = info.split("\n");
             var names = ["Calamity Janet", "Jourdonnais", "Paul Regret", "Kit Carlson", "Bart Cassidy", "Jesse Jones", "Pedro Ramirez", "El Gringo", "Rose Doolan", "Suzy Lafayette", "Black Jack", "Sid Ketchum", "Slab the Killer", "Lucky Duke", "Vulture Sam", "Willy the Kid", "Uncle Will", "Johnny Kisch", "Claus The Saint"];
             var lastInfo = splitInfo[splitInfo.length - 1];
-            for (i = 0; i < names.length; i++) {
+            for (var i = 0; i < names.length; i++) {
                 if (lastInfo.includes(names[i])) {
                     flashBorder(names[i], true);
                 }
             }
-            for (i = 0; i < names.length; i++) {
+            for (var i = 0; i < names.length; i++) {
                 if (lastInfo.includes(names[i])) {
                     flashBorder(names[i]);
                 }
@@ -984,7 +986,7 @@
 
     function join(servletUrl, responseHandler, gameId, handle) {
         document.cookie = "handle=" + handle + "; expires=Thu, 18 Dec 2999 12:00:00 UTC";
-        sendXMLHttp(servletUrl + "?messageType=JOIN&gameId=" + gameId + "&handle=" + handle, responseHandler);
+        sendXMLHttp(servletUrl + "?messageType=JOIN&gameId=" + gameId + "&handle=" + enc(handle), responseHandler);
     }
 
     function parseJoinAi(responseXML) {
@@ -993,7 +995,7 @@
     }
 
     function joinAi(servletUrl, responseHandler, gameId, ai, handle) {
-        sendXMLHttp(servletUrl + "?messageType=JOINAI&gameId=" + gameId + "&handle=" + handle, responseHandler);
+        sendXMLHttp(servletUrl + "?messageType=JOINAI&gameId=" + gameId + "&handle=" + enc(handle), responseHandler);
     }
 
     function parseLeave(responseXML) {
@@ -1198,7 +1200,7 @@
     }
 
     function sendResponseXML(servletUrl, responseHandler, user, response, gameId, messageId) {
-        sendXMLHttp(servletUrl + "?messageType=SENDRESPONSE&user=" + user + "&response=" + response + "&gameId=" + gameId + "&messageId=" + messageId, responseHandler);
+        sendXMLHttp(servletUrl + "?messageType=SENDRESPONSE&user=" + user + "&response=" + enc(response) + "&gameId=" + gameId + "&messageId=" + messageId, responseHandler);
     }
 
     function parseSendChat(responseXML) {
@@ -1212,7 +1214,9 @@
         if (gameId != null) {
             gameIdString = "&gameid=" + gameId;
         }
-        sendXMLHttp(servletUrl + "?messageType=CHAT&chat=" + document.getElementById('handle').value + ": " + chat + gameIdString, responseHandler);
+
+        var payload = document.getElementById('handle').value + ": " + chat;
+        sendXMLHttp(servletUrl + "?messageType=CHAT&chat=" + enc(payload) + gameIdString, responseHandler);
     }
 
     function parseGetChat(responseXML) {
@@ -1233,8 +1237,6 @@
             var textarea = document.getElementById('chatarea');
             textarea.scrollTop = textarea.scrollHeight;
         }
-        var sessionNodes = responseXML.getElementsByTagName("session");
-
         var chatNamesDiv = document.getElementById('chatNames');
         var sessionNodes = responseXML.getElementsByTagName("session");
         var namesResult = "<textarea rows=\"10\" cols=\"20\" id=\"chatarea\" readonly>";
@@ -1255,7 +1257,7 @@
         if (gameId != null) {
             gameIdString = "&gameid=" + gameId;
         }
-        sendXMLHttp(servletUrl + "?messageType=GETCHAT&guestCounter=" + guestCounter + "&handle=" + handle + gameIdString, responseHandler);
+        sendXMLHttp(servletUrl + "?messageType=GETCHAT&guestCounter=" + guestCounter + "&handle=" + enc(handle) + gameIdString, responseHandler);
     }
 
     function parseGetPlayerInfo(responseXML) {
@@ -1410,7 +1412,7 @@
             if (gameId != null) {
                 getGameState(getServletUrl(), parseGetGameState, gameId);
             }
-            var t = setTimeout("timedCount()", 1000);
+            setTimeout(timedCount, 1000);
             setup();
             pollMessages();
             var handleField = document.getElementById('handle');

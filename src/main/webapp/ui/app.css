@@ -1,0 +1,145 @@
+
+body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    margin: 16px
+}
+
+.row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+button {
+    padding: 6px 10px;
+    border: 1px solid #888;
+    border-radius: 6px;
+    background: #f6f6f6;
+    cursor: pointer
+}
+
+button:disabled {
+    opacity: .5;
+    cursor: not-allowed
+}
+
+input[type="text"] {
+    padding: 6px 8px
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 8px
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 6px 8px;
+    text-align: left
+}
+
+.grid {
+    display: grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 12px
+}
+
+.cards {
+    display: grid;
+    grid-template-columns:repeat(auto-fill, minmax(90px, 1fr));
+    gap: 8px
+}
+
+.card {
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    padding: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+    background: #fff
+}
+
+.card .name {
+    font-weight: 600
+}
+
+.chatlog {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px;
+    height: 240px;
+    overflow: auto;
+    background: #fafafa
+}
+
+.muted {
+    color: #666;
+    font-size: 12px
+}
+
+tr.current {
+    background: #fffae6;
+}
+
+.badge {
+    display: inline-block;
+    border: 1px solid #bbb;
+    border-radius: 999px;
+    padding: 2px 8px;
+    margin-right: 4px;
+    background: #fff
+}
+
+.kpi {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 6px 0
+}
+
+.kpi .box {
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    padding: 4px 6px;
+    background: #fff
+}
+
+/* modal */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .35);
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.modal.hidden {
+    display: none
+}
+
+.modal-dialog {
+    background: #fff;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .15);
+    padding: 12px;
+    min-width: 320px;
+    max-width: 520px
+}
+
+.modal-title {
+    font-weight: 600;
+    margin-bottom: 6px
+}
+
+.modal-body {
+    white-space: pre-wrap;
+    margin-bottom: 6px
+}
+
+.secondary {
+    background: #fff
+}
