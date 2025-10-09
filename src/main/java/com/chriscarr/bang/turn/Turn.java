@@ -143,17 +143,19 @@ public class Turn {
             }
             inJail = isInJail();
             if (!inJail && players.contains(currentPlayer)) {
-                new DrawPhase()
-                    .carryOut(
-                        TurnContext.of(deck, discard, players, userInterface)
-                            .withCurrentPlayer(currentPlayer)
-                            .withApi(TurnApi.of(
-                                Turn::pullCards,
-                                Turn::chooseValidCardToPutBack,
-                                Turn::getValidChosenPlayer,
-                                Turn::getNextPlayer
-                            ))
-                    );
+                TurnContext ctx = TurnContext.of(deck, discard, players, userInterface)
+                    .withCurrentPlayer(currentPlayer)
+                    .withApi(TurnApi.of(
+                        Turn::pullCards,
+                        Turn::chooseValidCardToPutBack,
+                        Turn::getValidChosenPlayer,
+                        Turn::getNextPlayer
+                    ));
+                new TurnEngine(List.of(new UpkeepPhase(),
+                    new DrawPhase(),
+                    new MainPhase(),
+                    new DiscardPhase()
+                )).run(ctx);
                 while (!donePlaying && players.contains(currentPlayer)) {
                     play();
                     if (GameOverService.isGameOver(players)) {
