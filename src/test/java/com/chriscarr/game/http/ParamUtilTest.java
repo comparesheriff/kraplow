@@ -17,7 +17,8 @@ class ParamUtilTest {
 
         assertNull(ParamUtil.intParamOr400(req, resp, "gameId"));
         assertEquals(400, resp.getStatus());
-        assertTrue(resp.body().contains("<error>missing gameId</error>"));
+        assertTrue(resp.getBody().contains("<error"));
+        assertTrue(resp.getBody().contains("MISSING_PARAM"));
     }
 
     @Test
@@ -27,7 +28,8 @@ class ParamUtilTest {
         when(req.getParameter("gameId")).thenReturn("x");
         assertNull(ParamUtil.intParamOr400(req, resp, "gameId"));
         assertEquals(400, resp.getStatus());
-        assertTrue(resp.body().contains("<error>invalid gameId</error>"));
+        assertTrue(resp.getBody().contains("<error"));
+        assertTrue(resp.getBody().contains("INVALID_PARAM"));
     }
 
 

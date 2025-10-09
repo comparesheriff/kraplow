@@ -13,6 +13,7 @@ import com.chriscarr.game.xml.MessageXmlWriter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
 
 public final class MessageHandlers {
     private MessageHandlers() {
@@ -56,14 +57,19 @@ public final class MessageHandlers {
             if (gameId == null) {
                 return;
             }
+            OptionalInt messageId = ParamUtil.intParam(request.getParameter("messageId"));
             request.getParameter("messageId");
             JSPUserInterface ui = (JSPUserInterface) WebInit.getUserInterface(gameId);
             if (ui != null) {
                 List<Message> messages = ((WebGameUserInterface) ui).getMessages(user);
                 if (!messages.isEmpty()) {
-                    messages.removeFirst();
-                    if (responseMessage != null && !responseMessage.isEmpty()) {
-                        ((WebGameUserInterface) ui).addResponse(user, responseMessage);
+                    Message first = messages.getFirst();
+                    boolean shouldConsume = messageId.isEmpty() || (first.getId() == messageId.getAsInt());
+                    if (shouldConsume) {
+                        messages.removeFirst();
+                        if (responseMessage != null && !responseMessage.isEmpty()) {
+                            ((WebGameUserInterface) ui).addResponse(user, responseMessage);
+                        }
                     }
                 }
             }

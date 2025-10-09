@@ -36,6 +36,10 @@ public final class ChatHandlers {
             }
             WebGame.updateSession(guestCounter, handle);
             List<ChatMessage> chatLog = WebGame.getChatLog(gameId);
+            if (chatLog == null || chatLog.isEmpty()) {
+                response.getWriter().write("<chats/>");
+                return;
+            }
             response.getWriter().write("<chats>");
             for (ChatMessage chat : chatLog) {
                 response.getWriter().write("<chatmessage>");

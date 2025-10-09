@@ -4,6 +4,7 @@ import com.chriscarr.game.ajax.AjaxAction;
 import com.chriscarr.game.ajax.AjaxRegistry;
 import com.chriscarr.game.ajax.MessageType;
 import com.chriscarr.game.ajax.handlers.*;
+import com.chriscarr.game.xml.GenericXmlWriter;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -51,22 +52,25 @@ public class AjaxServlet extends HttpServlet {
         setResponseHeaders(response);
 
         String messageTypeParam = request.getParameter("messageType");
-        if (messageTypeParam != null && !messageTypeParam.isEmpty()) {
-            MessageType messageType = MessageType.fromString(messageTypeParam);
-            AjaxAction ajaxAction = registry.get(messageType);
-            if (ajaxAction != null) {
-                ajaxAction.handle(request, response);
-                return;
-            }
-
-            LOG.error("Unknown message type: {}", messageTypeParam);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("<error>unknown message type</error>");
-        } else {
+        if (messageTypeParam == null || messageTypeParam.isEmpty()) {
             LOG.error("No message type specified");
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("<error>no message type specified</error>");
+            GenericXmlWriter.writeError(response, HttpServletResponse.SC_BAD_REQUEST, "NO_MESSAGE_TYPE", "no message type specified");
+            return;
         }
+        MessageType messageType = MessageType.fromString(messageTypeParam);
+        if (messageType == null) {
+            LOG.error("Unknown message type: {}", messageTypeParam);
+            GenericXmlWriter.writeError(response, HttpServletResponse.SC_BAD_REQUEST, "UNKNOWN_MESSAGE_TYPE", "unknown message type");
+            return;
+        }
+        AjaxAction ajaxAction = registry.get(messageType);
+        if (ajaxAction == null) {
+            LOG.error("No action registered for message type: {}", messageType);
+            GenericXmlWriter.writeError(response, HttpServletResponse.SC_BAD_REQUEST, "UNREGISTERED_MESSAGE_TYPE", "no action registered for message type");
+            return;
+        }
+
+        ajaxAction.handle(request, response);
     }
 
     @Override

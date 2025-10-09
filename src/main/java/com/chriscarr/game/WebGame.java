@@ -151,8 +151,7 @@ public class WebGame {
     }
 
     public static void updateSession(String sessionId, String handle) {
-        if (!sessionId.equals("null")) {
-            // Removed new Long deprecated
+        if (!"null".equals(sessionId)) {
             sessions.put(sessionId, new Session(System.currentTimeMillis(), handle));
             cleanSessions();
         }

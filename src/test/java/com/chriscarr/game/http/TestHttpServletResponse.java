@@ -53,8 +53,9 @@ public class TestHttpServletResponse extends HttpServletResponseWrapper {
         return charset;
     }
 
-    public String body() {
+    public String getBody() {
         writer.flush();
         return buf.toString();
     }
+
 }

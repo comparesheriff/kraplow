@@ -1,14 +1,16 @@
 package com.chriscarr.bang.userinterface;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class MessageImpl implements Message {
 
-    static int nextId = 0;
+    private static final AtomicInteger NEXT_ID = new AtomicInteger(0);
     private String message;
     private final int id;
 
     public MessageImpl(String info) {
         setMessage(info);
-        this.id = nextId++;
+        this.id = NEXT_ID.getAndIncrement();
     }
 
     @Override

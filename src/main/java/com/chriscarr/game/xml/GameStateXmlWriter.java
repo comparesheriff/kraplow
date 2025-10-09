@@ -21,11 +21,13 @@ public final class GameStateXmlWriter {
         resp.getWriter().write("</players>");
 
         if (gameState.timeout() != null) {
-            resp.getWriter().write("<timeout>" + gameState.timeout() + "</timeout>");
+            resp.getWriter().write("<timeout>");
+            resp.getWriter().write(XmlUtil.escapeXml(gameState.timeout()));
+            resp.getWriter().write("</timeout>");
         }
 
         resp.getWriter().write("<currentname>");
-        resp.getWriter().write(gameState.getCurrentName());
+        resp.getWriter().write(XmlUtil.escapeXml(gameState.getCurrentName()));
         resp.getWriter().write("</currentname>");
 
         resp.getWriter().write("<decksize>");
