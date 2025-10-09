@@ -34,7 +34,9 @@ public final class GameStateHandlers {
             }
 
             if (ui instanceof WebGameUserInterface wui) {
-                gameState.getPlayers().forEach(p -> p.user = wui.userFigureNames.get(p.name));
+                if (wui.userFigureNames != null) {
+                    gameState.getPlayers().forEach(p -> p.user = wui.userFigureNames.get(p.name));
+                }
             }
 
             GameStateXmlWriter.writeGameState(gameState, ui.getRoles(), response);
