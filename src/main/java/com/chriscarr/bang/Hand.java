@@ -3,6 +3,7 @@ package com.chriscarr.bang;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.cards.SingleUse;
+import com.chriscarr.infra.Rng;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -12,8 +13,7 @@ import java.util.function.IntUnaryOperator;
 
 public class Hand extends ArrayList<Card> {
 
-    private IntUnaryOperator indexPicker =
-        n -> java.util.concurrent.ThreadLocalRandom.current().nextInt(n);
+    private IntUnaryOperator indexPicker = Rng::nextInt;
 
     @Override
     public boolean add(Card card) {

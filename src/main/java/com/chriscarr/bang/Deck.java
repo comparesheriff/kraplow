@@ -1,23 +1,12 @@
 package com.chriscarr.bang;
 
 import com.chriscarr.bang.cards.Card;
+import com.chriscarr.infra.Rng;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Random;
 
 public class Deck extends ArrayList<Card> {
     private Discard discard;
-    private final Random rng;
-
-    public Deck() {
-        this(new Random());
-    }
-
-    public Deck(Random rng) {
-        this.rng = Objects.requireNonNull(rng);
-    }
 
     public Card pull() {
         if (isEmpty()) {
@@ -30,7 +19,7 @@ public class Deck extends ArrayList<Card> {
     }
 
     public void shuffle() {
-        Collections.shuffle(this, rng);
+        Rng.shuffle(this);
     }
 
     public void setDiscard(Discard discard) {

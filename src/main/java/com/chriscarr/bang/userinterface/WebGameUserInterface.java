@@ -6,6 +6,7 @@ import com.chriscarr.bang.Role;
 import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.gamestate.GameState;
 import com.chriscarr.bang.gamestate.GameStatePlayer;
+import com.chriscarr.infra.Rng;
 import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -429,7 +430,7 @@ public class WebGameUserInterface extends JSPUserInterface {
             return -1;
         } else {
             // Random target instead of first
-            Collections.shuffle(targets);
+            Rng.shuffle(targets);
             return targets.getFirst();
         }
     }

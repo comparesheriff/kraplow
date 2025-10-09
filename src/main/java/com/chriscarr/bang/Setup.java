@@ -4,20 +4,18 @@ import com.chriscarr.bang.cards.BangDeck;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.gamestate.GameStateListener;
 import com.chriscarr.bang.userinterface.UserInterface;
+import com.chriscarr.infra.Rng;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class Setup {
     private static final Logger LOG = LoggerFactory.getLogger(Setup.class);
 
     private Deck deck;
     private List<Player> players;
-    private static Random rng = new Random();
 
     public Setup(int countPlayers, UserInterface userInterface, GameStateListener gameStateListener) {
         new Setup(countPlayers, userInterface, gameStateListener, false, Role.RANDOM, Character.RANDOM);
@@ -77,9 +75,9 @@ public class Setup {
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
-        Collections.shuffle(characterList, rng);
+        Rng.shuffle(characterList);
         List<Role> roles = getRoles(countCharacters);
-        Collections.shuffle(roles, rng);
+        Rng.shuffle(roles);
         for (int i = 0; i < countCharacters; i++) {
             Player player = new Player();
 
@@ -155,7 +153,7 @@ public class Setup {
         ArrayList<Player> players = new ArrayList<>();
 
         List<Role> roles = getRoles(countCharacters);
-        Collections.shuffle(roles, rng);
+        Rng.shuffle(roles);
         for (int i = 0; i < countCharacters; i++) {
             Player player = new Player();
 
@@ -177,9 +175,5 @@ public class Setup {
         }
 
         return players;
-    }
-
-    static void setRngForTests(Random r) { // nur test-intern verwenden
-        rng = r;
     }
 }
