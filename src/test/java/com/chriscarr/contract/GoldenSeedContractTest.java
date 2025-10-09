@@ -9,11 +9,13 @@ import com.chriscarr.game.ajax.handlers.JoinHandlers;
 import com.chriscarr.game.ajax.handlers.MessageHandlers;
 import com.chriscarr.game.http.TestHttpServletResponse;
 import com.chriscarr.infra.Rng;
+import com.chriscarr.infra.testing.DeterministicRng;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.mockito.Mockito;
 
 import java.util.HashMap;
@@ -27,6 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
+@DeterministicRng(seed = 1)
+@ResourceLock("RNG")
 public class GoldenSeedContractTest {
     private static final Pattern TAG_GAMEID = Pattern.compile("<gameid>(\\d+)</gameid>");
     private static final Pattern TAG_USER = Pattern.compile("<user>([^<]+)</user>");
