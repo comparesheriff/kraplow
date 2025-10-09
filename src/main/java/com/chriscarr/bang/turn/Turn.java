@@ -143,7 +143,17 @@ public class Turn {
             }
             inJail = isInJail();
             if (!inJail && players.contains(currentPlayer)) {
-                this.drawCards(currentPlayer, deck);
+                new DrawPhase()
+                    .carryOut(
+                        TurnContext.of(deck, discard, players, userInterface)
+                            .withCurrentPlayer(currentPlayer)
+                            .withApi(TurnApi.of(
+                                Turn::pullCards,
+                                Turn::chooseValidCardToPutBack,
+                                Turn::getValidChosenPlayer,
+                                Turn::getNextPlayer
+                            ))
+                    );
                 while (!donePlaying && players.contains(currentPlayer)) {
                     play();
                     if (GameOverService.isGameOver(players)) {
@@ -176,155 +186,6 @@ public class Turn {
         for (Player player : players) {
             if (player.getRole() == Role.SHERIFF) {
                 currentPlayer = player;
-            }
-        }
-    }
-
-    public void drawCards(Player player, Deck deck) {
-        Hand hand = player.getHand();
-        if (Character.KITCARLSON.equals(player.getCharacter())) {
-            List<Card> cards = pullCards(deck, 3, userInterface);
-            Card cardToPutBack = chooseValidCardToPutBack(player, cards, userInterface);
-            cards.remove(cardToPutBack);
-            deck.add(cardToPutBack);
-            hand.addAll(cards);
-            userInterface.printInfo(
-                player.getCharacter().getName() + " put a card back on the draw pile");
-        } else if (Character.JESSEJONES.equals(player.getCharacter())) {
-            List<Player> otherPlayers = new ArrayList<>();
-            for (Player other : players) {
-                if (!other.equals(player) && !other.getHand().isEmpty()) {
-                    otherPlayers.add(other);
-                }
-            }
-            boolean chosenFromPlayer = false;
-            if (!otherPlayers.isEmpty()) {
-                chosenFromPlayer = userInterface.chooseFromPlayer(player);
-            }
-            if (chosenFromPlayer) {
-                Player chosenPlayer = getValidChosenPlayer(player, otherPlayers, userInterface);
-                chosenPlayer.removeRandom().ifPresent(hand::add);
-                userInterface.printInfo(
-                    player.getCharacter().getName()
-                        + " drew a card from "
-                        + chosenPlayer.getName()
-                        + " hand.");
-            } else {
-                if (deck.isEmpty()) {
-                    userInterface.printInfo("Shuffling the deck");
-                }
-                hand.add(deck.pull());
-                userInterface.printInfo(player.getCharacter().getName() + " drew a card from the deck.");
-            }
-            hand.add(deck.pull());
-        } else if (Character.PATBRENNAN.equals(player.getCharacter())) {
-            boolean chosenFromPlayer = userInterface.chooseFromPlayer(player);
-            if (chosenFromPlayer) {
-                List<Player> otherPlayers = new ArrayList<>();
-                for (Player other : players) {
-                    if (!other.equals(player)
-                        && (!other.getCardsInPlay().isEmpty() || other.getCardsInPlay().hasGun())) {
-                        otherPlayers.add(other);
-                    }
-                }
-                if (!otherPlayers.isEmpty()) {
-                    Player chosenPlayer = getValidChosenPlayer(player, otherPlayers, userInterface);
-                    int chosenCard = -3;
-                    while (chosenCard < -2 || chosenCard > chosenPlayer.getCardsInPlay().size() - 1) {
-                        chosenCard = userInterface.askOthersCard(player, chosenPlayer.getCardsInPlay(), false);
-                    }
-                    if (chosenCard == -2) {
-                        Card card = chosenPlayer.getCardsInPlay().removeGun();
-                        hand.add(card);
-                        userInterface.printInfo(
-                            currentPlayer.getName()
-                                + " takes a "
-                                + card.getName()
-                                + " from "
-                                + chosenPlayer.getName());
-                    } else {
-                        Card card = chosenPlayer.getCardsInPlay().remove(chosenCard);
-                        hand.add(card);
-                        userInterface.printInfo(
-                            currentPlayer.getName()
-                                + " takes a "
-                                + card.getName()
-                                + " from "
-                                + chosenPlayer.getName());
-                    }
-                } else {
-                    hand.add(deck.pull());
-                    hand.add(deck.pull());
-                }
-            } else {
-                hand.add(deck.pull());
-                hand.add(deck.pull());
-            }
-        } else if (Character.PEDRORAMIREZ.equals(player.getCharacter())) {
-            if (!discard.isEmpty()) {
-                boolean chosenDiscard = userInterface.chooseDiscard(player, discard.getLast());
-                if (chosenDiscard) {
-                    Card discardCard = discard.removeLast();
-                    hand.add(discardCard);
-                    userInterface.printInfo(
-                        player.getCharacter().getName()
-                            + " drew a "
-                            + discardCard.getName()
-                            + " from the discard pile.");
-                } else {
-                    hand.add(deck.pull());
-                    userInterface.printInfo(player.getCharacter().getName() + " drew a card from the deck.");
-                }
-            } else {
-                hand.add(deck.pull());
-                userInterface.printInfo(player.getCharacter().getName() + " drew a card from the deck.");
-            }
-            hand.add(deck.pull());
-        } else if (Character.PIXIEPETE.equals(player.getCharacter())) {
-            hand.add(deck.pull());
-            hand.add(deck.pull());
-            hand.add(deck.pull());
-        } else if (Character.BILLNOFACE.equals(player.getCharacter())) {
-            hand.add(deck.pull());
-            int cardsToDraw = player.getMaxHealth() - player.getHealth();
-            while (cardsToDraw > 0) {
-                hand.add(deck.pull());
-                cardsToDraw -= 1;
-            }
-            userInterface.printInfo(
-                player.getName()
-                    + " drew "
-                    + (player.getMaxHealth() - player.getHealth() + 1)
-                    + " card(s) from the deck.");
-        } else if (Character.CLAUSTHESAINT.equals(player.getCharacter())) {
-            List<Card> cards = pullCards(deck, players.size() + 1, userInterface);
-            Player generalPlayer = Turn.getNextPlayer(player, players);
-            while (!generalPlayer.equals(player)) {
-                Card card = chooseValidCardToPutBack(player, cards, userInterface);
-                cards.remove(card);
-                userInterface.printInfo(
-                    player.getName() + " gives " + generalPlayer.getName() + " a card.");
-                generalPlayer.getHand().add(card);
-                generalPlayer = Turn.getNextPlayer(generalPlayer, players);
-            }
-            hand.addAll(cards);
-        } else {
-            hand.add(deck.pull());
-            Card secondCard = deck.pull();
-            hand.add(secondCard);
-            if (Character.BLACKJACK.equals(player.getCharacter())) {
-                CardSuit suit = secondCard.getSuit();
-                userInterface.printInfo(
-                    player.getCharacter().getName()
-                        + " drew a "
-                        + suit.getLabel()
-                        + " "
-                        + secondCard.getName());
-                if (suit == CardSuit.HEARTS || suit == CardSuit.DIAMONDS) {
-                    hand.add(deck.pull());
-                    userInterface.printInfo(
-                        player.getCharacter().getName() + " drew a third card from the deck.");
-                }
             }
         }
     }
