@@ -58,7 +58,6 @@ public final class MessageHandlers {
                 return;
             }
             OptionalInt messageId = ParamUtil.intParam(request.getParameter("messageId"));
-            request.getParameter("messageId");
             JSPUserInterface ui = (JSPUserInterface) WebInit.getUserInterface(gameId);
             if (ui != null) {
                 List<Message> messages = ((WebGameUserInterface) ui).getMessages(user);
