@@ -13,6 +13,7 @@ import com.chriscarr.infra.testing.DeterministicRng;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.ResourceLock;
@@ -43,6 +44,7 @@ public class GoldenSeedContractTest {
     }
 
     @Test
+    @Timeout(1)
     void sameSeed_producesIdenticalXmlSnapshots() throws Exception {
         Snap a = runScenario(42L);
         Snap b = runScenario(42L);
@@ -51,6 +53,7 @@ public class GoldenSeedContractTest {
     }
 
     @Test
+    @Timeout(1)
     void differentSeed_producesDifferentXmlSnapshots() throws Exception {
         Snap a = runScenario(42L);
         Snap c = runScenario(43L);
@@ -77,8 +80,8 @@ public class GoldenSeedContractTest {
             String playerCharacter = Character.values()[0].name();
             startGame(gameId, 0, playerRole, playerCharacter);
 
-            String gameState = normalize(xml_getGameState(gameId));
-            String firstMsg = normalize(xml_getMessage(gameId, user1));
+            String firstMsg = xml_waitForFirstMessage(gameId, user1);
+            String gameState = xml_waitForGameState(gameId);
             return new Snap(gameState, firstMsg);
         }
     }
@@ -115,6 +118,32 @@ public class GoldenSeedContractTest {
         assertTrue(resp.contains("<ok/>"), "START must respond with <ok/>");
     }
 
+    /**
+     * Wartet, bis GETGAMESTATE nicht mehr das leere <gamestate/> liefert.
+     */
+    private static String xml_waitForGameState(int gameId) throws Exception {
+        for (int i = 0; i < 10_000; i++) {
+            String xml = normalize(xml_getGameState(gameId));
+            // Handler gibt <gamestate/> zurück, solange UI/GameState noch nicht bereit ist. (siehe Handler)
+            if (!xml.contains("<gamestate/>")) return xml;
+            Thread.onSpinWait();
+        }
+        return normalize(xml_getGameState(gameId)); // Fallback für Assertion-Output
+    }
+
+    /**
+     * Wartet, bis GETMESSAGE eine <message>…</message> liefert (statt <ok/> bei leerer Queue).
+     */
+    private static String xml_waitForFirstMessage(int gameId, String user) throws Exception {
+        for (int i = 0; i < 10_000; i++) {
+            String xml = normalize(xml_getMessage(gameId, user));
+            // Handler liefert <ok/>, wenn noch keine Messages vorhanden sind. (siehe Handler)
+            if (xml.contains("<message>")) return xml;
+            Thread.onSpinWait();
+        }
+        return normalize(xml_getMessage(gameId, user));
+    }
+
     private static String xml_getGameState(int gameId) throws Exception {
         AjaxAction action = GameStateHandlers.getGameState(CLEANUP);
         Map<String, String> p = Map.of("gameId", String.valueOf(gameId));
@@ -143,8 +172,11 @@ public class GoldenSeedContractTest {
     }
 
     private static String normalize(String xml) {
-        // stabilisiert Whitespace zwischen Tags (Writer erzeugen ohnehin kompakt)
-        return xml.replaceAll(">\\s+<", "><");
+        // 1) Whitespace stabilisieren
+        String compact = xml.replaceAll(">\\s+<", "><");
+        // 2) Message-IDs sind global inkrementell (static AtomicInteger) und damit
+        //    nicht deterministisch pro JVM-Lauf → für den Contractvergleich neutralisieren.
+        return compact.replaceAll("<id>\\d+</id>", "<id>_</id>");
     }
 
     private record Snap(String gameStateXml, String firstMessageXml) {

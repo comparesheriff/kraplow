@@ -542,6 +542,9 @@ public class WebGameUserInterface extends JSPUserInterface {
     }
 
     public String getPlayerForUser(String user) {
+        if (figureNamesUser == null) {
+            setupMap(); // baut userFigureNames/figureNamesUser aus GameState auf
+        }
         return figureNamesUser.get(user);
     }
 

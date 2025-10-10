@@ -39,7 +39,7 @@ public final class MessageHandlers {
             Message first = messages.getFirst();
             ArrayList<String> cardNames = new ArrayList<>();
             String playerName = ((WebGameUserInterface) ui).getPlayerForUser(user);
-            if (ui.isPlayerAlive(playerName)) {
+            if (playerName != null && ui.isPlayerAlive(playerName)) {
                 Hand hand = ui.getHandForUser(playerName);
                 for (Card card : hand) {
                     cardNames.add(card.getName().getDisplayName());

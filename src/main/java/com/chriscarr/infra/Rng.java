@@ -37,10 +37,10 @@ public final class Rng {
     }
 
     public static int nextInt(int bound) {
-        return rng.nextInt(bound);
+        return get().nextInt(bound);
     }
 
     public static <T> void shuffle(List<T> list) {
-        Collections.shuffle(list, rng);
+        Collections.shuffle(list, get());
     }
 }
