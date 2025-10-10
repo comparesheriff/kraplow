@@ -17,6 +17,7 @@ public final class TurnContext {
 
     private Player currentPlayer;
     private TurnApi turnApi;
+    private boolean inJail;
 
     private TurnContext(Deck deck, Discard discard, List<Player> players, UserInterface ui) {
         this.deck = deck;
@@ -60,6 +61,15 @@ public final class TurnContext {
 
     public TurnContext withCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
+        return this;
+    }
+
+    public boolean inJail() {
+        return inJail;
+    }
+
+    public TurnContext withInJail(boolean inJail) {
+        this.inJail = inJail;
         return this;
     }
 }

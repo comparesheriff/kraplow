@@ -1,7 +1,9 @@
 package com.chriscarr.bang.turn;
 
-import com.chriscarr.bang.*;
-import com.chriscarr.bang.Character;
+import com.chriscarr.bang.Deck;
+import com.chriscarr.bang.Discard;
+import com.chriscarr.bang.Hand;
+import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.cards.CardSuit;
 import com.chriscarr.bang.userinterface.UserInterface;
@@ -15,106 +17,94 @@ class DrawPhase implements TurnPhase {
         drawCards(context.currentPlayer(), context.deck(), context.ui(), context.players(), context.discard(), context.api());
     }
 
-    public void drawCards(Player player, Deck deck, UserInterface userInterface, List<Player> players, Discard discard, TurnApi api) {
-        if (Character.KITCARLSON.equals(player.getCharacter())) {
-            drawCardsForKitCarlson(player, deck, userInterface, api);
-        } else if (Character.JESSEJONES.equals(player.getCharacter())) {
-            drawCardsForJesseJones(player, deck, userInterface, players, api);
-        } else if (Character.PATBRENNAN.equals(player.getCharacter()))
-            drawCardsForPatBrennan(player, deck, userInterface, players, api);
-        else if (Character.PEDRORAMIREZ.equals(player.getCharacter()))
-            drawCardsForPedroRamirez(player, deck, userInterface, discard);
-        else if (Character.PIXIEPETE.equals(player.getCharacter())) drawCardsForPixiePete(deck, player.getHand());
-        else if (Character.BILLNOFACE.equals(player.getCharacter()))
-            drawCardsForBillNoFace(player, deck, userInterface);
-        else if (Character.CLAUSTHESAINT.equals(player.getCharacter()))
-            drawCardsForClausTheSaint(player, deck, userInterface, players, api);
-        else drawCardsNormally(player, deck, userInterface);
-    }
-
-    private static void drawCardsNormally(Player player, Deck deck, UserInterface userInterface) {
-        Hand hand = player.getHand();
-        hand.add(deck.pull());
-        Card secondCard = deck.pull();
-        hand.add(secondCard);
-        if (Character.BLACKJACK.equals(player.getCharacter())) {
-            CardSuit suit = secondCard.getSuit();
-            userInterface.printInfo(
-                player.getCharacter().getName()
-                    + " drew a "
-                    + suit.getLabel()
-                    + " "
-                    + secondCard.getName());
-            if (suit == CardSuit.HEARTS || suit == CardSuit.DIAMONDS) {
-                hand.add(deck.pull());
-                userInterface.printInfo(
-                    player.getCharacter().getName() + " drew a third card from the deck.");
-            }
+    public void drawCards(Player player, Deck deck, UserInterface ui, List<Player> players, Discard discard, TurnApi api) {
+        switch (player.getCharacter()) {
+            case KITCARLSON -> drawCardsForKitCarlson(player, deck, ui, api);
+            case JESSEJONES -> drawCardsForJesseJones(player, deck, ui, players, api);
+            case PATBRENNAN -> drawCardsForPatBrennan(player, deck, ui, players, api);
+            case PEDRORAMIREZ -> drawCardsForPedroRamirez(player, deck, ui, discard);
+            case PIXIEPETE -> drawCardsForPixiePete(deck, player.getHand());
+            case BILLNOFACE -> drawCardsForBillNoFace(player, deck, ui);
+            case CLAUSTHESAINT -> drawCardsForClausTheSaint(player, deck, ui, players, api);
+            case BLACKJACK -> drawCardsForBlackJack(player, deck, ui);
+            case null, default -> drawCardsNormally(player, deck);
         }
     }
 
-    private static void drawCardsForClausTheSaint(Player player, Deck deck, UserInterface userInterface, List<Player> players, TurnApi api) {
+    private void drawCardsForBlackJack(Player player, Deck deck, UserInterface ui) {
+        drawCardsNormally(player, deck);
         Hand hand = player.getHand();
-        List<Card> cards = api.pullCards(deck, players.size() + 1, userInterface);
+        Card secondCard = hand.getLast();
+        CardSuit suit = secondCard.getSuit();
+        ui.printInfo(
+            player.getCharacter().getName()
+                + " drew a "
+                + suit.getLabel()
+                + " "
+                + secondCard.getName());
+        if (suit == CardSuit.HEARTS || suit == CardSuit.DIAMONDS) {
+            drawFromDeck(deck, hand, 1);
+            ui.printInfo(player.getCharacter().getName() + " drew a third card from the deck.");
+        }
+    }
+
+    private void drawCardsNormally(Player player, Deck deck) {
+        Hand hand = player.getHand();
+        drawFromDeck(deck, hand, 2);
+    }
+
+    private void drawCardsForClausTheSaint(Player player, Deck deck, UserInterface ui, List<Player> players, TurnApi api) {
+        Hand hand = player.getHand();
+        List<Card> cards = api.pullCards(deck, players.size() + 1, ui);
         Player generalPlayer = api.nextPlayer(player, players);
         while (!generalPlayer.equals(player)) {
-            Card card = api.chooseValidCardToPutBack(player, cards, userInterface);
+            Card card = api.chooseValidCardToPutBack(player, cards, ui);
             cards.remove(card);
-            userInterface.printInfo(
-                player.getName() + " gives " + generalPlayer.getName() + " a card.");
+            ui.printInfo(player.getName() + " gives " + generalPlayer.getName() + " a card.");
             generalPlayer.getHand().add(card);
             generalPlayer = api.nextPlayer(generalPlayer, players);
         }
         hand.addAll(cards);
     }
 
-    private static void drawCardsForBillNoFace(Player player, Deck deck, UserInterface userInterface) {
+    private void drawCardsForBillNoFace(Player player, Deck deck, UserInterface ui) {
         Hand hand = player.getHand();
-        hand.add(deck.pull());
+        drawFromDeck(deck, hand, 1);
         int cardsToDraw = player.getMaxHealth() - player.getHealth();
         while (cardsToDraw > 0) {
-            hand.add(deck.pull());
+            drawFromDeck(deck, hand, 1);
             cardsToDraw -= 1;
         }
-        userInterface.printInfo(
-            player.getName()
-                + " drew "
-                + (player.getMaxHealth() - player.getHealth() + 1)
-                + " card(s) from the deck.");
+        ui.printInfo(player.getName() + " drew " + (cardsToDraw + 1) + " card(s) from the deck.");
     }
 
-    private static void drawCardsForPixiePete(Deck deck, Hand hand) {
-        hand.add(deck.pull());
-        hand.add(deck.pull());
-        hand.add(deck.pull());
+    private void drawCardsForPixiePete(Deck deck, Hand hand) {
+        drawFromDeck(deck, hand, 3);
     }
 
-    private static void drawCardsForPedroRamirez(Player player, Deck deck, UserInterface userInterface, Discard discard) {
+    private void drawCardsForPedroRamirez(Player player, Deck deck, UserInterface ui, Discard discard) {
         Hand hand = player.getHand();
         if (!discard.isEmpty()) {
-            boolean chosenDiscard = userInterface.chooseDiscard(player, discard.getLast());
+            boolean chosenDiscard = ui.chooseDiscard(player, discard.getLast());
             if (chosenDiscard) {
                 Card discardCard = discard.removeLast();
                 hand.add(discardCard);
-                userInterface.printInfo(
+                ui.printInfo(
                     player.getCharacter().getName()
                         + " drew a "
                         + discardCard.getName()
                         + " from the discard pile.");
-            } else {
-                hand.add(deck.pull());
-                userInterface.printInfo(player.getCharacter().getName() + " drew a card from the deck.");
+                drawFromDeck(deck, hand, 1);
+                return;
             }
-        } else {
-            hand.add(deck.pull());
-            userInterface.printInfo(player.getCharacter().getName() + " drew a card from the deck.");
         }
-        hand.add(deck.pull());
+        ui.printInfo(player.getCharacter().getName() + " drew a card from the deck.");
+        drawFromDeck(deck, hand, 2);
     }
 
-    private static void drawCardsForPatBrennan(Player player, Deck deck, UserInterface userInterface, List<Player> players, TurnApi api) {
+    private void drawCardsForPatBrennan(Player player, Deck deck, UserInterface ui, List<Player> players, TurnApi api) {
         Hand hand = player.getHand();
-        boolean chosenFromPlayer = userInterface.chooseFromPlayer(player);
+        boolean chosenFromPlayer = ui.chooseFromPlayer(player);
         if (chosenFromPlayer) {
             List<Player> otherPlayers = new ArrayList<>();
             for (Player other : players) {
@@ -124,41 +114,33 @@ class DrawPhase implements TurnPhase {
                 }
             }
             if (!otherPlayers.isEmpty()) {
-                Player chosenPlayer = api.validChosenPlayer(player, otherPlayers, userInterface);
+                Player chosenPlayer = api.validChosenPlayer(player, otherPlayers, ui);
                 int chosenCard = -3;
                 while (chosenCard < -2 || chosenCard > chosenPlayer.getCardsInPlay().size() - 1) {
-                    chosenCard = userInterface.askOthersCard(player, chosenPlayer.getCardsInPlay(), false);
+                    chosenCard = ui.askOthersCard(player, chosenPlayer.getCardsInPlay(), false);
                 }
+                Card card;
                 if (chosenCard == -2) {
-                    Card card = chosenPlayer.getCardsInPlay().removeGun();
-                    hand.add(card);
-                    userInterface.printInfo(
-                        player.getName()
-                            + " takes a "
-                            + card.getName()
-                            + " from "
-                            + chosenPlayer.getName());
+                    card = chosenPlayer.getCardsInPlay().removeGun();
                 } else {
-                    Card card = chosenPlayer.getCardsInPlay().remove(chosenCard);
-                    hand.add(card);
-                    userInterface.printInfo(
-                        player.getName()
-                            + " takes a "
-                            + card.getName()
-                            + " from "
-                            + chosenPlayer.getName());
+                    card = chosenPlayer.getCardsInPlay().remove(chosenCard);
                 }
+                hand.add(card);
+                ui.printInfo(
+                    player.getName()
+                        + " takes a "
+                        + card.getName()
+                        + " from "
+                        + chosenPlayer.getName());
             } else {
-                hand.add(deck.pull());
-                hand.add(deck.pull());
+                drawFromDeck(deck, hand, 2);
             }
         } else {
-            hand.add(deck.pull());
-            hand.add(deck.pull());
+            drawFromDeck(deck, hand, 2);
         }
     }
 
-    private static void drawCardsForJesseJones(Player player, Deck deck, UserInterface userInterface, List<Player> players, TurnApi api) {
+    private void drawCardsForJesseJones(Player player, Deck deck, UserInterface ui, List<Player> players, TurnApi api) {
         Hand hand = player.getHand();
         List<Player> otherPlayers = new ArrayList<>();
         for (Player other : players) {
@@ -168,34 +150,40 @@ class DrawPhase implements TurnPhase {
         }
         boolean chosenFromPlayer = false;
         if (!otherPlayers.isEmpty()) {
-            chosenFromPlayer = userInterface.chooseFromPlayer(player);
+            chosenFromPlayer = ui.chooseFromPlayer(player);
         }
         if (chosenFromPlayer) {
-            Player chosenPlayer = api.validChosenPlayer(player, otherPlayers, userInterface);
+            Player chosenPlayer = api.validChosenPlayer(player, otherPlayers, ui);
             chosenPlayer.removeRandom().ifPresent(hand::add);
-            userInterface.printInfo(
+            ui.printInfo(
                 player.getCharacter().getName()
                     + " drew a card from "
                     + chosenPlayer.getName()
                     + " hand.");
         } else {
             if (deck.isEmpty()) {
-                userInterface.printInfo("Shuffling the deck");
+                ui.printInfo("Shuffling the deck");
             }
-            hand.add(deck.pull());
-            userInterface.printInfo(player.getCharacter().getName() + " drew a card from the deck.");
+            drawFromDeck(deck, hand, 1);
+            ui.printInfo(player.getCharacter().getName() + " drew a card from the deck.");
         }
-        hand.add(deck.pull());
+        drawFromDeck(deck, hand, 1);
     }
 
-    private static void drawCardsForKitCarlson(Player player, Deck deck, UserInterface userInterface, TurnApi api) {
+    private void drawCardsForKitCarlson(Player player, Deck deck, UserInterface ui, TurnApi api) {
         Hand hand = player.getHand();
-        List<Card> cards = api.pullCards(deck, 3, userInterface);
-        Card cardToPutBack = api.chooseValidCardToPutBack(player, cards, userInterface);
+        List<Card> cards = api.pullCards(deck, 3, ui);
+        Card cardToPutBack = api.chooseValidCardToPutBack(player, cards, ui);
         cards.remove(cardToPutBack);
         deck.add(cardToPutBack);
         hand.addAll(cards);
-        userInterface.printInfo(player.getCharacter().getName() + " put a card back on the draw pile");
+        ui.printInfo(player.getCharacter().getName() + " put a card back on the draw pile");
+    }
+
+    private void drawFromDeck(Deck deck, Hand hand, int cardsToPull) {
+        for (int i = 0; i < cardsToPull; i++) {
+            hand.add(deck.pull());
+        }
     }
 
 }

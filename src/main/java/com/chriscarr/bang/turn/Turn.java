@@ -102,7 +102,7 @@ public class Turn {
         // End log all cards
 
         currentPlayer = getNextPlayer(currentPlayer, players);
-        donePlaying = false;
+        setDonePlaying(false);
         bangsPlayed = 0;
         turnLoop(currentPlayer);
     }
@@ -110,66 +110,32 @@ public class Turn {
     private void turnLoop(Player currentPlayer) {
         this.joseActions = 0;
         this.uncleWillActions = 0;
-        boolean inJail;
+        TurnContext ctx = TurnContext.of(deck, discard, players, userInterface)
+            .withCurrentPlayer(currentPlayer)
+            .withApi(TurnApi.of(
+                Turn::pullCards,
+                Turn::chooseValidCardToPutBack,
+                Turn::getValidChosenPlayer,
+                Turn::getNextPlayer,
+                Turn::draw,
+                this::damagePlayer,
+                this::isDonePlaying,
+                this::play,
+                this::setDonePlaying
+            ))
+            .withInJail(false);
         try {
-            userInterface.printInfo(currentPlayer.getName() + "'s turn.");
-            if (Character.VERACUSTER.equals(currentPlayer.getCharacter())) {
-                List<Player> otherPlayers = new ArrayList<>();
-                for (Player other : players) {
-                    if (!other.equals(currentPlayer)) {
-                        otherPlayers.add(other);
-                    }
-                }
-                userInterface.printInfo(
-                    Character.VERACUSTER + " will choose the abilities of another player");
-                Player chosenPlayer = getValidChosenPlayer(currentPlayer, otherPlayers, userInterface);
-                currentPlayer.setCharacter(chosenPlayer.getCharacter());
-                userInterface.printInfo(
-                    currentPlayer.getCharacter().getName()
-                        + " chose the abilities of "
-                        + chosenPlayer.getName());
-            }
-
-            if (isDynamiteExplode()) {
-                discardDynamite();
-                userInterface.printInfo("Dynamite Exploded on " + currentPlayer.getName());
-                damagePlayer(currentPlayer, players, currentPlayer, 3, null, deck, discard, userInterface);
-                if (GameOverService.isGameOver(players)) {
-                    userInterface.printInfo("Winners are " + GameOverService.getWinners(players) + " " + GameOverService.revealRolesOnGameEnd(players));
-                    throw new EndOfGameException("Game over");
-                }
-            } else {
-                passDynamite();
-            }
-            inJail = isInJail();
-            if (!inJail && players.contains(currentPlayer)) {
-                TurnContext ctx = TurnContext.of(deck, discard, players, userInterface)
-                    .withCurrentPlayer(currentPlayer)
-                    .withApi(TurnApi.of(
-                        Turn::pullCards,
-                        Turn::chooseValidCardToPutBack,
-                        Turn::getValidChosenPlayer,
-                        Turn::getNextPlayer
-                    ));
-                new TurnEngine(List.of(new UpkeepPhase(),
-                    new DrawPhase(),
-                    new MainPhase(),
-                    new DiscardPhase()
-                )).run(ctx);
-                while (!donePlaying && players.contains(currentPlayer)) {
-                    play();
-                    if (GameOverService.isGameOver(players)) {
-                        userInterface.printInfo("Winners are " + GameOverService.getWinners(players) + " " + GameOverService.revealRolesOnGameEnd(players));
-                        throw new EndOfGameException("Game over");
-                    }
-                }
+            new UpkeepPhase().carryOut(ctx);
+            if (!ctx.inJail() && players.contains(currentPlayer)) {
+                new DrawPhase().carryOut(ctx);
+                new MainPhase().carryOut(ctx);
             }
         } catch (EndOfGameException e) {
             return;
         }
         if (players.contains(currentPlayer)) {
-            if (!inJail) {
-                discard(currentPlayer);
+            if (!ctx.inJail()) {
+                new DiscardPhase().carryOut(ctx);
             }
         }
         nextTurn();
@@ -192,41 +158,11 @@ public class Turn {
         }
     }
 
-    public void discard(Player player) {
-        int maxHandSize = player.getHealth();
-        if (Character.SEANMALLORY.equals(player.getCharacter())) {
-            maxHandSize = 10;
-        }
-        Hand hand = player.getHand();
-        StringBuilder discardedCards = new StringBuilder();
-        while (hand.size() > maxHandSize) {
-            Card discardedCard = askPlayerToDiscard(player, discard);
-            discardedCards.append(discardedCard.getName()).append(", ");
-        }
-        if (!discardedCards.toString().isEmpty()) {
-            userInterface.printInfo(
-                player.getName()
-                    + " discarded "
-                    + discardedCards.substring(0, discardedCards.length() - 2)
-                    + ".");
-        }
-    }
-
-    private Card askPlayerToDiscard(Player player, Discard discard) {
-        int card = -1;
-        while (card < 0 || card > player.getHand().size() - 1) {
-            card = userInterface.askDiscard(player);
-        }
-        Card removedCard = player.getHand().remove(card);
-        discard.add(removedCard);
-        return removedCard;
-    }
-
     public void setUserInterface(UserInterface userInterface) {
         this.userInterface = userInterface;
     }
 
-    public void play() {
+    public void play(TurnContext ctx) {
         for (Player player : players) {
             if (Character.SUZYLAFAYETTE.equals(player.getCharacter())) {
                 Hand playerHand = player.getHand();
@@ -348,7 +284,7 @@ public class Turn {
             }
         }
         if (hand.size() + singleUseInPlay.size() == 0 || card == -1) {
-            donePlaying = true;
+            ctx.api().setDonePlaying(true);
             userInterface.printInfo(currentPlayer.getName() + " is finished playing.");
             CardsInPlay allCardsInPlayActivate = currentPlayer.getCardsInPlay();
             for (int i = 0; i < allCardsInPlayActivate.size(); i++) {
@@ -372,8 +308,7 @@ public class Turn {
                     userInterface.printInfo(
                         currentPlayer.getName() + " played a " + playedCard.getName() + ".");
                 }
-                boolean success =
-                    playedCard.play(currentPlayer, players, userInterface, deck, discard, this);
+                boolean success = playedCard.play(currentPlayer, players, userInterface, deck, discard, this);
                 if (success) {
                     if (playedCard instanceof Bang) {
                         bangsPlayed++;
@@ -453,51 +388,16 @@ public class Turn {
         return donePlaying;
     }
 
+    public void setDonePlaying(boolean donePlaying) {
+        this.donePlaying = donePlaying;
+    }
+
     public void setDiscard(Discard discard) {
         this.discard = discard;
     }
 
     public void setDeck(Deck deck) {
         this.deck = deck;
-    }
-
-    public boolean isDynamiteExplode() {
-        CardsInPlay currentCardsInPlay = currentPlayer.getCardsInPlay();
-        if (currentCardsInPlay.hasItem(CardName.DYNAMITE)) {
-            userInterface.printInfo(
-                currentPlayer.getName() + " is drawing to see if the dynamite explodes");
-            Card drawnCard = draw(currentPlayer, deck, discard, userInterface);
-            return Card.isExplode(drawnCard);
-        }
-        return false;
-    }
-
-    public void passDynamite() {
-        CardsInPlay currentCardsInPlay = currentPlayer.getCardsInPlay();
-        if (currentCardsInPlay.hasItem(CardName.DYNAMITE)) {
-            Optional<Card> dynamiteOptional = currentCardsInPlay.removeDynamite();
-            if (dynamiteOptional.isEmpty()) {
-                throw new IllegalStateException("Dynamite card not found in cards in play.");
-            }
-            Player nextPlayer = getNextPlayer(currentPlayer, players);
-            CardsInPlay nextCardsInPlay = nextPlayer.getCardsInPlay();
-            if (!nextCardsInPlay.hasItem(CardName.DYNAMITE)) {
-                userInterface.printInfo("Dynamite Passed to " + nextPlayer.getName());
-                nextCardsInPlay.add(dynamiteOptional.get());
-            } else {
-                nextPlayer = getNextPlayer(nextPlayer, players);
-                nextCardsInPlay = nextPlayer.getCardsInPlay();
-                userInterface.printInfo("Dynamite Passed to " + nextPlayer.getName());
-                nextCardsInPlay.add(dynamiteOptional.get());
-            }
-        }
-    }
-
-    public void discardDynamite() {
-        CardsInPlay currentCardsInPlay = currentPlayer.getCardsInPlay();
-        if (currentCardsInPlay.hasItem(CardName.DYNAMITE)) {
-            currentCardsInPlay.removeDynamite().ifPresent(discard::add);
-        }
     }
 
     public static Card draw(Player player, Deck deck, Discard discard, UserInterface userInterface) {
@@ -534,27 +434,6 @@ public class Turn {
             discard.add(card);
             return card;
         }
-    }
-
-    public boolean isInJail() {
-        CardsInPlay currentCardsInPlay = currentPlayer.getCardsInPlay();
-        if (currentCardsInPlay.hasItem(CardName.JAIL)) {
-            Optional<Card> jailOptional = currentCardsInPlay.removeJail();
-            if (jailOptional.isEmpty()) {
-                throw new IllegalStateException("Jail card not found in cards in play.");
-            }
-            userInterface.printInfo(currentPlayer.getName() + " is drawing to break out of jail");
-            Card drawn = draw(currentPlayer, deck, discard, userInterface);
-            boolean inJail = drawn.getSuit() != CardSuit.HEARTS;
-            discard.add(jailOptional.get());
-            if (inJail) {
-                userInterface.printInfo(currentPlayer.getName() + " stays in jail");
-            } else {
-                userInterface.printInfo(currentPlayer.getName() + " breaks out of jail");
-            }
-            return inJail;
-        }
-        return false;
     }
 
     public static int isBarrelSave(
