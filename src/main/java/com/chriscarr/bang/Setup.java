@@ -82,6 +82,8 @@ public class Setup {
         for (int i = 0; i < countCharacters; i++) {
             Player player = new Player();
 
+            player.setId(i + 1);
+
             //move specific character to front if player has chosen a non random character
             if (i == 0 && !Character.RANDOM.equals(pChar) && characterList.contains(pChar)) {
                 characterList.remove(pChar);
@@ -171,6 +173,8 @@ public class Setup {
             player.setHand(new Hand());
 
             player.setInPlay(new CardsInPlay());
+
+            player.setId(i + 1);
 
             players.add(player);
         }

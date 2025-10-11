@@ -76,6 +76,15 @@ public class Turn {
         return players.get(index);
     }
 
+    public Optional<Player> getPlayerById(int id) {
+        for (Player player : players) {
+            if (player.getId() == id) {
+                return Optional.of(player);
+            }
+        }
+        return Optional.empty();
+    }
+
     public void nextTurn() {
         // Log of all cards
     /*

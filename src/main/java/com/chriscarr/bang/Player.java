@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class Player {
+    private int id;
     private Character character;
     private Hand hand;
     private CardsInPlay cardsInPlay;
@@ -140,5 +141,13 @@ public class Player {
 
     public List<GameStateCard> getGameStateInPlay() {
         return cardsInPlay.getGameStateInPlay();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
