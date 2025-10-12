@@ -4,9 +4,9 @@ import com.chriscarr.bang.play.PlayCommand;
 import com.chriscarr.bang.play.PlayResolver;
 import com.chriscarr.bang.turn.TurnContext;
 
-public final class NoopResolver implements PlayResolver {
+public final class PassResolver implements PlayResolver {
     @Override
     public void resolve(TurnContext ctx, PlayCommand cmd) {
-        //no-op
+        ctx.api().setDonePlaying(true);
     }
 }

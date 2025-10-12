@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -19,23 +20,23 @@ public final class TestUI implements UserInterface {
     private static final Logger LOG = LoggerFactory.getLogger(TestUI.class);
 
     public Function<Player, Integer> askDiscardFn = p -> 0;
-    Function<Player, Integer> askBlueDiscardFn = p -> -1;
-    Function<Player, Integer> askPlayFn = p -> -1; // "passen"
-    Function<Player, Integer> askPlayerFn = p -> 0;
-    Function<Player, Integer> respondBangFn = p -> -1;
-    Function<Player, Integer> respondMissFn = p -> -1;
-    Function<Player, List<Card>> respondTwoMissFn = p -> List.of();
-    Function<Player, Integer> chooseGeneralStoreCardFn = p -> 0;
+    public Function<Player, Integer> askBlueDiscardFn = p -> -1;
+    public Function<Player, Integer> askPlayFn = p -> -1; // "passen"
+    public Function<Player, Integer> askPlayerFn = p -> 0;
+    public Function<Player, Integer> respondBangFn = p -> -1;
+    public Function<Player, Integer> respondMissFn = p -> -1;
+    public Function<Player, List<Card>> respondTwoMissFn = p -> List.of();
+    public Function<Player, Integer> chooseGeneralStoreCardFn = p -> 0;
     TriFunction<Player, CardsInPlay, Boolean, Integer> askOthersCardFn = (p, inPlay, hasHand) -> 0;
-    Function<Player, Integer> respondBeerFn = p -> -1;
-    BiFunction2<Player, Card, Boolean> chooseDiscardFn = (p, c) -> false;
-    Function<Player, Boolean> chooseFromPlayerFn = p -> false;
-    Function<Player, List<Card>> chooseTwoDiscardForLifeFn = p -> new ArrayList<>();
-    Function<Player, List<Card>> chooseTwoDiscardForShootFn = p -> new ArrayList<>();
-    Function<String, String> getRoleForNameFn = s -> null;
-    Function<Player, Integer> chooseDrawCardFn = p -> 0;
-    Function<Player, Integer> chooseCardToPutBackFn = p -> 0;
-    String timeout = "0";
+    public Function<Player, Integer> respondBeerFn = p -> -1;
+    public BiFunction<Player, Card, Boolean> chooseDiscardFn = (p, c) -> false;
+    public Function<Player, Boolean> chooseFromPlayerFn = p -> false;
+    public Function<Player, List<Card>> chooseTwoDiscardForLifeFn = p -> new ArrayList<>();
+    public Function<Player, List<Card>> chooseTwoDiscardForShootFn = p -> new ArrayList<>();
+    public Function<String, String> getRoleForNameFn = s -> null;
+    public Function<Player, Integer> chooseDrawCardFn = p -> 0;
+    public Function<Player, Integer> chooseCardToPutBackFn = p -> 0;
+    public String timeout = "0";
 
     @Override
     public int askBlueDiscard(Player player) {

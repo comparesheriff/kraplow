@@ -1,15 +1,13 @@
 package com.chriscarr.bang.play.impl;
 
-import com.chriscarr.bang.PlayerRef;
+import com.chriscarr.bang.PlayerRefUtil;
 import com.chriscarr.bang.play.PlayCommand;
 import com.chriscarr.bang.play.PlayParser;
 import com.chriscarr.bang.turn.TurnContext;
 
-public final class NoopParser implements PlayParser {
-
+public final class PassOnlyParser implements PlayParser {
     @Override
     public PlayCommand parse(TurnContext ctx) {
-        // Context bewusst ignorieren: stabiler Dummy-Ref (0) für Smoke-Tests.
-        return PlayCommand.pass(new PlayerRef(0));
+        return PlayCommand.pass(PlayerRefUtil.of(ctx.currentPlayer()));
     }
 }
