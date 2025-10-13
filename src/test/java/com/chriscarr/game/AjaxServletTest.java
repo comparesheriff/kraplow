@@ -2,6 +2,7 @@ package com.chriscarr.game;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AjaxServletTest {
 
     @Test
+    @Timeout(1)
     void unknownMessageTypeYields400AndXmlError() throws Exception {
         AjaxServlet servlet = new AjaxServlet();
         HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
@@ -26,6 +28,7 @@ public class AjaxServletTest {
     }
 
     @Test
+    @Timeout(1)
     void missingMessageTypeYields400AndXmlError() throws Exception {
         AjaxServlet servlet = new AjaxServlet();
         HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
