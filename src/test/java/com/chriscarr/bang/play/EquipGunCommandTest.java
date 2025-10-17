@@ -98,4 +98,40 @@ class EquipGunCommandTest {
         assertEquals(0, discard.size(), "no old gun to discard");
     }
 
+    @Test
+    @Timeout(1)
+    void johnny_kisch_forces_others_with_same_gun_to_discard() {
+        // Arrange
+        Player johnny = TestPlayerFactory.mkPlayer(Character.JOHNNYKISCH, 4, Role.OUTLAW);
+        Player p1 = TestPlayerFactory.mkPlayer(Character.BARTCASSIDY, 4, Role.SHERIFF);
+        Player p2 = TestPlayerFactory.mkPlayer(Character.APACHEKID, 4, Role.OUTLAW);
+        var players = new java.util.ArrayList<>(List.of(johnny, p1, p2));
+        Deck deck = new Deck();
+        Discard discard = new Discard();
+        deck.setDiscard(discard);
+        // p1 hat SCHOFIELD im Slot, p2 hat REMINGTON
+        Gun schofield1 = new Gun(CardName.SCHOFIELD, CardSuit.HEARTS, CardValue.NINE, CardType.GUN);
+        Gun remington2 = new Gun(CardName.REMINGTON, CardSuit.DIAMONDS, CardValue.QUEEN, CardType.GUN);
+        p1.getCardsInPlay().setGun(schofield1);
+        p2.getCardsInPlay().setGun(remington2);
+        // Johnny spielt SCHOFIELD aus der Hand
+        Gun johnnySchofield = new Gun(CardName.SCHOFIELD, CardSuit.SPADES, CardValue.ACE, CardType.GUN);
+        johnny.getHand().add(johnnySchofield);
+
+        TurnContext ctx = ctxForSingleIteration(johnny, players, deck, discard);
+
+        PlayParser parser = new EquipParser(new FirstGunSelector());
+        PlayValidator validator = new EquipGunValidator();
+        PlayResolver resolver = new EquipGunResolver();
+
+        // Act
+        new CommandPlayLoop(parser, resolver, validator).run(ctx);
+
+        // Assert
+        assertEquals(CardName.SCHOFIELD, johnny.getCardsInPlay().getGunName(), "Johnny should equip SCHOFIELD");
+        assertFalse(p1.getCardsInPlay().hasGun(), "p1 should be forced to discard matching SCHOFIELD");
+        assertTrue(p2.getCardsInPlay().hasGun(), "p2 keeps REMINGTON (different gun)");
+        assertTrue(discard.contains(schofield1), "p1's gun should be in discard");
+    }
+
 }
