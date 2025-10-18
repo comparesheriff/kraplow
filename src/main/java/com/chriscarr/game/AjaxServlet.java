@@ -20,33 +20,52 @@ import java.util.concurrent.ScheduledExecutorService;
 public class AjaxServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(AjaxServlet.class);
 
-    private static final ScheduledExecutorService CLEANUP =
-        Executors.newSingleThreadScheduledExecutor(
-            r -> {
-                Thread thread = new Thread(r, "Cleanup");
-                thread.setDaemon(true);
-                return thread;
-            });
+    private final ScheduledExecutorService cleanup;
+    private final DateTimeFormatter dateFormat;
+    private final AjaxRegistry registry;
 
-    private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault());
+    public AjaxServlet() {
+        this(
+            Executors.newSingleThreadScheduledExecutor(
+                r -> {
+                    Thread thread = new Thread(r, "Cleanup");
+                    thread.setDaemon(true);
+                    return thread;
+                }),
+            DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault())
+        );
+    }
 
-    private final AjaxRegistry registry = new AjaxRegistry()
-        .register(MessageType.CHAT, ChatHandlers.chat())
-        .register(MessageType.GETCHAT, ChatHandlers.getChat(dateFormat))
-        .register(MessageType.GETGAMESTATE, GameStateHandlers.getGameState(CLEANUP))
-        .register(MessageType.JOIN, JoinHandlers.join())
-        .register(MessageType.JOINAI, JoinHandlers.joinAI())
-        .register(MessageType.LEAVE, JoinHandlers.leave())
-        .register(MessageType.AVAILABLEGAMES, LobbyHandlers.availableGames())
-        .register(MessageType.COUNTPLAYERS, LobbyHandlers.countPlayers())
-        .register(MessageType.GETGUESTCOUNTER, LobbyHandlers.getGuestCounter())
-        .register(MessageType.CANSTART, LobbyHandlers.canStart())
-        .register(MessageType.GETMESSAGE, MessageHandlers.getMessage())
-        .register(MessageType.SENDRESPONSE, MessageHandlers.sendResponse())
-        .register(MessageType.GETPLAYERINFO, PlayerInfoHandlers.getPlayerInfo())
-        .register(MessageType.START, CommandHandlers.startGame())
-        .register(MessageType.CREATE, CommandHandlers.createGame());
+    AjaxServlet(ScheduledExecutorService cleanup, DateTimeFormatter dateFormat) {
+        this.cleanup = cleanup;
+        this.dateFormat = dateFormat;
+        this.registry = defaultRegistry(this.cleanup, this.dateFormat);
+    }
 
+    AjaxServlet(ScheduledExecutorService cleanup, DateTimeFormatter dateFormat, AjaxRegistry registry) {
+        this.cleanup = cleanup;
+        this.dateFormat = dateFormat;
+        this.registry = registry;
+    }
+
+    private static AjaxRegistry defaultRegistry(ScheduledExecutorService cleanup, DateTimeFormatter dateFormat) {
+        return new AjaxRegistry()
+            .register(MessageType.CHAT, ChatHandlers.chat())
+            .register(MessageType.GETCHAT, ChatHandlers.getChat(dateFormat))
+            .register(MessageType.GETGAMESTATE, GameStateHandlers.getGameState(cleanup))
+            .register(MessageType.JOIN, JoinHandlers.join())
+            .register(MessageType.JOINAI, JoinHandlers.joinAI())
+            .register(MessageType.LEAVE, JoinHandlers.leave())
+            .register(MessageType.AVAILABLEGAMES, LobbyHandlers.availableGames())
+            .register(MessageType.COUNTPLAYERS, LobbyHandlers.countPlayers())
+            .register(MessageType.GETGUESTCOUNTER, LobbyHandlers.getGuestCounter())
+            .register(MessageType.CANSTART, LobbyHandlers.canStart())
+            .register(MessageType.GETMESSAGE, MessageHandlers.getMessage())
+            .register(MessageType.SENDRESPONSE, MessageHandlers.sendResponse())
+            .register(MessageType.GETPLAYERINFO, PlayerInfoHandlers.getPlayerInfo())
+            .register(MessageType.START, CommandHandlers.startGame())
+            .register(MessageType.CREATE, CommandHandlers.createGame());
+    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         setResponseHeaders(response);
@@ -87,7 +106,7 @@ public class AjaxServlet extends HttpServlet {
 
     @Override
     public void destroy() {
-        CLEANUP.shutdownNow(); // Executor aufräumen
+        cleanup.shutdownNow(); // Executor aufräumen
         super.destroy();
     }
 }

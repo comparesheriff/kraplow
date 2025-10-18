@@ -6,13 +6,13 @@ import com.chriscarr.bang.Setup;
 import com.chriscarr.bang.gamestate.GameStateListener;
 import com.chriscarr.bang.userinterface.UserInterface;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class WebInit {
 
-    private static final Map<Integer, UserInterface> userInterfaces = new HashMap<>();
-    private static final Map<Integer, GameStateListener> gameStateListeners = new HashMap<>();
+    private static final Map<Integer, UserInterface> userInterfaces = new ConcurrentHashMap<>();
+    private static final Map<Integer, GameStateListener> gameStateListeners = new ConcurrentHashMap<>();
 
     public void setup(
         int numPlayers,
@@ -36,6 +36,19 @@ public class WebInit {
     public static void remove(int gameId) {
         userInterfaces.remove(gameId);
         gameStateListeners.remove(gameId);
+    }
+
+    public static final class TestHooks {
+        private TestHooks() {}
+
+        public static void putUI(int gameId, UserInterface ui) {
+            userInterfaces.put(gameId, ui);
+        }
+
+        public static void clear() {
+            userInterfaces.clear();
+            gameStateListeners.clear();
+        }
     }
 
     static class GameThread extends Thread {

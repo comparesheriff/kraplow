@@ -15,7 +15,6 @@ import org.mockito.Mockito;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -51,14 +50,10 @@ class MessageHandlersTest {
 
     @Test
     @Timeout(2)
-    @SuppressWarnings("unchecked")
     void sendResponse_isIdempotentOnMismatchedMessageId() throws Exception {
         // Arrange WebInit map
-        Field f = WebInit.class.getDeclaredField("userInterfaces");
-        f.setAccessible(true);
-        var map = (Map<Integer, Object>) f.get(null);
         TestUI ui = new TestUI();
-        map.put(7, ui);
+        WebInit.TestHooks.putUI(7, ui);
 
         // Queue mit einer Message id=123
         List<Message> queue = ui.getMessages("u");

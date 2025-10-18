@@ -39,21 +39,18 @@ export function renderGame(container, handRoot, gs, myHandle, handCardNames) {
     }
     container.appendChild(table);
 
-    // meine Hand – echte Namen falls vorhanden (aus GETMESSAGE), sonst Platzhalter nach Handgröße
+    // meine Hand – echte Namen falls vorhanden (aus GETMESSAGE)
     handRoot.innerHTML = "";
     const me = gs.players.find(p => p.handle === myHandle);
     if (me) {
-        for (let i = 0; i < me.handSize; i++) {
-            const card = document.createElement("div");
-            card.className = "card";
-            card.innerHTML = `<div class="name">Card #${i + 1}</div><div class="muted">[unknown name]</div>`;
-            handRoot.appendChild(card);
-        }
-        const names = (handCardNames && handCardNames.length) ? handCardNames : Array.from({length: me.handSize}, (_, i) => `Card #${i + 1}`);
+        const names = (handCardNames && handCardNames.length)
+            ? handCardNames :
+            Array.from({length: me.handSize}, (_, i) => `Card #${i + 1}`);
         for (let i = 0; i < names.length; i++) {
             const card = document.createElement("div");
             card.className = "card";
-            card.innerHTML = `<div class="name">${names[i]}</div>${(handCardNames && handCardNames.length) ? "" : `<div class="muted">[unknown name]</div>`}`;
+            const hasRealNames = !!(handCardNames && handCardNames.length);
+            card.innerHTML = `<div class="name">${names[i]}</div>${hasRealNames ? "" : `<div class="muted">[unknown name]</div>`}`;
             handRoot.appendChild(card);
         }
     }
