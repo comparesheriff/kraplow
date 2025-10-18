@@ -3,6 +3,7 @@ package com.chriscarr.bang.turn;
 import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Player;
+import com.chriscarr.bang.turn.ports.TurnApiPorts;
 import com.chriscarr.bang.userinterface.UserInterface;
 import jakarta.annotation.Nonnull;
 
@@ -53,6 +54,10 @@ public final class TurnContext {
     public TurnContext withApi(@Nonnull TurnApi turnApi) {
         this.turnApi = Objects.requireNonNull(turnApi);
         return this;
+    }
+
+    public TurnApiPorts ports() {
+        return TurnApiPorts.from(turnApi);
     }
 
     public Player currentPlayer() {

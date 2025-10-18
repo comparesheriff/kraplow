@@ -7,6 +7,6 @@ import com.chriscarr.bang.turn.TurnContext;
 public final class PassResolver implements PlayResolver {
     @Override
     public void resolve(TurnContext ctx, PlayCommand cmd) {
-        ctx.api().setDonePlaying(true);
+        ctx.ports().setDonePlaying(true);
     }
 }

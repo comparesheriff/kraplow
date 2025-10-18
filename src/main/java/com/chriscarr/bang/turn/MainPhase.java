@@ -1,13 +1,13 @@
 package com.chriscarr.bang.turn;
 
 import com.chriscarr.bang.play.PlayLoop;
-import com.chriscarr.bang.play.impl.TurnApiPlayLoop;
+import com.chriscarr.bang.play.impl.PortsPlayLoop;
 
 class MainPhase implements TurnPhase {
     private final PlayLoop loop;
 
     MainPhase() {
-        this(new TurnApiPlayLoop());
+        this(new PortsPlayLoop());
     }
 
     MainPhase(PlayLoop loop) {

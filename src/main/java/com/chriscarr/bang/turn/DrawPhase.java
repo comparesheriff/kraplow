@@ -18,11 +18,10 @@ import java.util.List;
 class DrawPhase implements TurnPhase {
     @Override
     public void carryOut(TurnContext context) {
-        drawCards(context.currentPlayer(), context.deck(), context.ui(), context.players(), context.discard(), context.api());
+        drawCards(context.currentPlayer(), context.deck(), context.ui(), context.players(), context.discard(), context.ports());
     }
 
-    public void drawCards(Player player, Deck deck, UserInterface ui, List<Player> players, Discard discard, TurnApi api) {
-        TurnApiPorts ports = TurnApiPorts.from(api);
+    public void drawCards(Player player, Deck deck, UserInterface ui, List<Player> players, Discard discard, TurnApiPorts ports) {
         drawCards(player, deck, ui, players, discard, ports, ports, ports);
     }
 

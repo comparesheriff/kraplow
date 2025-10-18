@@ -8,6 +8,7 @@ import com.chriscarr.bang.turn.TurnContext;
 
 import java.util.List;
 
+@Deprecated(since = "refactor-ports", forRemoval = false)
 public class TurnApiPlayLoop implements PlayLoop {
     @Override
     public void run(TurnContext ctx) {

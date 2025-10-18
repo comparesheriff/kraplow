@@ -17,7 +17,7 @@ class UpkeepPhase implements TurnPhase {
     @Override
     public void carryOut(TurnContext context) {
         //TODO figure out how to skip turn
-        TurnApiPorts ports = TurnApiPorts.from(context.api());
+        TurnApiPorts ports = context.ports();
         boolean skipTurn = handleUpkeep(context.ui(),
             context.currentPlayer(),
             context.players(),

@@ -23,7 +23,7 @@ public class CommandPlayLoop implements PlayLoop {
     @Override
     public void run(TurnContext ctx) {
         List<Player> players = ctx.players();
-        while (!ctx.api().checkDonePlaying() && players.contains(ctx.currentPlayer())) {
+        while (!ctx.ports().checkDonePlaying() && players.contains(ctx.currentPlayer())) {
             PlayCommand cmd = parser.parse(ctx);
             ValidationResult result = validator.validate(ctx, cmd);
             if (result.valid()) {
