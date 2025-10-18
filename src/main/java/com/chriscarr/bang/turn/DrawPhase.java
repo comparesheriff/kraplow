@@ -6,6 +6,10 @@ import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.Player;
 import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.cards.CardSuit;
+import com.chriscarr.bang.turn.ports.HandPort;
+import com.chriscarr.bang.turn.ports.TargetingPort;
+import com.chriscarr.bang.turn.ports.TurnApiPorts;
+import com.chriscarr.bang.turn.ports.TurnOrderPort;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.ArrayList;
@@ -18,14 +22,19 @@ class DrawPhase implements TurnPhase {
     }
 
     public void drawCards(Player player, Deck deck, UserInterface ui, List<Player> players, Discard discard, TurnApi api) {
+        TurnApiPorts ports = TurnApiPorts.from(api);
+        drawCards(player, deck, ui, players, discard, ports, ports, ports);
+    }
+
+    public void drawCards(Player player, Deck deck, UserInterface ui, List<Player> players, Discard discard, HandPort handPort, TargetingPort targetingPort, TurnOrderPort turnOrderPort) {
         switch (player.getCharacter()) {
-            case KITCARLSON -> drawCardsForKitCarlson(player, deck, ui, api);
-            case JESSEJONES -> drawCardsForJesseJones(player, deck, ui, players, api);
-            case PATBRENNAN -> drawCardsForPatBrennan(player, deck, ui, players, api);
+            case KITCARLSON -> drawCardsForKitCarlson(player, deck, ui, handPort);
+            case JESSEJONES -> drawCardsForJesseJones(player, deck, ui, players, targetingPort);
+            case PATBRENNAN -> drawCardsForPatBrennan(player, deck, ui, players, targetingPort);
             case PEDRORAMIREZ -> drawCardsForPedroRamirez(player, deck, ui, discard);
             case PIXIEPETE -> drawCardsForPixiePete(deck, player.getHand());
             case BILLNOFACE -> drawCardsForBillNoFace(player, deck, ui);
-            case CLAUSTHESAINT -> drawCardsForClausTheSaint(player, deck, ui, players, api);
+            case CLAUSTHESAINT -> drawCardsForClausTheSaint(player, deck, ui, players, handPort, turnOrderPort);
             case BLACKJACK -> drawCardsForBlackJack(player, deck, ui);
             case null, default -> drawCardsNormally(player, deck);
         }
@@ -53,16 +62,16 @@ class DrawPhase implements TurnPhase {
         drawFromDeck(deck, hand, 2);
     }
 
-    private void drawCardsForClausTheSaint(Player player, Deck deck, UserInterface ui, List<Player> players, TurnApi api) {
+    private void drawCardsForClausTheSaint(Player player, Deck deck, UserInterface ui, List<Player> players, HandPort handPort, TurnOrderPort turnOrderPort) {
         Hand hand = player.getHand();
-        List<Card> cards = api.pullCards(deck, players.size() + 1, ui);
-        Player generalPlayer = api.nextPlayer(player, players);
+        List<Card> cards = handPort.pullCards(deck, players.size() + 1, ui);
+        Player generalPlayer = turnOrderPort.nextPlayer(player, players);
         while (!generalPlayer.equals(player)) {
-            Card card = api.chooseValidCardToPutBack(player, cards, ui);
+            Card card = handPort.chooseValidCardToPutBack(player, cards, ui);
             cards.remove(card);
             ui.printInfo(player.getName() + " gives " + generalPlayer.getName() + " a card.");
             generalPlayer.getHand().add(card);
-            generalPlayer = api.nextPlayer(generalPlayer, players);
+            generalPlayer = turnOrderPort.nextPlayer(generalPlayer, players);
         }
         hand.addAll(cards);
     }
@@ -102,7 +111,7 @@ class DrawPhase implements TurnPhase {
         drawFromDeck(deck, hand, 2);
     }
 
-    private void drawCardsForPatBrennan(Player player, Deck deck, UserInterface ui, List<Player> players, TurnApi api) {
+    private void drawCardsForPatBrennan(Player player, Deck deck, UserInterface ui, List<Player> players, TargetingPort targetingPort) {
         Hand hand = player.getHand();
         boolean chosenFromPlayer = ui.chooseFromPlayer(player);
         if (chosenFromPlayer) {
@@ -114,7 +123,7 @@ class DrawPhase implements TurnPhase {
                 }
             }
             if (!otherPlayers.isEmpty()) {
-                Player chosenPlayer = api.validChosenPlayer(player, otherPlayers, ui);
+                Player chosenPlayer = targetingPort.validChosenPlayer(player, otherPlayers, ui);
                 int chosenCard = -3;
                 while (chosenCard < -2 || chosenCard > chosenPlayer.getCardsInPlay().size() - 1) {
                     chosenCard = ui.askOthersCard(player, chosenPlayer.getCardsInPlay(), false);
@@ -140,7 +149,7 @@ class DrawPhase implements TurnPhase {
         }
     }
 
-    private void drawCardsForJesseJones(Player player, Deck deck, UserInterface ui, List<Player> players, TurnApi api) {
+    private void drawCardsForJesseJones(Player player, Deck deck, UserInterface ui, List<Player> players, TargetingPort targetingPort) {
         Hand hand = player.getHand();
         List<Player> otherPlayers = new ArrayList<>();
         for (Player other : players) {
@@ -153,7 +162,7 @@ class DrawPhase implements TurnPhase {
             chosenFromPlayer = ui.chooseFromPlayer(player);
         }
         if (chosenFromPlayer) {
-            Player chosenPlayer = api.validChosenPlayer(player, otherPlayers, ui);
+            Player chosenPlayer = targetingPort.validChosenPlayer(player, otherPlayers, ui);
             chosenPlayer.removeRandom().ifPresent(hand::add);
             ui.printInfo(
                 player.getCharacter().getName()
@@ -170,10 +179,10 @@ class DrawPhase implements TurnPhase {
         drawFromDeck(deck, hand, 1);
     }
 
-    private void drawCardsForKitCarlson(Player player, Deck deck, UserInterface ui, TurnApi api) {
+    private void drawCardsForKitCarlson(Player player, Deck deck, UserInterface ui, HandPort handPort) {
         Hand hand = player.getHand();
-        List<Card> cards = api.pullCards(deck, 3, ui);
-        Card cardToPutBack = api.chooseValidCardToPutBack(player, cards, ui);
+        List<Card> cards = handPort.pullCards(deck, 3, ui);
+        Card cardToPutBack = handPort.chooseValidCardToPutBack(player, cards, ui);
         cards.remove(cardToPutBack);
         deck.add(cardToPutBack);
         hand.addAll(cards);

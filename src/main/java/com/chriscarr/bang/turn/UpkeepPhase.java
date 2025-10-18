@@ -6,6 +6,7 @@ import com.chriscarr.bang.cards.Card;
 import com.chriscarr.bang.cards.CardName;
 import com.chriscarr.bang.cards.CardSuit;
 import com.chriscarr.bang.services.GameOverService;
+import com.chriscarr.bang.turn.ports.*;
 import com.chriscarr.bang.userinterface.UserInterface;
 
 import java.util.ArrayList;
@@ -16,31 +17,48 @@ class UpkeepPhase implements TurnPhase {
     @Override
     public void carryOut(TurnContext context) {
         //TODO figure out how to skip turn
-        boolean skipTurn = handleUpkeep(context.ui(), context.currentPlayer(), context.players(), context.api(), context.deck(), context.discard());
+        TurnApiPorts ports = TurnApiPorts.from(context.api());
+        boolean skipTurn = handleUpkeep(context.ui(),
+            context.currentPlayer(),
+            context.players(),
+            context.deck(),
+            context.discard(),
+            ports,
+            ports,
+            ports,
+            ports);
         context.withInJail(skipTurn);
     }
 
-    private boolean handleUpkeep(UserInterface ui, Player currentPlayer, List<Player> players, TurnApi api, Deck deck, Discard discard) {
+    private boolean handleUpkeep(UserInterface ui,
+                                 Player currentPlayer,
+                                 List<Player> players,
+                                 Deck deck,
+                                 Discard discard,
+                                 DamagePort damagePort,
+                                 DrawPort drawPort,
+                                 TurnOrderPort turnOrderPort,
+                                 TargetingPort targetingPort) {
         ui.printInfo(currentPlayer.getName() + "'s turn.");
         if (com.chriscarr.bang.Character.VERACUSTER.equals(currentPlayer.getCharacter())) {
-            handleVeraCuster(ui, currentPlayer, players, api);
+            handleVeraCuster(ui, currentPlayer, players, targetingPort);
         }
 
-        if (isDynamiteExplode(currentPlayer, ui, deck, discard, api)) {
+        if (isDynamiteExplode(currentPlayer, ui, deck, discard, drawPort)) {
             discardDynamite(currentPlayer, discard);
             ui.printInfo("Dynamite Exploded on " + currentPlayer.getName());
-            api.damagePlayer(currentPlayer, players, currentPlayer, 3, null, deck, discard, ui);
+            damagePort.damagePlayer(currentPlayer, players, currentPlayer, 3, null, deck, discard, ui);
             if (GameOverService.isGameOver(players)) {
                 ui.printInfo("Winners are " + GameOverService.getWinners(players) + " " + GameOverService.revealRolesOnGameEnd(players));
                 throw new EndOfGameException("Game over");
             }
         } else {
-            passDynamite(currentPlayer, api, ui, players);
+            passDynamite(currentPlayer, ui, players, turnOrderPort);
         }
-        return isInJail(currentPlayer, ui, deck, discard, api);
+        return isInJail(currentPlayer, ui, deck, discard, drawPort);
     }
 
-    private void handleVeraCuster(UserInterface ui, Player currentPlayer, List<Player> players, TurnApi api) {
+    private void handleVeraCuster(UserInterface ui, Player currentPlayer, List<Player> players, TargetingPort targetingPort) {
         List<Player> otherPlayers = new ArrayList<>();
         for (Player other : players) {
             if (!other.equals(currentPlayer)) {
@@ -48,35 +66,35 @@ class UpkeepPhase implements TurnPhase {
             }
         }
         ui.printInfo(Character.VERACUSTER + " will choose the abilities of another player");
-        Player chosenPlayer = api.validChosenPlayer(currentPlayer, otherPlayers, ui);
+        Player chosenPlayer = targetingPort.validChosenPlayer(currentPlayer, otherPlayers, ui);
         currentPlayer.setCharacter(chosenPlayer.getCharacter());
         ui.printInfo(currentPlayer.getCharacter().getName() + " chose the abilities of " + chosenPlayer.getName());
     }
 
-    private boolean isDynamiteExplode(Player currentPlayer, UserInterface ui, Deck deck, Discard discard, TurnApi api) {
+    private boolean isDynamiteExplode(Player currentPlayer, UserInterface ui, Deck deck, Discard discard, DrawPort draw) {
         CardsInPlay currentCardsInPlay = currentPlayer.getCardsInPlay();
         if (currentCardsInPlay.hasItem(CardName.DYNAMITE)) {
             ui.printInfo(currentPlayer.getName() + " is drawing to see if the dynamite explodes");
-            Card drawnCard = api.draw(currentPlayer, deck, discard, ui);
+            Card drawnCard = draw.draw(currentPlayer, deck, discard, ui);
             return Card.isExplode(drawnCard);
         }
         return false;
     }
 
-    private void passDynamite(Player currentPlayer, TurnApi api, UserInterface ui, List<Player> players) {
+    private void passDynamite(Player currentPlayer, UserInterface ui, List<Player> players, TurnOrderPort turnOrderPort) {
         CardsInPlay currentCardsInPlay = currentPlayer.getCardsInPlay();
         if (currentCardsInPlay.hasItem(CardName.DYNAMITE)) {
             Optional<Card> dynamiteOptional = currentCardsInPlay.removeDynamite();
             if (dynamiteOptional.isEmpty()) {
                 throw new IllegalStateException("Dynamite card not found in cards in play.");
             }
-            Player nextPlayer = api.nextPlayer(currentPlayer, players);
+            Player nextPlayer = turnOrderPort.nextPlayer(currentPlayer, players);
             CardsInPlay nextCardsInPlay = nextPlayer.getCardsInPlay();
             if (!nextCardsInPlay.hasItem(CardName.DYNAMITE)) {
                 ui.printInfo("Dynamite Passed to " + nextPlayer.getName());
                 nextCardsInPlay.add(dynamiteOptional.get());
             } else {
-                nextPlayer = api.nextPlayer(nextPlayer, players);
+                nextPlayer = turnOrderPort.nextPlayer(nextPlayer, players);
                 nextCardsInPlay = nextPlayer.getCardsInPlay();
                 ui.printInfo("Dynamite Passed to " + nextPlayer.getName());
                 nextCardsInPlay.add(dynamiteOptional.get());
@@ -91,7 +109,7 @@ class UpkeepPhase implements TurnPhase {
         }
     }
 
-    private boolean isInJail(Player currentPlayer, UserInterface ui, Deck deck, Discard discard, TurnApi api) {
+    private boolean isInJail(Player currentPlayer, UserInterface ui, Deck deck, Discard discard, DrawPort drawPort) {
         CardsInPlay currentCardsInPlay = currentPlayer.getCardsInPlay();
         if (currentCardsInPlay.hasItem(CardName.JAIL)) {
             Optional<Card> jailOptional = currentCardsInPlay.removeJail();
@@ -99,7 +117,7 @@ class UpkeepPhase implements TurnPhase {
                 throw new IllegalStateException("Jail card not found in cards in play.");
             }
             ui.printInfo(currentPlayer.getName() + " is drawing to break out of jail");
-            Card drawn = api.draw(currentPlayer, deck, discard, ui);
+            Card drawn = drawPort.draw(currentPlayer, deck, discard, ui);
             boolean inJail = drawn.getSuit() != CardSuit.HEARTS;
             discard.add(jailOptional.get());
             if (inJail) {
