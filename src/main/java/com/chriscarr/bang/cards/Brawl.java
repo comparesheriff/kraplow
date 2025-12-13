@@ -4,6 +4,7 @@ import com.chriscarr.bang.Deck;
 import com.chriscarr.bang.Discard;
 import com.chriscarr.bang.Hand;
 import com.chriscarr.bang.Player;
+import com.chriscarr.bang.services.AskOthersCardHelper;
 import com.chriscarr.bang.services.TargetingService;
 import com.chriscarr.bang.turn.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
@@ -64,12 +65,7 @@ public class Brawl extends Card implements Playable {
                 continue;
             }
 
-            int chosenCard = -3;
-            while (chosenCard < -2 || chosenCard > brawlPlayer.getCardsInPlay().size() - 1) {
-                chosenCard =
-                    userInterface.askOthersCard(
-                        currentPlayer, brawlPlayer.getCardsInPlay(), !brawlPlayer.getHand().isEmpty());
-            }
+            int chosenCard = AskOthersCardHelper.askOthersCard(userInterface, currentPlayer, brawlPlayer);
             if (chosenCard == -1) {
                 Optional<Card> cardOptional = brawlPlayer.getHand().removeRandom();
                 if (cardOptional.isPresent()) {

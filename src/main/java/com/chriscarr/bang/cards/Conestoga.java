@@ -2,6 +2,7 @@ package com.chriscarr.bang.cards;
 
 import com.chriscarr.bang.*;
 import com.chriscarr.bang.Character;
+import com.chriscarr.bang.services.AskOthersCardHelper;
 import com.chriscarr.bang.turn.Turn;
 import com.chriscarr.bang.userinterface.UserInterface;
 
@@ -34,12 +35,7 @@ public class Conestoga extends SingleUse implements Playable {
             return true;
         }
         if (!(otherPlayer instanceof CancelPlayer)) {
-            int chosenCard = -3;
-            while (chosenCard < -2 || chosenCard > otherPlayer.getCardsInPlay().size() - 1) {
-                chosenCard =
-                    userInterface.askOthersCard(
-                        currentPlayer, otherPlayer.getCardsInPlay(), !otherPlayer.getHand().isEmpty());
-            }
+            int chosenCard = AskOthersCardHelper.askOthersCard(userInterface, currentPlayer, otherPlayer);
             Hand hand = currentPlayer.getHand();
             if (chosenCard == -1) {
                 otherPlayer.getHand().removeRandom().ifPresent(hand::add);

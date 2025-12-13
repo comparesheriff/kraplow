@@ -194,6 +194,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <useModulePath>false</useModulePath>
+                    <argLine>
+                        -javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/1.14.15/byte-buddy-agent-1.14.15.jar
+                        -XX:+EnableDynamicAgentLoading -Djdk.attach.allowAttachSelf=true
+                    </argLine>
                 </configuration>
             </plugin>
 
